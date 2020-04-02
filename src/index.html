@@ -16,6 +16,7 @@
     <script defer src="render.js"></script>
   </head>
   <body>
+    <!-- NavBar -->
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="https://bulma.io">
@@ -77,6 +78,7 @@
       </div>
     </nav>
 
+    <!-- New User Input -->
     <div class="field is-horizontal">
       <div class="field-label is-left">
         <label class="label">Add User:</label>
@@ -113,14 +115,14 @@
           </p>
         </div>
         <div class="buttons">
-          <a class="button">
+          <a id="add-user-button" class="button">
             Add
             </a>
         </div>
       </div>
     </div>
 
-    <!-- TABLES -->
+    <!-- user table -->
       <div class ="box">
         <div class="table-container">
           <table class="table is-fullwidth is-hoverable">
@@ -154,9 +156,9 @@
           </table>
         </div>
       </div>
-
     <hr />
 
+    <!-- csv file upload -->
     <p>Import a csv file containing users</p>
 
     <div id="file-js-example" class="file has-name">
