@@ -17,6 +17,17 @@ Operator Mode --> To station someone to handle the badging, if desired
 
 Journal --> To log entries and exits in the database
 
+## Installation
+```bash
+# clone the repo locally
+git clone https://github.com/AndrewDavis1191/PicoACM-Electron.git
+# start the app with npm
+npm start
+```
+
+## Usage
+
+
 ## Tech used (so far)
 HTML
 
