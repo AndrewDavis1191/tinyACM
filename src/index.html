@@ -118,7 +118,7 @@
     <!-- user table -->
       <div class ="box">
         <div class="table-container">
-          <table class="table is-fullwidth is-hoverable">
+          <table id="table" class="table is-fullwidth is-hoverable">
             <thead>
               <tr>
                 <th>First Name</th>
@@ -183,6 +183,18 @@
           fileName.textContent = fileInput.files[0].name;
         }
       }
+
+      // Messing around interacting with table
+      let table = document.querySelector("#table"),rIndex;
+      for (let i = 0; i < table.rows.length; i++)
+        {
+          table.rows[i].onclick = function()
+          {
+            rIndex = this.rowIndex;
+            console.log(rIndex);
+          };
+        }
+
     </script>
   </body>
 </html>

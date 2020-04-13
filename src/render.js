@@ -6,4 +6,4 @@ const { Menu } = remote;
 // Buttons
 const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
-addUserBtn.onclick = getVideoSources;
+addUserBtn.onclick = console.log('suh');
