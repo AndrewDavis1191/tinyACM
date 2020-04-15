@@ -9,7 +9,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1050,
+    width: 1025,
     height: 600,
     icon: 'icons/picoacm_icon.ico',
     webPreferences: {
@@ -48,22 +48,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-let sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database(':memory:');
-
-// SqlLite Stuff
-db.serialize(function() {
-  db.run("CREATE TABLE users (info TEXT)");
-
-  let stmt = db.prepare("INSERT INTO users VALUES (?)");
-  for (let i = 0; i < 10; i++) {
-      stmt.run("Ipsum " + i);
-  }
-  stmt.finalize();
-
-  db.each("SELECT rowid AS id, info FROM users", function(err, row) {
-      console.log(row.id + ": " + row.info);
-  });
-});
-
-db.close();
