@@ -26,7 +26,13 @@ npm start
 ```
 
 ## Usage
+Populate the users via the CRUD, or import a CSV of your users (this can be exported from your established Access Management System if you have one in place)
 
+Set up a device that can accept badge reads via USB, like one of the PcProx readers shown below:
+![Image of pcprox](https://github.com/AndrewDavis1191/PicoACM-Electron/blob/master/images/pscprox%20reader.png)
+![Image of pcproxalt](https://github.com/AndrewDavis1191/PicoACM-Electron/blob/master/images/pcprox%20reader%20alt.png)
+
+Switch to kiosk mode, and your AdHoc Access Control is ready to go!
 
 ## Tech used (so far)
 HTML
