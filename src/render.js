@@ -1,14 +1,6 @@
 const { fs, remote } = require('electron');
 const { Menu } = remote;
 
-// Function here to perform on-click operations
-
-// Buttons
-const addUserBtn = document.getElementById('add-user-button');
-const deleteUserBtn = document.getElementById('delete-user-button');
-addUserBtn.onclick(console.log('suh'));
-
-
 let sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database(':memory:', (err) => {
   if (err) {
@@ -38,3 +30,31 @@ db.serialize(function() {
 //  }
 //  console.log('Close the database connection.');
 //});
+
+
+// Function here to perform on-click operations
+
+// Buttons
+const addUserBtn = document.getElementById('add-user-button');
+const deleteUserBtn = document.getElementById('delete-user-button');
+const kioskBtn = document.getElementById('kiosk-mode-button');
+
+// Press Add Button on Enter in field three
+document.getElementById('badge-num-field')
+.addEventListener('keyup', function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+      document.getElementById('add-user-button').click();
+  }
+});
+
+// Button placeholders
+addUserBtn.onclick = function() {
+    console.log('adding user');
+}
+deleteUserBtn.onclick = function() {
+    console.log('removing user');
+}
+kioskBtn.onclick = function() {
+    console.log('entering kiosk mode');
+}
