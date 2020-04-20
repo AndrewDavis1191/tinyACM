@@ -45,10 +45,22 @@ document.getElementById('badge-num-field')
 
 // Add user to database and javascript table
 addUserBtn.onclick = function() {
-    let table_body = document.getElementById("tbody");
-    let fname_cell = document.getElementById("first-name-field");
-    let lname_cell = document.getElementById("last-name-field");
-    let badge_cell = document.getElementById("badge-num-field");
+  let table_body = document.getElementById("tbody");
+  let fname_cell = document.getElementById("first-name-field");
+  let lname_cell = document.getElementById("last-name-field");
+  let badge_cell = document.getElementById("badge-num-field");
+  // Validate
+  if (/\D/.test(badge_cell.value)) {
+    console.log("Badge must be a number");
+  } else if (lname_cell.value == "") {
+    console.log("Last Name must have a value");
+  } else if (fname_cell.value == "") {
+    console.log("First Name must have a value");
+  } else if (/\d/.test(lname_cell.value)) {
+    console.log("Last Name can not contain a number");
+  } else if (/\d/.test(fname_cell.value)) {
+    console.log("First Name can not contain a number");
+  } else {
     let row = table_body.insertRow();
     let cell1 = row.insertCell(0);
     let cell2 = row.insertCell(1);
@@ -68,6 +80,7 @@ addUserBtn.onclick = function() {
     fname_cell.value = "";
     lname_cell.value = "";
     badge_cell.value = "";
+  }
 };
 // Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
@@ -117,7 +130,7 @@ fileInput.onchange = () => {
 // Table selection and highlighting
 document.getElementById("table").onclick = function() {
   let table = document.querySelector("#table"),rIndex;
-  for (let i = 0; i < table.rows.length; i++) {
+  for (let i = 1; i < table.rows.length; i++) {
     table.rows[i].onclick = function() {
       if (this.className === "is-selected") {
         this.className = ""
