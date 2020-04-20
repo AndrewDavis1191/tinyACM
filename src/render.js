@@ -75,20 +75,14 @@ addUserBtn.onclick = function() {
 // Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
 
-  /***We get the table object based on given id ***/
   let table = document.getElementById('table');
-  /*** Get the current row length ***/
   let rowLength = table.rows.length;
-  /*** Initial row counter ***/
   let counter = 0;
 
-  /*** Performing a loop inside the table ***/
 	if (table.rows.length >= 1) {
 		for (let i = 0; i < table.rows.length; i++) {
 
-			 /*** Get is-selected class ***/
 			if (table.rows[i].className === "is-selected") {
-				/*** if highlighted we del ***/
         badge = table.rows[i].cells[2].innerText;
         db.serialize(function(err, result) {
         db.run(`DELETE FROM users
