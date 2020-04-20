@@ -1,4 +1,4 @@
-# PicoACM-Electron
+# PicoACM
 A small, lightweight Access Control application for AdHoc situations.
 
 ## Backstory
