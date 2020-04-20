@@ -52,9 +52,37 @@ document.getElementById('badge-num-field')
 addUserBtn.onclick = function() {
     console.log('adding user');
 }
+// Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
+    db.serialize(function(err, result) {
+    db.run(`DELETE FROM users
+            WHERE badge_number = ${badge}`);
+      console.log(result);
+  });
     console.log('removing user');
 }
 kioskBtn.onclick = function() {
     console.log('entering kiosk mode');
 }
+
+// File input function
+const fileInput = document.querySelector('#file-js-example input[type=file]');
+fileInput.onchange = () => {
+  if (fileInput.files.length > 0) {
+    const fileName = document.querySelector('#file-js-example .file-name');
+    fileName.textContent = fileInput.files[0].name;
+  }
+}
+
+// Messing around interacting with table
+let table = document.querySelector("#table"),rIndex;
+for (let i = 0; i <= table.rows.length; i++)
+  {
+    table.rows[i].onclick = function()
+    {
+      rIndex = this.rowIndex;
+      badge = this.cells[2].innerText;
+      console.log(rIndex);
+      console.log(badge);
+    };
+  }

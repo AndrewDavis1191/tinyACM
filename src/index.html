@@ -135,7 +135,7 @@
                 <td>Daryl</td>
                 <td>Dixon</td>
                 <td>1123345566</td>
-              <tr>
+              <tr is-selected>
                 <td>Glen</td>
                 <td>Rhee</td>
                 <td>3334445555</td>
@@ -174,27 +174,5 @@
         </span>
       </label>
     </div>
-
-    <script>
-      const fileInput = document.querySelector('#file-js-example input[type=file]');
-      fileInput.onchange = () => {
-        if (fileInput.files.length > 0) {
-          const fileName = document.querySelector('#file-js-example .file-name');
-          fileName.textContent = fileInput.files[0].name;
-        }
-      }
-
-      // Messing around interacting with table
-      let table = document.querySelector("#table"),rIndex;
-      for (let i = 0; i < table.rows.length; i++)
-        {
-          table.rows[i].onclick = function()
-          {
-            rIndex = this.rowIndex;
-            console.log(rIndex);
-          };
-        }
-
-    </script>
   </body>
 </html>
