@@ -53,10 +53,10 @@ addUserBtn.onclick = function() {
     let fname_cell = document.getElementById("first-name-field");
     let lname_cell = document.getElementById("last-name-field");
     let badge_cell = document.getElementById("badge-num-field");
-    let row = table.insertRow(1)
-    let cell1 = row.insertCell(0)
-    let cell2 = row.insertCell(1)
-    let cell3 = row.insertCell(2)
+    let insert_row = table.insertRow(1)
+    let cell1 = insert_row.insertCell(0)
+    let cell2 = insert_row.insertCell(1)
+    let cell3 = insert_row.insertCell(2)
     cell1.innerHTML = `${fname_cell.value}`;
     cell2.innerHTML = `${lname_cell.value}`;
     cell3.innerHTML = `${badge_cell.value}`;
@@ -98,13 +98,20 @@ fileInput.onchange = () => {
 
 // Messing around interacting with table
 let table = document.querySelector("#table"),rIndex;
-for (let i = 0; i <= table.rows.length; i++)
+for (let i = 0; i < table.rows.length; i++)
+{
+  table.rows[i].onclick = function()
   {
-    table.rows[i].onclick = function()
+    if (this.className === "is-selected")
     {
-      rIndex = this.rowIndex;
-      badge = this.cells[2].innerText;
-      console.log(rIndex);
-      console.log(badge);
-    };
-  }
+      this.className = ""
+    }
+    else {
+      this.className = "is-selected"
+    }
+    rIndex = this.rowIndex;
+    badge = this.cells[2].innerText;
+    console.log(rIndex);
+    console.log(badge);
+  };
+}
