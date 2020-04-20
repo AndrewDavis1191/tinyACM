@@ -1,6 +1,4 @@
 const { fs, remote } = require('electron');
-const { Menu } = remote;
-
 let sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database(':memory:', (err) => {
   if (err) {
@@ -50,13 +48,14 @@ document.getElementById('badge-num-field')
 
 // Button placeholders
 addUserBtn.onclick = function() {
+    let table_body = document.getElementById("tbody");
     let fname_cell = document.getElementById("first-name-field");
     let lname_cell = document.getElementById("last-name-field");
     let badge_cell = document.getElementById("badge-num-field");
-    let insert_row = table.insertRow(1)
-    let cell1 = insert_row.insertCell(0)
-    let cell2 = insert_row.insertCell(1)
-    let cell3 = insert_row.insertCell(2)
+    let row = table_body.insertRow()
+    let cell1 = row.insertCell(0)
+    let cell2 = row.insertCell(1)
+    let cell3 = row.insertCell(2)
     cell1.innerHTML = `${fname_cell.value}`;
     cell2.innerHTML = `${lname_cell.value}`;
     cell3.innerHTML = `${badge_cell.value}`;
@@ -75,13 +74,42 @@ addUserBtn.onclick = function() {
 }
 // Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
-    db.serialize(function(err, result) {
-    db.run(`DELETE FROM users
-            WHERE badge_number = ${badge}`);
-      console.log(result);
-  });
-    table.deleteRow(rIndex)
-    console.log('removing user');
+
+  /***We get the table object based on given id ***/
+  let table = document.getElementById('table');
+  /*** Get the current row length ***/
+  let rowLength = table.rows.length;
+  /*** Initial row counter ***/
+  let counter = 0;
+
+  /*** Performing a loop inside the table ***/
+	if (table.rows.length >= 1) {
+		for (let i = 0; i < table.rows.length; i++) {
+
+			 /*** Get is-selected class ***/
+			if (table.rows[i].className === "is-selected") {
+				/*** if highlighted we del ***/
+        badge = table.rows[i].cells[2].innerText;
+        db.serialize(function(err, result) {
+        db.run(`DELETE FROM users
+                WHERE badge_number = ${badge}`);
+        console.log(result);
+        });
+				table.deleteRow(i);
+				rowLength--;
+				i--;
+				counter = counter + 1;
+			}
+		}
+
+		/*** Alert user if there is now row is selected to be deleted ***/
+		if (counter == 0) {
+			console.log("Please select the row that you want to delete.");
+		}
+	}else{
+		/*** Alert user if there are no rows being added ***/
+		console.log("There are no rows being added");
+	}
 }
 kioskBtn.onclick = function() {
     console.log('entering kiosk mode');
@@ -97,21 +125,27 @@ fileInput.onchange = () => {
 }
 
 // Messing around interacting with table
-let table = document.querySelector("#table"),rIndex;
-for (let i = 0; i < table.rows.length; i++)
+document.getElementById("table").onclick = function()
 {
-  table.rows[i].onclick = function()
+  let table = document.querySelector("#table"),rIndex;
+  for (let i = 0; i < table.rows.length; i++)
   {
-    if (this.className === "is-selected")
+    table.rows[i].onclick = function()
     {
-      this.className = ""
-    }
-    else {
-      this.className = "is-selected"
-    }
-    rIndex = this.rowIndex;
-    badge = this.cells[2].innerText;
-    console.log(rIndex);
-    console.log(badge);
-  };
+      if (this.className === "is-selected")
+      {
+        this.className = ""
+        badge = ""
+        rindex = ""
+        console.log("no item selected");
+      }
+      else {
+        this.className = "is-selected"
+          rIndex = this.rowIndex;
+          badge = this.cells[2].innerText;
+          console.log(rIndex);
+          console.log(badge);
+      }
+    };
+  }
 }
