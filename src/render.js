@@ -34,6 +34,23 @@ const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
 
+document.getElementById("first-name-field").onclick = function() {
+  if (this.className !== "input") {
+    this.className = "input"
+  }
+}
+document.getElementById("last-name-field").onclick = function() {
+  if (this.className !== "input") {
+    this.className = "input"
+  }
+}
+document.getElementById("badge-num-field").onclick = function() {
+  if (this.className !== "input") {
+    this.className = "input"
+  }
+}
+
+
 // Press Add Button on Enter in badge field
 document.getElementById('badge-num-field')
 .addEventListener('keyup', function(event) {
@@ -49,17 +66,26 @@ addUserBtn.onclick = function() {
   let fname_cell = document.getElementById("first-name-field");
   let lname_cell = document.getElementById("last-name-field");
   let badge_cell = document.getElementById("badge-num-field");
-  // Validate
+  // Validate text inputs
   if (/\D/.test(badge_cell.value)) {
     console.log("Badge must be a number");
-  } else if (lname_cell.value == "") {
+    badge_cell.className = "input is-danger"
+  }
+  if (lname_cell.value == "") {
     console.log("Last Name must have a value");
-  } else if (fname_cell.value == "") {
+    lname_cell.className = "input is-danger"
+  }
+  if (fname_cell.value == "") {
     console.log("First Name must have a value");
-  } else if (/\d/.test(lname_cell.value)) {
+    fname_cell.className = "input is-danger"
+  }
+  if (/\d/.test(lname_cell.value)) {
     console.log("Last Name can not contain a number");
-  } else if (/\d/.test(fname_cell.value)) {
+    lname_cell.className = "input is-danger"
+  }
+  if (/\d/.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
+    fname_cell.className = "input is-danger"
   } else {
     let row = table_body.insertRow();
     let cell1 = row.insertCell(0);
