@@ -50,7 +50,28 @@ document.getElementById('badge-num-field')
 
 // Button placeholders
 addUserBtn.onclick = function() {
+    let fname_cell = document.getElementById("first-name-field");
+    let lname_cell = document.getElementById("last-name-field");
+    let badge_cell = document.getElementById("badge-num-field");
+    let row = table.insertRow(1)
+    let cell1 = row.insertCell(0)
+    let cell2 = row.insertCell(1)
+    let cell3 = row.insertCell(2)
+    cell1.innerHTML = `${fname_cell.value}`;
+    cell2.innerHTML = `${lname_cell.value}`;
+    cell3.innerHTML = `${badge_cell.value}`;
     console.log('adding user');
+    db.serialize(function() {
+      db.run(`INSERT INTO users(first_name,last_name,badge_number)
+              VALUES('${fname_cell.value}','${lname_cell.value}','${badge_cell.value}');
+      `);
+      db.all('SELECT * FROM users', function(err, result) {
+          console.log(result);
+      });
+    });
+    fname_cell.value = "";
+    lname_cell.value = "";
+    badge_cell.value = "";
 }
 // Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
@@ -59,6 +80,7 @@ deleteUserBtn.onclick = function() {
             WHERE badge_number = ${badge}`);
       console.log(result);
   });
+    table.deleteRow(rIndex)
     console.log('removing user');
 }
 kioskBtn.onclick = function() {
