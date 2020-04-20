@@ -7,7 +7,7 @@ let db = new sqlite3.Database(':memory:', (err) => {
   console.log('Connected to the in-memory SQlite database.');
 });
 
-// SqlLite Stuff
+// Create user table and populate with starter info
 db.serialize(function() {
   db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
@@ -29,33 +29,30 @@ db.serialize(function() {
 //  console.log('Close the database connection.');
 //});
 
-
-// Function here to perform on-click operations
-
 // Buttons
 const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
 
-// Press Add Button on Enter in field three
+// Press Add Button on Enter in badge field
 document.getElementById('badge-num-field')
 .addEventListener('keyup', function(event) {
   event.preventDefault();
   if (event.keyCode === 13) {
-      document.getElementById('add-user-button').click();
+      addUserBtn.click();
   }
 });
 
-// Button placeholders
+// Add user to database and javascript table
 addUserBtn.onclick = function() {
     let table_body = document.getElementById("tbody");
     let fname_cell = document.getElementById("first-name-field");
     let lname_cell = document.getElementById("last-name-field");
     let badge_cell = document.getElementById("badge-num-field");
-    let row = table_body.insertRow()
-    let cell1 = row.insertCell(0)
-    let cell2 = row.insertCell(1)
-    let cell3 = row.insertCell(2)
+    let row = table_body.insertRow();
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    let cell3 = row.insertCell(2);
     cell1.innerHTML = `${fname_cell.value}`;
     cell2.innerHTML = `${lname_cell.value}`;
     cell3.innerHTML = `${badge_cell.value}`;
@@ -71,7 +68,7 @@ addUserBtn.onclick = function() {
     fname_cell.value = "";
     lname_cell.value = "";
     badge_cell.value = "";
-}
+};
 // Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
 
@@ -81,12 +78,12 @@ deleteUserBtn.onclick = function() {
 
 	if (table.rows.length >= 1) {
 		for (let i = 0; i < table.rows.length; i++) {
-
 			if (table.rows[i].className === "is-selected") {
         badge = table.rows[i].cells[2].innerText;
         db.serialize(function(err, result) {
         db.run(`DELETE FROM users
-                WHERE badge_number = ${badge}`);
+                WHERE badge_number = ${badge}`
+        );
         console.log(result);
         });
 				table.deleteRow(i);
@@ -95,19 +92,18 @@ deleteUserBtn.onclick = function() {
 				counter = counter + 1;
 			}
 		}
-
-		/*** Alert user if there is now row is selected to be deleted ***/
 		if (counter == 0) {
 			console.log("Please select the row that you want to delete.");
 		}
-	}else{
-		/*** Alert user if there are no rows being added ***/
+	}else {
 		console.log("There are no rows being added");
 	}
-}
+};
+
+// Kiosk mode function
 kioskBtn.onclick = function() {
-    console.log('entering kiosk mode');
-}
+  console.log('entering kiosk mode');
+};
 
 // File input function
 const fileInput = document.querySelector('#file-js-example input[type=file]');
@@ -118,16 +114,12 @@ fileInput.onchange = () => {
   }
 }
 
-// Messing around interacting with table
-document.getElementById("table").onclick = function()
-{
+// Table selection and highlighting
+document.getElementById("table").onclick = function() {
   let table = document.querySelector("#table"),rIndex;
-  for (let i = 0; i < table.rows.length; i++)
-  {
-    table.rows[i].onclick = function()
-    {
-      if (this.className === "is-selected")
-      {
+  for (let i = 0; i < table.rows.length; i++) {
+    table.rows[i].onclick = function() {
+      if (this.className === "is-selected") {
         this.className = ""
         badge = ""
         rindex = ""
@@ -135,11 +127,11 @@ document.getElementById("table").onclick = function()
       }
       else {
         this.className = "is-selected"
-          rIndex = this.rowIndex;
-          badge = this.cells[2].innerText;
-          console.log(rIndex);
-          console.log(badge);
+        rIndex = this.rowIndex;
+        badge = this.cells[2].innerText;
+        console.log(rIndex);
+        console.log(badge);
       }
     };
   }
-}
+};
