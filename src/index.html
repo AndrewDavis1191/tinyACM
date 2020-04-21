@@ -151,29 +151,35 @@
     </div>
     <hr />
     <div class="box has-text-centered">
-      <div class="buttons">
-        <a id="delete-user-button" class="button is-warning">
-          Delete
-        </a>
-
-
-    <!-- csv file upload -->
-    <p>Import a csv file containing users</p>
-    <div id="file-js-example" class="file has-name">
-      <label class="file-label">
-        <input class="file-input" type="file" name="resume">
-        <span class="file-cta">
-          <span class="file-icon">
-            <i class="fas fa-upload"></i>
-          </span>
-          <span class="file-label">
-            Choose a file…
-          </span>
-        </span>
-        <span class="file-name">
-          No file uploaded
-        </span>
-      </label>
+      <nav class="level">
+        <!-- Left side -->
+        <div class="level-left">
+          <div class="buttons">
+            <a id="delete-user-button" class="button is-warning">
+              Delete
+            </a>
+          </div>
+        </div>
+        <!-- Right side -->
+        <div class="level-right">
+          <div id="file-js-example" class="file has-name is-pulled-right">
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="file-name">
+                No file uploaded
+              </span>
+            </label>
+          </div>
+        </div>
+      </nav>
     </div>
   </body>
 </html>

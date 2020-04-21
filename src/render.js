@@ -70,26 +70,32 @@ addUserBtn.onclick = function() {
   if (lname_cell.value === "") {
     console.log("Last Name must have a value");
     lname_cell.className = "input is-danger"
+    return
   }
   if (fname_cell.value === "") {
     console.log("First Name must have a value");
     fname_cell.className = "input is-danger"
+    return
   }
   if (badge_cell.value === "") {
     console.log("Badge must have a value");
     badge_cell.className = "input is-danger"
+    return
   }
   if (/\d/.test(lname_cell.value)) {
     console.log("Last Name can not contain a number");
     lname_cell.className = "input is-danger"
+    return
   }
   if (/\d/.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
     fname_cell.className = "input is-danger"
+    return
   }
   if (/\D/.test(badge_cell.value)) {
     console.log("Badge must be a number");
     badge_cell.className = "input is-danger"
+    return
   } else {
     let row = table_body.insertRow();
     let cell1 = row.insertCell(0);
