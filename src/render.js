@@ -50,6 +50,24 @@ document.getElementById("badge-num-field").onclick = function() {
   }
 }
 
+// search feature
+let searchInput = document.getElementById('search-input');
+searchInput.addEventListener('keyup', filterUsers);
+
+function filterUsers(){
+  let filterValue = document.getElementById('search-input').value.toUpperCase();
+
+  let table = document.getElementById('table');
+  for(let i = 1;i < table.rows.length;i++){
+    let row = table.rows[i];
+    if(row.innerHTML.toUpperCase().indexOf(filterValue) > -1){
+      row.style.display = '';
+    }
+    else {
+      row.style.display = 'none';
+    }
+  }
+}
 
 // Press Add Button on Enter in badge field
 document.getElementById('badge-num-field')
@@ -67,36 +85,31 @@ addUserBtn.onclick = function() {
   let lname_cell = document.getElementById("last-name-field");
   let badge_cell = document.getElementById("badge-num-field");
   // Validate text inputs
-  if (lname_cell.value === "") {
-    console.log("Last Name must have a value");
-    lname_cell.className = "input is-danger"
-    return
-  }
   if (fname_cell.value === "") {
     console.log("First Name must have a value");
     fname_cell.className = "input is-danger"
-    return
+  }
+  else if (/\d/.test(fname_cell.value)) {
+    console.log("First Name can not contain a number");
+    fname_cell.className = "input is-danger"
+  }
+  if (lname_cell.value === "") {
+    console.log("Last Name must have a value");
+    lname_cell.className = "input is-danger"
+  }
+  else if (/\d/.test(lname_cell.value)) {
+    console.log("Last Name can not contain a number");
+    lname_cell.className = "input is-danger"
   }
   if (badge_cell.value === "") {
     console.log("Badge must have a value");
     badge_cell.className = "input is-danger"
-    return
   }
-  if (/\d/.test(lname_cell.value)) {
-    console.log("Last Name can not contain a number");
-    lname_cell.className = "input is-danger"
-    return
-  }
-  if (/\d/.test(fname_cell.value)) {
-    console.log("First Name can not contain a number");
-    fname_cell.className = "input is-danger"
-    return
-  }
-  if (/\D/.test(badge_cell.value)) {
+  else if (/\D/.test(badge_cell.value)) {
     console.log("Badge must be a number");
     badge_cell.className = "input is-danger"
-    return
-  } else {
+  }
+  else {
     let row = table_body.insertRow();
     let cell1 = row.insertCell(0);
     let cell2 = row.insertCell(1);
@@ -120,7 +133,6 @@ addUserBtn.onclick = function() {
 };
 // Delete user from database and javascript table
 deleteUserBtn.onclick = function() {
-
   let table = document.getElementById('table');
   let rowLength = table.rows.length;
   let counter = 0;
@@ -145,7 +157,7 @@ deleteUserBtn.onclick = function() {
 			console.log("Please select the row that you want to delete.");
 		}
 	}else {
-		console.log("There are no rows being added");
+		console.log("There are no rows to delete");
 	}
 };
 
