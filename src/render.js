@@ -34,21 +34,27 @@ const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
 
-document.getElementById("first-name-field").onclick = function() {
+const fnameField = document.getElementById("first-name-field");
+fnameField.onclick = function() {
   if (this.className !== "input") {
     this.className = "input"
   }
-}
-document.getElementById("last-name-field").onclick = function() {
+};
+const lnameField = document.getElementById("last-name-field");
+lnameField.onclick = function() {
   if (this.className !== "input") {
     this.className = "input"
   }
-}
-document.getElementById("badge-num-field").onclick = function() {
+};
+const badgeNumField = document.getElementById("badge-num-field");
+badgeNumField.onclick = function() {
   if (this.className !== "input") {
     this.className = "input"
   }
-}
+};
+
+const tableContainer = document.getElementById('table-cont');
+const userContainer = document.getElementById('user-input-cont');
 
 // search feature
 let searchInput = document.getElementById('search-input');
@@ -162,8 +168,39 @@ deleteUserBtn.onclick = function() {
 };
 
 // Kiosk mode function
+// Show an element
+const show = function (elem) {
+	elem.style.display = 'block';
+};
+
+// Hide an element
+const hide = function (elem) {
+	elem.style.display = 'none';
+};
 kioskBtn.onclick = function() {
-  console.log('entering kiosk mode');
+  const window = remote.getCurrentWindow();
+  if (window.isKiosk() === false) {
+    console.log('entering kiosk mode');
+    window.setKiosk(true);
+    kioskBtn.innerText = "Exit Kiosk Mode"
+    hide(addUserBtn);
+    hide(userContainer);
+    hide(searchInput);
+    hide(tableContainer);
+    hide(deleteUserBtn);
+    hide(fileInput);
+  }
+  else if (window.isKiosk() === true) {
+    console.log('exiting kiosk mode')
+    window.setKiosk(false);
+    kioskBtn.innerText = "Kiosk Mode"
+    show(addUserBtn);
+    show(userContainer);
+    show(searchInput);
+    show(tableContainer);
+    show(deleteUserBtn);
+    show(fileInput);
+  }
 };
 
 // File input function

@@ -12,6 +12,7 @@ const createWindow = () => {
     width: 1035,
     height: 620,
     resizable: false,
+    maximizable: true,
     autoHideMenuBar: true,
     icon: 'icons/picoacm_icon.ico',
     webPreferences: {
