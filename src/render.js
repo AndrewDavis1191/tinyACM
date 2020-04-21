@@ -1,6 +1,6 @@
 const { fs, remote } = require('electron');
-let sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database(':memory:', (err) => {
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database(':memory:', (err) => {
   if (err) {
     return console.error(err.message);
   }
@@ -67,17 +67,17 @@ addUserBtn.onclick = function() {
   let lname_cell = document.getElementById("last-name-field");
   let badge_cell = document.getElementById("badge-num-field");
   // Validate text inputs
-  if (/\D/.test(badge_cell.value)) {
-    console.log("Badge must be a number");
-    badge_cell.className = "input is-danger"
-  }
-  if (lname_cell.value == "") {
+  if (lname_cell.value === "") {
     console.log("Last Name must have a value");
     lname_cell.className = "input is-danger"
   }
-  if (fname_cell.value == "") {
+  if (fname_cell.value === "") {
     console.log("First Name must have a value");
     fname_cell.className = "input is-danger"
+  }
+  if (badge_cell.value === "") {
+    console.log("Badge must have a value");
+    badge_cell.className = "input is-danger"
   }
   if (/\d/.test(lname_cell.value)) {
     console.log("Last Name can not contain a number");
@@ -86,6 +86,10 @@ addUserBtn.onclick = function() {
   if (/\d/.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
     fname_cell.className = "input is-danger"
+  }
+  if (/\D/.test(badge_cell.value)) {
+    console.log("Badge must be a number");
+    badge_cell.className = "input is-danger"
   } else {
     let row = table_body.insertRow();
     let cell1 = row.insertCell(0);

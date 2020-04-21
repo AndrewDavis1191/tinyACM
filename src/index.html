@@ -109,47 +109,46 @@
 
     <!-- user table -->
     <div class="field is-grouped">
-          <p class="control is-expanded">
-            <input class="input" type="text" placeholder="Find a User">
-          </p>
-          <p class="control">
-            <a class="button is-info">
-              Search
-            </a>
-          </p>
-        </div>
-        <div class="table-container">
-          <table id="table" class="table is-fullwidth is-hoverable">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Badge Number</th>
-              </tr>
-            </thead>
-            <tbody id="tbody">
-              <tr>
-                <td>Rick</td>
-                <td>Grimes</td>
-                <td>5555555555</td>
-              </tr>
-                <td>Daryl</td>
-                <td>Dixon</td>
-                <td>1123345566</td>
-              <tr>
-                <td>Glen</td>
-                <td>Rhee</td>
-                <td>3334445555</td>
-              </tr>
-              <tr>
-                <td>Carol</td>
-                <td>Peletier</td>
-                <td>3433445543</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <p class="control is-expanded">
+        <input class="input" type="text" placeholder="Find a User">
+      </p>
+      <p class="control">
+        <a class="button is-info">
+          Search
+        </a>
+      </p>
+    </div>
+    <div class="table-container" style="width: 975px; height: 240px; overflow-y: scroll">
+      <table id="table" class="table is-fullwidth is-hoverable is-scrollable">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Badge Number</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td>Rick</td>
+            <td>Grimes</td>
+            <td>5555555555</td>
+          </tr>
+            <td>Daryl</td>
+            <td>Dixon</td>
+            <td>1123345566</td>
+          <tr>
+            <td>Glen</td>
+            <td>Rhee</td>
+            <td>3334445555</td>
+          </tr>
+          <tr>
+            <td>Carol</td>
+            <td>Peletier</td>
+            <td>3433445543</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <hr />
     <div class="box has-text-centered">
       <div class="buttons">
@@ -160,7 +159,6 @@
 
     <!-- csv file upload -->
     <p>Import a csv file containing users</p>
-
     <div id="file-js-example" class="file has-name">
       <label class="file-label">
         <input class="file-input" type="file" name="resume">
@@ -177,6 +175,5 @@
         </span>
       </label>
     </div>
-  </div>
   </body>
 </html>
