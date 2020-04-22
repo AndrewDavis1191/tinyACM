@@ -55,8 +55,27 @@ badgeNumField.onclick = function() {
 
 const tableContainer = document.getElementById('table-cont');
 const userContainer = document.getElementById('user-input-cont');
+const aboutButton = document.getElementById('about-button')
+const aboutModal = document.getElementById('about-modal')
+const aboutModalCloseButton = document.getElementById('about-modal-close-button')
+const aboutModalBackground = document.getElementById('about-modal-background')
 
-// search feature
+// About Modal feature
+aboutButton.onclick = function() {
+  aboutModal.className = "modal is-active"
+};
+
+// About Modal close
+aboutModalCloseButton.onclick = function() {
+  aboutModal.className = "modal"
+}
+
+// About Modal close on background click
+aboutModalBackground.onclick = function() {
+  aboutModal.className = "modal"
+}
+
+// Search Feature
 let searchInput = document.getElementById('search-input');
 searchInput.addEventListener('keyup', filterUsers);
 
@@ -91,27 +110,15 @@ addUserBtn.onclick = function() {
   let lname_cell = document.getElementById("last-name-field");
   let badge_cell = document.getElementById("badge-num-field");
   // Validate text inputs
-  if (fname_cell.value === "") {
-    console.log("First Name must have a value");
-    fname_cell.className = "input is-danger"
-  }
-  else if (/\d/.test(fname_cell.value)) {
+  if (/[^\D]\d|\W/.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
     fname_cell.className = "input is-danger"
   }
-  if (lname_cell.value === "") {
-    console.log("Last Name must have a value");
-    lname_cell.className = "input is-danger"
-  }
-  else if (/\d/.test(lname_cell.value)) {
+  if (/[^\D]\d|\W/.test(lname_cell.value)) {
     console.log("Last Name can not contain a number");
     lname_cell.className = "input is-danger"
   }
-  if (badge_cell.value === "") {
-    console.log("Badge must have a value");
-    badge_cell.className = "input is-danger"
-  }
-  else if (/\D/.test(badge_cell.value)) {
+  if (/([^(\w|\X)]|\D)/.test(badge_cell.value)) {
     console.log("Badge must be a number");
     badge_cell.className = "input is-danger"
   }
@@ -185,7 +192,6 @@ kioskBtn.onclick = function() {
     kioskBtn.innerText = "Exit Kiosk Mode"
     hide(addUserBtn);
     hide(userContainer);
-    hide(searchInput);
     hide(tableContainer);
     hide(deleteUserBtn);
     hide(fileInput);
@@ -196,7 +202,6 @@ kioskBtn.onclick = function() {
     kioskBtn.innerText = "Kiosk Mode"
     show(addUserBtn);
     show(userContainer);
-    show(searchInput);
     show(tableContainer);
     show(deleteUserBtn);
     show(fileInput);

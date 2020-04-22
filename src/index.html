@@ -39,7 +39,7 @@
               <a class="navbar-item" href="https://github.com/PicoACM-Electron/issues/new" target="_blank">
                 Report an issue
               </a>
-              <a class="navbar-item">
+              <a id="about-button" class="navbar-item">
                 About
               </a>
             </div>
@@ -57,6 +57,53 @@
         </div>
       </div>
     </nav>
+
+    <!--modal about box-->>
+    <div id="about-modal" class="modal">
+      <div id="about-modal-background" class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <article class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+                <img src="https://avatars0.githubusercontent.com/u/8334795?s=400&u=0dc4db155561d987fd85d4316672e72814b987d4&v=4" alt="Image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Andrew Ryan Davis</strong>
+                  <br>
+                  Hope you're enjoying the app!
+
+                  Find it useful? Buy me a coffee!
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item" aria-label="kofi">
+                    <span class="icon is-small">
+                      <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'Q5Q81MWOW');kofiwidget2.draw();</script>
+                    </span>
+                  </a>
+                  <a class="level-item" aria-label="linkedin">
+                      <span class="icon is-medium">
+                        <i class="fab fa-linkedin" href="https://www.linkedin.com/ARD1" target="_blank" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                    <a class="level-item" aria-label="github">
+                      <span class="icon is-medium">
+                        <i class="fab fa-github" href="https://github.com/AndrewDavis1191" target="_blank" aria-hidden="true"></i>
+                      </span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </article>
+        </div>
+      </div>
+      <button id="about-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+    </div>
 
     <!-- New User Input -->
     <div id="user-input-cont" class ="box">
