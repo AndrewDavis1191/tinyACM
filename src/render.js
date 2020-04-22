@@ -85,7 +85,6 @@ let searchInput = document.getElementById('search-input');
 searchInput.addEventListener('keyup', filterUsers);
 function filterUsers(){
   let filterValue = document.getElementById('search-input').value.toUpperCase();
-
   let table = document.getElementById('table');
   for(let i = 1;i < table.rows.length;i++){
     let row = table.rows[i];
@@ -229,13 +228,6 @@ fileInput.onchange = () => {
     .pipe(parse())
     .on('data', (row) => {
       dataArray.push(row);
-      let tableRow = table_body.insertRow();
-      let cell1 = tableRow.insertCell(0);
-      let cell2 = tableRow.insertCell(1);
-      let cell3 = tableRow.insertCell(2);
-      cell1.innerHTML = `${row[0]}`;
-      cell2.innerHTML = `${row[1]}`;
-      cell3.innerHTML = `${row[2]}`;
       db.serialize(function() {
         db.run(`INSERT INTO users(first_name,last_name,badge_number)
                 VALUES('${row[0]}','${row[1]}',${row[2]});
@@ -251,10 +243,10 @@ fileInput.onchange = () => {
 };
 
 // Table selection and highlighting
-document.getElementById("table").onclick = function() {
-  let table = document.querySelector("#table"),rIndex;
-  for (let i = 1; i < table.rows.length; i++) {
-    table.rows[i].onclick = function() {
+let table = document.querySelector("#table"),rIndex;
+for (let i = 1, len = table.rows.length; i < len; i++) {
+  (function(index) {
+    table.rows[i].onclick = function(){
       if (this.className === "is-selected") {
         this.className = ""
         badge = ""
@@ -269,5 +261,5 @@ document.getElementById("table").onclick = function() {
         console.log(badge);
       }
     };
-  }
-};
+  })(i);
+}
