@@ -48,5 +48,10 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
+## Constructive Criticism!
+Please please please send feedback to me if you have suggestions on code in any manner; operation, readability, overall javascript best practices.
+
+This is my first time messing around with JavaScript, and I wanted to go vanilla, as I'd like to move into react and actually appreciate the problems it solves.
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
