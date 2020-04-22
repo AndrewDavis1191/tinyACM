@@ -1,4 +1,6 @@
-const { fs, remote } = require('electron');
+const { remote } = require('electron');
+const { createReadStream,createWriteStream } = require('fs');
+const { parse } = require('fast-csv');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:', (err) => {
   if (err) {
@@ -59,6 +61,10 @@ const aboutButton = document.getElementById('about-button')
 const aboutModal = document.getElementById('about-modal')
 const aboutModalCloseButton = document.getElementById('about-modal-close-button')
 const aboutModalBackground = document.getElementById('about-modal-background')
+const table_body = document.getElementById("tbody");
+const fname_cell = document.getElementById("first-name-field");
+const lname_cell = document.getElementById("last-name-field");
+const badge_cell = document.getElementById("badge-num-field");
 
 // About Modal feature
 aboutButton.onclick = function() {
@@ -105,10 +111,6 @@ document.getElementById('badge-num-field')
 
 // Add user to database and javascript table
 addUserBtn.onclick = function() {
-  let table_body = document.getElementById("tbody");
-  let fname_cell = document.getElementById("first-name-field");
-  let lname_cell = document.getElementById("last-name-field");
-  let badge_cell = document.getElementById("badge-num-field");
   // Validate text inputs
   if (/[^\D]\d|\W/.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
@@ -184,6 +186,7 @@ const show = function (elem) {
 const hide = function (elem) {
 	elem.style.display = 'none';
 };
+
 kioskBtn.onclick = function() {
   const window = remote.getCurrentWindow();
   if (window.isKiosk() === false) {
@@ -212,10 +215,39 @@ kioskBtn.onclick = function() {
 const fileInput = document.querySelector('#file-js-example input[type=file]');
 fileInput.onchange = () => {
   if (fileInput.files.length > 0) {
+    db.serialize(function() {
+      db.run('DROP TABLE users');
+      console.log('users table removed')
+      db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
+      console.log('users table created')
+    });
+    let dataArray = [];
     const fileName = document.querySelector('#file-js-example .file-name');
     fileName.textContent = fileInput.files[0].name;
+    createReadStream(fileInput.files[0].path)
+    .pipe(parse())
+    .on('data', (row) => {
+      dataArray.push(row);
+      let tableRow = table_body.insertRow();
+      let cell1 = tableRow.insertCell(0);
+      let cell2 = tableRow.insertCell(1);
+      let cell3 = tableRow.insertCell(2);
+      cell1.innerHTML = `${row[0]}`;
+      cell2.innerHTML = `${row[1]}`;
+      cell3.innerHTML = `${row[2]}`;
+      db.serialize(function() {
+        db.run(`INSERT INTO users(first_name,last_name,badge_number)
+                VALUES('${row[0]}','${row[1]}',${row[2]});
+        `);
+      })
+    })
+    .on('error', error => console.error(error))
+    .on('end', () => {
+      console.log('CSV file successfully processed');
+      fileName.textContent = "";
+    });
   }
-}
+};
 
 // Table selection and highlighting
 document.getElementById("table").onclick = function() {
