@@ -55,6 +55,7 @@ badgeNumField.onclick = function() {
   }
 };
 
+// Grab elements for later use
 const tableContainer = document.getElementById('table-cont');
 const userContainer = document.getElementById('user-input-cont');
 const aboutButton = document.getElementById('about-button')
@@ -70,12 +71,10 @@ const badge_cell = document.getElementById("badge-num-field");
 aboutButton.onclick = function() {
   aboutModal.className = "modal is-active"
 };
-
 // About Modal close
 aboutModalCloseButton.onclick = function() {
   aboutModal.className = "modal"
 }
-
 // About Modal close on background click
 aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
@@ -84,7 +83,6 @@ aboutModalBackground.onclick = function() {
 // Search Feature
 let searchInput = document.getElementById('search-input');
 searchInput.addEventListener('keyup', filterUsers);
-
 function filterUsers(){
   let filterValue = document.getElementById('search-input').value.toUpperCase();
 
@@ -112,15 +110,15 @@ document.getElementById('badge-num-field')
 // Add user to database and javascript table
 addUserBtn.onclick = function() {
   // Validate text inputs
-  if (/[^\D]\d|\W/.test(fname_cell.value)) {
+  if (/[^\D]\d|\W/gi.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
     fname_cell.className = "input is-danger"
   }
-  if (/[^\D]\d|\W/.test(lname_cell.value)) {
+  else if (/[^\D]\d|\W/gi.test(lname_cell.value)) {
     console.log("Last Name can not contain a number");
     lname_cell.className = "input is-danger"
   }
-  if (/([^(\w|\X)]|\D)/.test(badge_cell.value)) {
+  else if (/([^(\w|\X)]|\D)/gi.test(badge_cell.value)) {
     console.log("Badge must be a number");
     badge_cell.className = "input is-danger"
   }
@@ -144,6 +142,9 @@ addUserBtn.onclick = function() {
     fname_cell.value = "";
     lname_cell.value = "";
     badge_cell.value = "";
+    fname_cell.className = "input";
+    lname_cell.className = "input";
+    badge_cell.className = "input";
   }
 };
 // Delete user from database and javascript table
