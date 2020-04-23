@@ -200,7 +200,7 @@ kioskBtn.onclick = function() {
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
     console.log('entering kiosk mode');
     kioskBtn.innerText = "Exit Kiosk Mode"
-    window.setSize(1045, 835, true)
+    window.setSize(1045, 770, true)
     hide(addUserBtn);
     hide(userContainer)
     hide(deleteUserBtn);
@@ -211,6 +211,7 @@ kioskBtn.onclick = function() {
   else if (kioskBtn.innerText !== "Kiosk Mode") {
     console.log('exiting kiosk mode')
     kioskBtn.innerText = "Kiosk Mode"
+    window.setSize(1045, 615, true)
     show(addUserBtn);
     show(userContainer)
     show(deleteUserBtn);
