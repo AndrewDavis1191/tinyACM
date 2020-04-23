@@ -24,7 +24,6 @@
           <span aria-hidden="true"></span>
         </a>
       </div>
-
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
           <div class="navbar-item has-dropdown is-hoverable">
@@ -109,8 +108,8 @@
     </div>
 
     <!-- New User Input -->
-    <div id="user-input-cont" class ="box">
-      <div class="field is-grouped">
+    <div class ="box">
+      <div id="user-input-cont" class="field is-grouped">
       <div class="field-body">
         <div class="field">
           <p class="control is-expanded has-icons-left">
@@ -152,8 +151,8 @@
       <p class="control">
       </p>
     </div>
-    <div id="table-cont" class="table-container" style="width: 975px; height: 240px; overflow-y: scroll">
-      <table id="table" class="table is-fullwidth is-hoverable is-scrollable">
+    <div id="table-cont" class="table-container" style="overflow-y: scroll">
+      <table id="table" class="table is-fullwidth is-hoverable">
         <thead>
           <tr>
             <th>First Name</th>
@@ -185,13 +184,23 @@
     </div>
     <hr />
     <div class="box has-text-centered">
-      <nav class="level">
+      <nav id="footer-items" class="level">
         <!-- Left side -->
         <div class="level-left">
           <div class="buttons">
             <a id="delete-user-button" class="button is-warning">
               Delete
             </a>
+          </div>
+          <!-- Kiosk fields -->
+          <div id='kiosk-field' class="tile is-12">
+            <article class="tile is-child notification is-info">
+              <p class="title">Middle tile</p>
+              <p class="subtitle">With an image</p>
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/640x480.png">
+              </figure>
+            </article>
           </div>
         </div>
         <!-- Right side -->
@@ -211,6 +220,16 @@
                 No file uploaded
               </span>
             </label>
+          </div>
+          <!-- Kiosk fields -->
+          <div id='kiosk-field2' class="tile is-parent is-12">
+            <article class="tile is-child notification is-info">
+              <p class="title">Middle tile</p>
+              <p class="subtitle">With an image</p>
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/640x480.png">
+              </figure>
+            </article>
           </div>
         </div>
       </nav>

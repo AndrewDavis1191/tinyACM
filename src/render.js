@@ -66,6 +66,24 @@ const table_body = document.getElementById("tbody");
 const fname_cell = document.getElementById("first-name-field");
 const lname_cell = document.getElementById("last-name-field");
 const badge_cell = document.getElementById("badge-num-field");
+const kiosk_field = document.getElementById("kiosk-field");
+const kiosk_field2 = document.getElementById("kiosk-field2");
+const footer_items = document.getElementById("footer-items");
+const fileInput_button = document.getElementById('file-js-example');
+
+// Show an element
+const show = function (elem) {
+	elem.style.display = 'block';
+};
+
+// Hide an element
+const hide = function (elem) {
+	elem.style.display = 'none';
+};
+
+// Hide kiosk content
+hide(kiosk_field);
+hide(kiosk_field2);
 
 // About Modal feature
 aboutButton.onclick = function() {
@@ -177,37 +195,28 @@ deleteUserBtn.onclick = function() {
 };
 
 // Kiosk mode function
-// Show an element
-const show = function (elem) {
-	elem.style.display = 'block';
-};
-
-// Hide an element
-const hide = function (elem) {
-	elem.style.display = 'none';
-};
-
 kioskBtn.onclick = function() {
   const window = remote.getCurrentWindow();
-  if (window.isKiosk() === false) {
+  if (kioskBtn.innerText !== "Exit Kiosk Mode") {
     console.log('entering kiosk mode');
-    window.setKiosk(true);
     kioskBtn.innerText = "Exit Kiosk Mode"
+    window.setSize(1045, 835, true)
     hide(addUserBtn);
-    hide(userContainer);
-    hide(tableContainer);
+    hide(userContainer)
     hide(deleteUserBtn);
-    hide(fileInput);
+    hide(fileInput_button)
+    show(kiosk_field);
+    show(kiosk_field2);
   }
-  else if (window.isKiosk() === true) {
+  else if (kioskBtn.innerText !== "Kiosk Mode") {
     console.log('exiting kiosk mode')
-    window.setKiosk(false);
     kioskBtn.innerText = "Kiosk Mode"
     show(addUserBtn);
-    show(userContainer);
-    show(tableContainer);
+    show(userContainer)
     show(deleteUserBtn);
-    show(fileInput);
+    show(fileInput_button)
+    hide(kiosk_field);
+    hide(kiosk_field2);
   }
 };
 

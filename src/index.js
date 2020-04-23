@@ -9,9 +9,9 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1035,
-    height: 620,
-    resizable: false,
+    width: 1045,
+    height: 615,
+    resizable: true,
     maximizable: true,
     autoHideMenuBar: true,
     icon: 'icons/picoacm_icon.ico',
