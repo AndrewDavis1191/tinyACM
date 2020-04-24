@@ -62,6 +62,9 @@ const aboutButton = document.getElementById('about-button')
 const aboutModal = document.getElementById('about-modal')
 const aboutModalCloseButton = document.getElementById('about-modal-close-button')
 const aboutModalBackground = document.getElementById('about-modal-background')
+const securityModal = document.getElementById('security-modal')
+const securityModalCloseButton = document.getElementById('security-modal-close-button')
+const securityModalBackground = document.getElementById('security-modal-background')
 const table_body = document.getElementById("tbody");
 const fname_cell = document.getElementById("first-name-field");
 const lname_cell = document.getElementById("last-name-field");
@@ -198,6 +201,16 @@ deleteUserBtn.onclick = function() {
 kioskBtn.onclick = function() {
   const window = remote.getCurrentWindow();
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
+    // Security Modal feature
+    securityModal.className = "modal is-active"
+    // About Modal close
+    securityModalCloseButton.onclick = function() {
+      securityModal.className = "modal"
+    }
+    // About Modal close on background click
+    securityModalBackground.onclick = function() {
+      securityModal.className = "modal"
+    }
     console.log('entering kiosk mode');
     kioskBtn.innerText = "Exit Kiosk Mode"
     window.setSize(1045, 770, true)

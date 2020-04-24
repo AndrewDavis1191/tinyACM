@@ -88,16 +88,18 @@
                       <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'Q5Q81MWOW');kofiwidget2.draw();</script>
                     </span>
                   </a>
-                  <a class="level-item" aria-label="linkedin">
-                      <span class="icon is-medium">
-                        <i class="fab fa-linkedin" href="https://www.linkedin.com/ARD1" target="_blank" aria-hidden="true"></i>
-                      </span>
+                  <div class="level-right"></div>
+                    <a class="level-item" aria-label="linkedin">
+                        <span class="icon is-medium">
+                          <i class="fab fa-linkedin" href="https://www.linkedin.com/ARD1" target="_blank" aria-hidden="true"></i>
+                        </span>
+                      </a>
+                      <a class="level-item" aria-label="github">
+                        <span class="icon is-medium">
+                          <i class="fab fa-github" href="https://github.com/AndrewDavis1191" target="_blank" aria-hidden="true"></i>
+                        </span>
                     </a>
-                    <a class="level-item" aria-label="github">
-                      <span class="icon is-medium">
-                        <i class="fab fa-github" href="https://github.com/AndrewDavis1191" target="_blank" aria-hidden="true"></i>
-                      </span>
-                  </a>
+                </div>
                 </div>
               </nav>
             </div>
@@ -105,6 +107,62 @@
         </div>
       </div>
       <button id="about-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <!--modal security box-->
+    <div id="security-modal" class="modal">
+      <div id="security-modal-background" class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <article class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+                <img src='images/Padlock.png' alt="Image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Provide a Password to protect User Management Mode?</strong>
+                  <br>
+                  <div id="security-input-cont" class="field is-grouped">
+                    <div class="field-body">
+                      <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                          <input id= "security-name-field" class="input" type="text" placeholder="Username">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                          <input id= "security-pass-field" class="input" type="text" placeholder="Password">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-key"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="buttons">
+                        <a id="security-button" class="button">
+                          Confirm
+                          </a>
+                      </div>
+                    </div>
+                  </div>
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item" aria-label="kofi">
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </article>
+        </div>
+      </div>
+      <button id="security-modal-close-button" class="modal-close is-large" aria-label="close"></button>
     </div>
 
     <!-- New User Input -->
