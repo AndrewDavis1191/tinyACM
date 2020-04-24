@@ -13,10 +13,10 @@ const db = new sqlite3.Database(':memory:', (err) => {
 db.serialize(function() {
   db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
-          VALUES('Rick','Grimes',5555555555),
-                ('Daryl','Dixon',1123345566),
-                ('Glen','Rhee',3334445555),
-                ('Carol','Peletier',3433445543);
+          VALUES('Karl','Dandleton',5555555555),
+                ('Bobson','Dugnutt',1123345566),
+                ('Glennalon','Mixon',3334445555),
+                ('Sleve','McDichael',3433445543);
   `);
   db.all('SELECT * FROM users', function(err, result) {
       console.log(result);
@@ -58,13 +58,13 @@ badgeNumField.onclick = function() {
 // Grab elements for later use
 const tableContainer = document.getElementById('table-cont');
 const userContainer = document.getElementById('user-input-cont');
-const aboutButton = document.getElementById('about-button')
-const aboutModal = document.getElementById('about-modal')
-const aboutModalCloseButton = document.getElementById('about-modal-close-button')
-const aboutModalBackground = document.getElementById('about-modal-background')
-const securityModal = document.getElementById('security-modal')
-const securityModalCloseButton = document.getElementById('security-modal-close-button')
-const securityModalBackground = document.getElementById('security-modal-background')
+const aboutButton = document.getElementById('about-button');
+const aboutModal = document.getElementById('about-modal');
+const aboutModalCloseButton = document.getElementById('about-modal-close-button');
+const aboutModalBackground = document.getElementById('about-modal-background');
+const securityModal = document.getElementById('security-modal');
+const securityModalCloseButton = document.getElementById('security-modal-close-button');
+const securityModalBackground = document.getElementById('security-modal-background');
 const table_body = document.getElementById("tbody");
 const fname_cell = document.getElementById("first-name-field");
 const lname_cell = document.getElementById("last-name-field");
@@ -165,6 +165,19 @@ addUserBtn.onclick = function() {
     fname_cell.className = "input";
     lname_cell.className = "input";
     badge_cell.className = "input";
+    row.onclick = function() {
+      if (this.className === "is-selected") {
+        this.className = ""
+        badge = ""
+        rindex = ""
+        console.log("no item selected");
+      }
+      else {
+        this.className = "is-selected"
+        badge = this.cells[2].innerText;
+        console.log(badge);
+      }
+    }
   }
 };
 // Delete user from database and javascript table
@@ -267,22 +280,21 @@ fileInput.onchange = () => {
 
 // Table selection and highlighting
 let table = document.querySelector("#table"),rIndex;
-for (let i = 1, len = table.rows.length; i < len; i++) {
-  (function(index) {
-    table.rows[i].onclick = function(){
-      if (this.className === "is-selected") {
-        this.className = ""
-        badge = ""
-        rindex = ""
-        console.log("no item selected");
-      }
-      else {
-        this.className = "is-selected"
-        rIndex = this.rowIndex;
-        badge = this.cells[2].innerText;
-        console.log(rIndex);
-        console.log(badge);
-      }
-    };
-  })(i);
+for (let i = 0, len = table.rows.length; i < len; i++) {
+  table.rows[i].onclick = function(){
+    let table = document.querySelector("#table"),rIndex;
+    if (this.className === "is-selected") {
+      this.className = ""
+      badge = ""
+      rindex = ""
+      console.log("no item selected");
+    }
+    else {
+      this.className = "is-selected"
+      rIndex = this.rowIndex;
+      badge = this.cells[2].innerText;
+      console.log(rIndex);
+      console.log(badge);
+    }
+  };
 }
