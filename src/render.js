@@ -62,9 +62,12 @@ const aboutButton = document.getElementById('about-button');
 const aboutModal = document.getElementById('about-modal');
 const aboutModalCloseButton = document.getElementById('about-modal-close-button');
 const aboutModalBackground = document.getElementById('about-modal-background');
-const securityModal = document.getElementById('security-modal');
-const securityModalCloseButton = document.getElementById('security-modal-close-button');
-const securityModalBackground = document.getElementById('security-modal-background');
+const securityEntryModal = document.getElementById('security-entry-modal');
+const securityEntryModalCloseButton = document.getElementById('security-entry-modal-close-button');
+const securityEntryModalBackground = document.getElementById('security-entry-modal-background');
+const securityExitModal = document.getElementById('security-exit-modal');
+const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
+const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const table_body = document.getElementById("tbody");
 const fname_cell = document.getElementById("first-name-field");
 const lname_cell = document.getElementById("last-name-field");
@@ -215,15 +218,24 @@ kioskBtn.onclick = function() {
   const window = remote.getCurrentWindow();
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
     // Security Modal feature
-    securityModal.className = "modal is-active"
+    securityEntryModal.className = "modal is-active"
     // About Modal close
-    securityModalCloseButton.onclick = function() {
-      securityModal.className = "modal"
+    securityEntryModalCloseButton.onclick = function() {
+      securityEntryModal.className = "modal"
     }
     // About Modal close on background click
-    securityModalBackground.onclick = function() {
-      securityModal.className = "modal"
+    securityEntryModalBackground.onclick = function() {
+      securityEntryModal.className = "modal"
     }
+    // Create user table and populate with starter info
+    db.serialize(function() {
+      db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)', function(err, result) {
+        console.log(result)
+      });
+      db.all('SELECT * FROM users', function(err, result) {
+          console.log(result);
+      });
+    });
     console.log('entering kiosk mode');
     kioskBtn.innerText = "Exit Kiosk Mode"
     window.setSize(1045, 770, true)
@@ -235,6 +247,16 @@ kioskBtn.onclick = function() {
     show(kiosk_field2);
   }
   else if (kioskBtn.innerText !== "Kiosk Mode") {
+    // Security Modal feature
+    securityExitModal.className = "modal is-active"
+    // About Modal close
+    securityExitModalCloseButton.onclick = function() {
+      securityExitModal.className = "modal"
+    }
+    // About Modal close on background click
+    securityExitModalBackground.onclick = function() {
+      securityExitModal.className = "modal"
+    }
     console.log('exiting kiosk mode')
     kioskBtn.innerText = "Kiosk Mode"
     window.setSize(1045, 615, true)

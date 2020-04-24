@@ -109,9 +109,9 @@
       <button id="about-modal-close-button" class="modal-close is-large" aria-label="close"></button>
     </div>
 
-    <!--modal security box-->
-    <div id="security-modal" class="modal">
-      <div id="security-modal-background" class="modal-background"></div>
+    <!--modal security kiosk entry box-->
+    <div id="security-entry-modal" class="modal">
+      <div id="security-entry-modal-background" class="modal-background"></div>
       <div class="modal-content">
         <div class="box">
           <article class="media">
@@ -123,13 +123,13 @@
             <div class="media-content">
               <div class="content">
                 <p>
-                  <strong>Provide a Password to protect User Management Mode?</strong>
+                  <strong>Would you like to password protect User Management Mode?</strong>
                   <br>
-                  <div id="security-input-cont" class="field is-grouped">
+                  <div id="security-entry-input-cont" class="field is-grouped">
                     <div class="field-body">
                       <div class="field">
                         <p class="control is-expanded has-icons-left">
-                          <input id= "security-name-field" class="input" type="text" placeholder="Username">
+                          <input id= "security-entry-name-field" class="input" type="text" placeholder="Username">
                           <span class="icon is-small is-left">
                             <i class="fas fa-user"></i>
                           </span>
@@ -137,32 +137,76 @@
                       </div>
                       <div class="field">
                         <p class="control is-expanded has-icons-left">
-                          <input id= "security-pass-field" class="input" type="text" placeholder="Password">
+                          <input id= "security-entry-pass-field" class="input" type="text" placeholder="Password">
                           <span class="icon is-small is-left">
                             <i class="fas fa-key"></i>
                           </span>
                         </p>
                       </div>
-                      <div class="buttons">
-                        <a id="security-button" class="button">
+                      <div class="buttons is-grouped">
+                        <a id="security-entry-button" class="button">
                           Confirm
-                          </a>
+                        </a>
                       </div>
                     </div>
                   </div>
                 </p>
               </div>
-              <nav class="level is-mobile">
-                <div class="level-left">
-                  <a class="level-item" aria-label="kofi">
-                  </a>
-                </div>
-              </nav>
             </div>
           </article>
         </div>
       </div>
-      <button id="security-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+      <button id="security-entry-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <!--modal security kiosk exit box-->
+    <div id="security-exit-modal" class="modal">
+      <div id="security-exit-modal-background" class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <article class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+                <img src='images/Padlock.png' alt="Image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>A password has been set to lock in this state, log in to exit</strong>
+                  <br>
+                  <div id="security-exit-input-cont" class="field is-grouped">
+                    <div class="field-body">
+                      <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                          <input id= "security-exit-name-field" class="input" type="text" placeholder="Username">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                          <input id= "security-exit-pass-field" class="input" type="text" placeholder="Password">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-key"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="buttons is-grouped">
+                        <a id="security-exit-button" class="button">
+                          Confirm
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <button id="security-exit-modal-close-button" class="modal-close is-large" aria-label="close"></button>
     </div>
 
     <!-- New User Input -->
