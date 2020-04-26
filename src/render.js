@@ -35,7 +35,7 @@ db.serialize(function() {
 // Encryption Key
 const keysentence = 'Now you’re looking for the secret, but you won’t find it, because of course you’re not really looking. You don’t really want to know. You want to be fooled.'
 const keyarray = keysentence.split(' ')
-keyarray.filter(function(entry) { return entry.length > 2; });
+const arr = keyarray.filter(function(entry) { return entry.length > 2; });
 const word = arr[Math.floor(Math.random() * arr.length)].split('').reverse().join('')
 arr.splice(arr.indexOf(word),1,word)
 const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ')
@@ -64,7 +64,7 @@ badgeNumField.onclick = function() {
   }
 };
 
-// Grab elements for later use
+// Get elements from html
 const tableContainer = document.getElementById('table-cont');
 const userContainer = document.getElementById('user-input-cont');
 const aboutButton = document.getElementById('about-button');
@@ -106,6 +106,7 @@ const hide = function (elem) {
 hide(kiosk_field);
 hide(kiosk_field2);
 
+// Add Event Listeners
 // About Modal feature
 aboutButton.onclick = function() {
   aboutModal.className = "modal is-active"
@@ -118,6 +119,51 @@ aboutModalCloseButton.onclick = function() {
 aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
 }
+
+// Security Modal close
+securityEntryModalCloseButton.onclick = function() {
+  securityEntryModal.className = "modal"
+}
+// Security Modal close on background click
+securityEntryModalBackground.onclick = function() {
+  securityEntryModal.className = "modal"
+}
+
+// Security Modal close
+securityExitModalCloseButton.onclick = function() {
+  securityExitModal.className = "modal"
+}
+// Security Modal close on background click
+securityExitModalBackground.onclick = function() {
+  securityExitModal.className = "modal"
+}
+
+// Press Add Button on Enter in badge field
+document.getElementById('badge-num-field')
+.addEventListener('keyup', function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+      addUserBtn.click();
+  }
+});
+
+// Press Confirm Button on Enter in Security Entry Modal
+document.getElementById('security-entry-pass-field')
+.addEventListener('keyup', function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+      securityEntryModalButton.click();
+  }
+});
+
+// Press Confirm Button on Enter in Security Exit Modal
+document.getElementById('security-exit-pass-field')
+.addEventListener('keyup', function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+      securityExitModalButton.click();
+  }
+});
 
 // Search Feature
 let searchInput = document.getElementById('search-input');
@@ -135,15 +181,6 @@ function filterUsers(){
     }
   }
 }
-
-// Press Add Button on Enter in badge field
-document.getElementById('badge-num-field')
-.addEventListener('keyup', function(event) {
-  event.preventDefault();
-  if (event.keyCode === 13) {
-      addUserBtn.click();
-  }
-});
 
 // Add user to database and javascript table
 addUserBtn.onclick = function() {
@@ -234,17 +271,9 @@ kioskBtn.onclick = function() {
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
     // Security Modal feature
     securityEntryModal.className = "modal is-active"
-    // About Modal close
-    securityEntryModalCloseButton.onclick = function() {
-      securityEntryModal.className = "modal"
-    }
-    // About Modal close on background click
-    securityEntryModalBackground.onclick = function() {
-      securityEntryModal.className = "modal"
-    }
     // Create user table and populate with starter info
     db.serialize(function() {
-      db.run('CREATE TABLE admins(username text, password text)', function(err, result) {
+      db.run('CREATE TABLE admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
         console.log(result)
       });
     });
@@ -260,24 +289,66 @@ kioskBtn.onclick = function() {
   }
   else if (kioskBtn.innerText !== "Kiosk Mode") {
     // Security Modal feature
-    securityExitModal.className = "modal is-active"
-    // About Modal close
-    securityExitModalCloseButton.onclick = function() {
-      securityExitModal.className = "modal"
-    }
-    // About Modal close on background click
-    securityExitModalBackground.onclick = function() {
-      securityExitModal.className = "modal"
-    }
-    console.log('exiting kiosk mode')
-    kioskBtn.innerText = "Kiosk Mode"
-    window.setSize(1045, 615, true)
-    show(addUserBtn);
-    show(userContainer)
-    show(deleteUserBtn);
-    show(fileInput_button)
-    hide(kiosk_field);
-    hide(kiosk_field2);
+    db.all('SELECT * FROM admins', function(err, result) {
+    console.log(result);
+      if (result.length > 0) {
+        securityExitModal.className = "modal is-active"
+        securityExitModalButton.onclick = function() {
+          // Validate text inputs
+          if (/[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
+            console.log("Username can not contain special characters");
+            securityExitModalUsername.className = "input is-danger"
+          }
+          else if (/[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)) {
+            console.log("Password cannot contain unicode");
+            securityExitModalPassword.className = "input is-danger"
+          }
+          else {
+              // Check db and validate password
+              db.all(`SELECT * FROM admins
+                WHERE username = '${securityExitModalUsername.value}'`, function(err, result){
+                console.log(result);
+                // Decrypt result
+                let bytes = Crypto.AES.decrypt(result[0].password, key);
+                let originalText = bytes.toString(Crypto.charenc.UTF8);
+                if (originalText === securityExitModalPassword.value) {
+                  // Security Modal close
+                  console.log('exiting kiosk mode')
+                  kioskBtn.innerText = "Kiosk Mode"
+                  window.setSize(1045, 615, true)
+                  show(addUserBtn);
+                  show(userContainer)
+                  show(deleteUserBtn);
+                  show(fileInput_button)
+                  hide(kiosk_field);
+                  hide(kiosk_field2);
+                  // Security Exit Modal close
+                  securityExitModal.className = "modal"
+                  securityEntryModalUsername.value = "";
+                  securityEntryModalPassword.value = "";
+                  securityEntryModalUsername.className = "input";
+                  securityEntryModalPassword.className = "input";
+                }
+                else if (originalText !== securityExitModalPassword) {
+                  securityExitModalUsername.className = "input is-danger"
+                  securityExitModalPassword.className = "input is-danger"
+                }
+              });
+          }
+        }
+      }
+      else if (result.length === 0) {
+        console.log('exiting kiosk mode')
+        kioskBtn.innerText = "Kiosk Mode"
+        window.setSize(1045, 615, true)
+        show(addUserBtn);
+        show(userContainer)
+        show(deleteUserBtn);
+        show(fileInput_button)
+        hide(kiosk_field);
+        hide(kiosk_field2);
+      }
+    });
   }
 };
 
@@ -285,17 +356,25 @@ kioskBtn.onclick = function() {
 securityEntryModalButton.onclick = function() {
   // Validate text inputs
   if (/[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
-    console.log("First Name can not contain a number");
+    console.log("Username can not contain special characters");
     securityEntryModalUsername.className = "input is-danger"
   }
   else if (/[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
-    console.log("Last Name can not contain a number");
+    console.log("Password cannot contain unicode");
     securityEntryModalPassword.className = "input is-danger"
   }
   else {
     // Encrypt
     let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
-    console.log(ciphertext)
+    db.serialize(function() {
+      db.run(`INSERT INTO admins(username,password)
+              VALUES('${securityEntryModalUsername.value}',
+              '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')
+      `);
+      db.all('SELECT * FROM admins', function(err, result) {
+          console.log(result);
+      });
+    });
 
     // Decrypt
     let bytes = Crypto.AES.decrypt(ciphertext, key);
@@ -303,6 +382,12 @@ securityEntryModalButton.onclick = function() {
 
     console.log(originalText); // 'my message'
 
+    // Close Security Entry modal
+    securityEntryModal.className = "modal"
+    securityEntryModalUsername.value = "";
+    securityEntryModalPassword.value = "";
+    securityEntryModalUsername.className = "input";
+    securityEntryModalPassword.className = "input";
   }
 }
 
