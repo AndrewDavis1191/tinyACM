@@ -1,6 +1,7 @@
 const { remote } = require('electron');
 const { crypto } = require("cryptojs");
-const { createReadStream,createWriteStream } = require('fs');
+const { dialog } = remote;
+const { createReadStream,writeFile } = require('fs');
 const { parse } = require('fast-csv');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:', (err) => {
@@ -64,6 +65,7 @@ const securityExitModalUsername = document.getElementById('security-exit-name-fi
 const securityExitModalPassword = document.getElementById('security-exit-pass-field');
 const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
+const exportUsersButton = document.getElementById('export-users-button');
 const table_body = document.getElementById("tbody");
 const fname_cell = document.getElementById("first-name-field");
 const lname_cell = document.getElementById("last-name-field");
@@ -153,6 +155,26 @@ document.getElementById('security-exit-pass-field')
       securityExitModalButton.click();
   }
 });
+
+// Export data function
+async function exportCsvFile(json) {
+  const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+  const header = Object.keys(json[0])
+  let csv = json.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+  csv.unshift(header.join(','))
+  csv = csv.join('\r\n')
+  const filePath = await dialog.showSaveDialog({
+    defaultPath: `file-${Date.now()}.csv`
+  });
+  writeFile(filePath.filePath, csv, () => console.log('csv saved successfully'))
+};
+
+// Export Users
+exportUsersButton.onclick = function() {
+  db.all('SELECT * FROM users;)', function(err, result) {
+    exportCsvFile(result);
+  });
+};
 
 // Show an element
 const show = function (elem) {
