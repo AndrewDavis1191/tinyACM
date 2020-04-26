@@ -164,10 +164,6 @@ const hide = function (elem) {
 	elem.style.display = 'none'
 };
 
-// Hide kiosk content
-hide(kiosk_field);
-hide(kiosk_field2);
-
 // Search Feature
 let searchInput = document.getElementById('search-input');
 searchInput.addEventListener('keyup', filterUsers);
