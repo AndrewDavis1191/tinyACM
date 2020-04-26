@@ -23,9 +23,6 @@ db.serialize(function() {
   db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
     console.log(result)
   });
-  db.all('SELECT * FROM users', function(err, result) {
-      console.log(result);
-  });
 });
 
 // close the database connection
@@ -75,20 +72,6 @@ const kiosk_field = document.getElementById("kiosk-field");
 const kiosk_field2 = document.getElementById("kiosk-field2");
 const footer_items = document.getElementById("footer-items");
 const fileInput_button = document.getElementById('file-js-example');
-
-// Show an element
-const show = function (elem) {
-	elem.style.display = 'block'
-};
-
-// Hide an element
-const hide = function (elem) {
-	elem.style.display = 'none'
-};
-
-// Hide kiosk content
-hide(kiosk_field);
-hide(kiosk_field2);
 
 // Add Event Listeners
 const fnameField = document.getElementById("first-name-field");
@@ -171,6 +154,20 @@ document.getElementById('security-exit-pass-field')
   }
 });
 
+// Show an element
+const show = function (elem) {
+	elem.style.display = 'block'
+};
+
+// Hide an element
+const hide = function (elem) {
+	elem.style.display = 'none'
+};
+
+// Hide kiosk content
+hide(kiosk_field);
+hide(kiosk_field2);
+
 // Search Feature
 let searchInput = document.getElementById('search-input');
 searchInput.addEventListener('keyup', filterUsers);
@@ -188,7 +185,7 @@ function filterUsers(){
   };
 };
 
-// Add user to database and javascript table
+// Add user to database and javaScript table
 addUserBtn.onclick = function() {
   // Validate text inputs
   if (/[^\D]\d|\W/gi.test(fname_cell.value)) {
@@ -241,7 +238,7 @@ addUserBtn.onclick = function() {
     };
   }
 };
-// Delete user from database and javascript table
+// Delete user from database and javaScript table
 deleteUserBtn.onclick = function() {
   let table = document.getElementById('table');
   let rowLength = table.rows.length;
