@@ -1,4 +1,5 @@
 const { remote } = require('electron');
+const { crypto } = require("cryptojs");
 const { createReadStream,createWriteStream } = require('fs');
 const { parse } = require('fast-csv');
 const sqlite3 = require('sqlite3').verbose();
@@ -30,6 +31,14 @@ db.serialize(function() {
 //  }
 //  console.log('Close the database connection.');
 //});
+
+// Encryption Key
+const keysentence = 'Now you’re looking for the secret, but you won’t find it, because of course you’re not really looking. You don’t really want to know. You want to be fooled.'
+const keyarray = keysentence.split(' ')
+keyarray.filter(function(entry) { return entry.length > 2; });
+const word = arr[Math.floor(Math.random() * arr.length)].split('').reverse().join('')
+arr.splice(arr.indexOf(word),1,word)
+const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ')
 
 // Buttons
 const addUserBtn = document.getElementById('add-user-button');
@@ -63,9 +72,15 @@ const aboutModal = document.getElementById('about-modal');
 const aboutModalCloseButton = document.getElementById('about-modal-close-button');
 const aboutModalBackground = document.getElementById('about-modal-background');
 const securityEntryModal = document.getElementById('security-entry-modal');
+const securityEntryModalButton = document.getElementById('security-entry-button');
+const securityEntryModalUsername = document.getElementById('security-entry-name-field');
+const securityEntryModalPassword = document.getElementById('security-entry-pass-field');
 const securityEntryModalCloseButton = document.getElementById('security-entry-modal-close-button');
 const securityEntryModalBackground = document.getElementById('security-entry-modal-background');
 const securityExitModal = document.getElementById('security-exit-modal');
+const securityExitModalButton = document.getElementById('security-exit-button');
+const securityExitModalUsername = document.getElementById('security-exit-name-field');
+const securityExitModalPassword = document.getElementById('security-exit-pass-field');
 const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const table_body = document.getElementById("tbody");
@@ -229,11 +244,8 @@ kioskBtn.onclick = function() {
     }
     // Create user table and populate with starter info
     db.serialize(function() {
-      db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)', function(err, result) {
+      db.run('CREATE TABLE admins(username text, password text)', function(err, result) {
         console.log(result)
-      });
-      db.all('SELECT * FROM users', function(err, result) {
-          console.log(result);
       });
     });
     console.log('entering kiosk mode');
@@ -268,6 +280,31 @@ kioskBtn.onclick = function() {
     hide(kiosk_field2);
   }
 };
+
+// Security entry modal function
+securityEntryModalButton.onclick = function() {
+  // Validate text inputs
+  if (/[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
+    console.log("First Name can not contain a number");
+    securityEntryModalUsername.className = "input is-danger"
+  }
+  else if (/[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
+    console.log("Last Name can not contain a number");
+    securityEntryModalPassword.className = "input is-danger"
+  }
+  else {
+    // Encrypt
+    let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
+    console.log(ciphertext)
+
+    // Decrypt
+    let bytes = Crypto.AES.decrypt(ciphertext, key);
+    let originalText = bytes.toString(Crypto.charenc.UTF8);
+
+    console.log(originalText); // 'my message'
+
+  }
+}
 
 // File input function
 const fileInput = document.querySelector('#file-js-example input[type=file]');
