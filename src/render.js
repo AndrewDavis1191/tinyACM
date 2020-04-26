@@ -34,11 +34,11 @@ db.serialize(function() {
 
 // Encryption Key
 const keysentence = 'Now you’re looking for the secret, but you won’t find it, because of course you’re not really looking. You don’t really want to know. You want to be fooled.'
-const keyarray = keysentence.split(' ')
+const keyarray = keysentence.split(' ');
 const arr = keyarray.filter(function(entry) { return entry.length > 2; });
-const word = arr[Math.floor(Math.random() * arr.length)].split('').reverse().join('')
-arr.splice(arr.indexOf(word),1,word)
-const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ')
+const word = arr[Math.floor(Math.random() * arr.length)].split('').reverse().join('');
+arr.splice(arr.indexOf(word),1,word);
+const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ');
 
 // Buttons
 const addUserBtn = document.getElementById('add-user-button');
@@ -94,12 +94,12 @@ const fileInput_button = document.getElementById('file-js-example');
 
 // Show an element
 const show = function (elem) {
-	elem.style.display = 'block';
+	elem.style.display = 'block'
 };
 
 // Hide an element
 const hide = function (elem) {
-	elem.style.display = 'none';
+	elem.style.display = 'none'
 };
 
 // Hide kiosk content
@@ -114,29 +114,29 @@ aboutButton.onclick = function() {
 // About Modal close
 aboutModalCloseButton.onclick = function() {
   aboutModal.className = "modal"
-}
+};
 // About Modal close on background click
 aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
-}
+};
 
 // Security Modal close
 securityEntryModalCloseButton.onclick = function() {
   securityEntryModal.className = "modal"
-}
+};
 // Security Modal close on background click
 securityEntryModalBackground.onclick = function() {
   securityEntryModal.className = "modal"
-}
+};
 
 // Security Modal close
 securityExitModalCloseButton.onclick = function() {
   securityExitModal.className = "modal"
-}
+};
 // Security Modal close on background click
 securityExitModalBackground.onclick = function() {
   securityExitModal.className = "modal"
-}
+};
 
 // Press Add Button on Enter in badge field
 document.getElementById('badge-num-field')
@@ -174,13 +174,13 @@ function filterUsers(){
   for(let i = 1;i < table.rows.length;i++){
     let row = table.rows[i];
     if(row.innerHTML.toUpperCase().indexOf(filterValue) > -1){
-      row.style.display = '';
+      row.style.display = ''
     }
     else {
-      row.style.display = 'none';
+      row.style.display = 'none'
     }
-  }
-}
+  };
+};
 
 // Add user to database and javascript table
 addUserBtn.onclick = function() {
@@ -202,9 +202,9 @@ addUserBtn.onclick = function() {
     let cell1 = row.insertCell(0);
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
-    cell1.innerHTML = `${fname_cell.value}`;
-    cell2.innerHTML = `${lname_cell.value}`;
-    cell3.innerHTML = `${badge_cell.value}`;
+    cell1.innerHTML = `${fname_cell.value}`
+    cell2.innerHTML = `${lname_cell.value}`
+    cell3.innerHTML = `${badge_cell.value}`
     console.log('adding user');
     db.serialize(function() {
       db.run(`INSERT INTO users(first_name,last_name,badge_number)
@@ -214,12 +214,12 @@ addUserBtn.onclick = function() {
           console.log(result);
       });
     });
-    fname_cell.value = "";
-    lname_cell.value = "";
-    badge_cell.value = "";
-    fname_cell.className = "input";
-    lname_cell.className = "input";
-    badge_cell.className = "input";
+    fname_cell.value = ""
+    lname_cell.value = ""
+    badge_cell.value = ""
+    fname_cell.className = "input"
+    lname_cell.className = "input"
+    badge_cell.className = "input"
     row.onclick = function() {
       if (this.className === "is-selected") {
         this.className = ""
@@ -232,7 +232,7 @@ addUserBtn.onclick = function() {
         badge = this.cells[2].innerText;
         console.log(badge);
       }
-    }
+    };
   }
 };
 // Delete user from database and javascript table
@@ -267,28 +267,34 @@ deleteUserBtn.onclick = function() {
 
 // Kiosk mode function
 kioskBtn.onclick = function() {
+  // Create admin table
+  db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
+    console.log(result)
+  });
   const window = remote.getCurrentWindow();
+  // Entering Kiosk Mode
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
-    // Security Modal feature
-    securityEntryModal.className = "modal is-active"
-    // Create user table and populate with starter info
-    db.serialize(function() {
-      db.run('CREATE TABLE admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
-        console.log(result)
-      });
+    db.all('SELECT * FROM admins', function(err, result) {
+      console.log(result);
+      if (err || result.length > 0) {
+        console.log('entering kiosk mode');
+        kioskBtn.innerText = "Exit Kiosk Mode"
+        window.setSize(1045, 770, true)
+        hide(addUserBtn);
+        hide(userContainer);
+        hide(deleteUserBtn);
+        hide(fileInput_button);
+        show(kiosk_field);
+        show(kiosk_field2);
+      }
+      else {
+        // Security Modal feature
+        securityEntryModal.className = "modal is-active"
+      }
     });
-    console.log('entering kiosk mode');
-    kioskBtn.innerText = "Exit Kiosk Mode"
-    window.setSize(1045, 770, true)
-    hide(addUserBtn);
-    hide(userContainer)
-    hide(deleteUserBtn);
-    hide(fileInput_button)
-    show(kiosk_field);
-    show(kiosk_field2);
   }
   else if (kioskBtn.innerText !== "Kiosk Mode") {
-    // Security Modal feature
+    // Exiting Kiosk Mode
     db.all('SELECT * FROM admins', function(err, result) {
     console.log(result);
       if (result.length > 0) {
@@ -324,10 +330,10 @@ kioskBtn.onclick = function() {
                   hide(kiosk_field2);
                   // Security Exit Modal close
                   securityExitModal.className = "modal"
-                  securityEntryModalUsername.value = "";
-                  securityEntryModalPassword.value = "";
-                  securityEntryModalUsername.className = "input";
-                  securityEntryModalPassword.className = "input";
+                  securityExitModalUsername.value = ""
+                  securityExitModalPassword.value = ""
+                  securityExitModalUsername.className = "input"
+                  securityExitModalPassword.className = "input"
                 }
                 else if (originalText !== securityExitModalPassword) {
                   securityExitModalUsername.className = "input is-danger"
@@ -335,16 +341,16 @@ kioskBtn.onclick = function() {
                 }
               });
           }
-        }
+        };
       }
       else if (result.length === 0) {
         console.log('exiting kiosk mode')
-        kioskBtn.innerText = "Kiosk Mode"
-        window.setSize(1045, 615, true)
+        kioskBtn.innerText = "Kiosk Mode";
+        window.setSize(1045, 615, true);
         show(addUserBtn);
-        show(userContainer)
+        show(userContainer);
         show(deleteUserBtn);
-        show(fileInput_button)
+        show(fileInput_button);
         hide(kiosk_field);
         hide(kiosk_field2);
       }
@@ -366,30 +372,26 @@ securityEntryModalButton.onclick = function() {
   else {
     // Encrypt
     let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
-    db.serialize(function() {
-      db.run(`INSERT INTO admins(username,password)
-              VALUES('${securityEntryModalUsername.value}',
-              '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')
-      `);
-      db.all('SELECT * FROM admins', function(err, result) {
-          console.log(result);
-      });
+    db.run(`INSERT INTO admins(username,password)
+            VALUES('${securityEntryModalUsername.value}',
+            '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')
+    `, function(err, result) {
+      if (err) {
+        console.log('A username already exists with that name')
+        console.log(err)
+      }
+      else {
+        // Close Security Entry modal
+        securityEntryModal.className = "modal";
+        securityEntryModalUsername.value = "";
+        securityEntryModalPassword.value = "";
+        securityEntryModalUsername.className = "input";
+        securityEntryModalPassword.className = "input";
+      }
     });
-
-    // Decrypt
-    let bytes = Crypto.AES.decrypt(ciphertext, key);
-    let originalText = bytes.toString(Crypto.charenc.UTF8);
-
-    console.log(originalText); // 'my message'
-
-    // Close Security Entry modal
-    securityEntryModal.className = "modal"
-    securityEntryModalUsername.value = "";
-    securityEntryModalPassword.value = "";
-    securityEntryModalUsername.className = "input";
-    securityEntryModalPassword.className = "input";
   }
-}
+};
+
 
 // File input function
 const fileInput = document.querySelector('#file-js-example input[type=file]');
@@ -412,8 +414,8 @@ fileInput.onchange = () => {
         db.run(`INSERT INTO users(first_name,last_name,badge_number)
                 VALUES('${row[0]}','${row[1]}',${row[2]});
         `);
-      })
-    })
+      });
+    });
     .on('error', error => console.error(error))
     .on('end', () => {
       console.log('CSV file successfully processed');
