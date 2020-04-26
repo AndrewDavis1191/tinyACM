@@ -19,6 +19,10 @@ db.serialize(function() {
                 ('Glennalon','Mixon',3334445555),
                 ('Sleve','McDichael',3433445543);
   `);
+  // Create admin table
+  db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
+    console.log(result)
+  });
   db.all('SELECT * FROM users', function(err, result) {
       console.log(result);
   });
@@ -40,31 +44,11 @@ const word = arr[Math.floor(Math.random() * arr.length)].split('').reverse().joi
 arr.splice(arr.indexOf(word),1,word);
 const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ');
 
-// Buttons
+// Get elements from html
 const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
-
-const fnameField = document.getElementById("first-name-field");
-fnameField.onclick = function() {
-  if (this.className !== "input") {
-    this.className = "input"
-  }
-};
-const lnameField = document.getElementById("last-name-field");
-lnameField.onclick = function() {
-  if (this.className !== "input") {
-    this.className = "input"
-  }
-};
-const badgeNumField = document.getElementById("badge-num-field");
-badgeNumField.onclick = function() {
-  if (this.className !== "input") {
-    this.className = "input"
-  }
-};
-
-// Get elements from html
+const adminButton = document.getElementById('admin-button');
 const tableContainer = document.getElementById('table-cont');
 const userContainer = document.getElementById('user-input-cont');
 const aboutButton = document.getElementById('about-button');
@@ -107,6 +91,24 @@ hide(kiosk_field);
 hide(kiosk_field2);
 
 // Add Event Listeners
+const fnameField = document.getElementById("first-name-field");
+fnameField.onclick = function() {
+  if (this.className !== "input") {
+    this.className = "input"
+  }
+};
+const lnameField = document.getElementById("last-name-field");
+lnameField.onclick = function() {
+  if (this.className !== "input") {
+    this.className = "input"
+  }
+};
+const badgeNumField = document.getElementById("badge-num-field");
+badgeNumField.onclick = function() {
+  if (this.className !== "input") {
+    this.className = "input"
+  }
+};
 // About Modal feature
 aboutButton.onclick = function() {
   aboutModal.className = "modal is-active"
@@ -120,6 +122,10 @@ aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
 };
 
+// Security Modal Button
+adminButton.onclick = function() {
+  securityEntryModal.className = "modal is-active"
+};
 // Security Modal close
 securityEntryModalCloseButton.onclick = function() {
   securityEntryModal.className = "modal"
@@ -267,19 +273,15 @@ deleteUserBtn.onclick = function() {
 
 // Kiosk mode function
 kioskBtn.onclick = function() {
-  // Create admin table
-  db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
-    console.log(result)
-  });
   const window = remote.getCurrentWindow();
   // Entering Kiosk Mode
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
     db.all('SELECT * FROM admins', function(err, result) {
       console.log(result);
-      if (err || result.length > 0) {
+      if (result.length === 0) {
         console.log('entering kiosk mode');
         kioskBtn.innerText = "Exit Kiosk Mode"
-        window.setSize(1045, 770, true)
+        //window.setSize(1045, 770, true)
         hide(addUserBtn);
         hide(userContainer);
         hide(deleteUserBtn);
@@ -321,7 +323,7 @@ kioskBtn.onclick = function() {
                   // Security Modal close
                   console.log('exiting kiosk mode')
                   kioskBtn.innerText = "Kiosk Mode"
-                  window.setSize(1045, 615, true)
+                  //window.setSize(1045, 615, true)
                   show(addUserBtn);
                   show(userContainer)
                   show(deleteUserBtn);
@@ -346,7 +348,7 @@ kioskBtn.onclick = function() {
       else if (result.length === 0) {
         console.log('exiting kiosk mode')
         kioskBtn.innerText = "Kiosk Mode";
-        window.setSize(1045, 615, true);
+        //window.setSize(1045, 615, true);
         show(addUserBtn);
         show(userContainer);
         show(deleteUserBtn);
@@ -392,7 +394,6 @@ securityEntryModalButton.onclick = function() {
   }
 };
 
-
 // File input function
 const fileInput = document.querySelector('#file-js-example input[type=file]');
 fileInput.onchange = () => {
@@ -414,8 +415,8 @@ fileInput.onchange = () => {
         db.run(`INSERT INTO users(first_name,last_name,badge_number)
                 VALUES('${row[0]}','${row[1]}',${row[2]});
         `);
-      });
-    });
+      })
+    })
     .on('error', error => console.error(error))
     .on('end', () => {
       console.log('CSV file successfully processed');
