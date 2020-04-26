@@ -12,7 +12,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 
 // Create user table and populate with starter info
 db.serialize(function() {
-  db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
+  db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT PRIMARY KEY)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
           VALUES('Karl','Dandleton',5555555555),
                 ('Bobson','Dugnutt',1123345566),
@@ -188,15 +188,15 @@ function filterUsers(){
 // Add user to database and javaScript table
 addUserBtn.onclick = function() {
   // Validate text inputs
-  if (/[^\D]\d|\W/gi.test(fname_cell.value)) {
+  if (fname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(fname_cell.value)) {
     console.log("First Name can not contain a number");
     fname_cell.className = "input is-danger"
   }
-  else if (/[^\D]\d|\W/gi.test(lname_cell.value)) {
+  else if (lname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(lname_cell.value)) {
     console.log("Last Name can not contain a number");
     lname_cell.className = "input is-danger"
   }
-  else if (/([^(\w|\X)]|\D)/gi.test(badge_cell.value)) {
+  else if (badge_cell.value.length === 0 || /([^(\w|\X)]|\D)/gi.test(badge_cell.value)) {
     console.log("Badge must be a number");
     badge_cell.className = "input is-danger"
   }
@@ -300,11 +300,11 @@ kioskBtn.onclick = function() {
         securityExitModal.className = "modal is-active"
         securityExitModalButton.onclick = function() {
           // Validate text inputs
-          if (/[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
+          if (securityExitModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
             console.log("Username can not contain special characters");
             securityExitModalUsername.className = "input is-danger"
           }
-          else if (/[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)) {
+          else if (securityExitModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)) {
             console.log("Password cannot contain unicode");
             securityExitModalPassword.className = "input is-danger"
           }
@@ -360,11 +360,11 @@ kioskBtn.onclick = function() {
 // Security entry modal function
 securityEntryModalButton.onclick = function() {
   // Validate text inputs
-  if (/[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
+  if (securityEntryModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
     console.log("Username can not contain special characters");
     securityEntryModalUsername.className = "input is-danger"
   }
-  else if (/[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
+  else if (securityEntryModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
     console.log("Password cannot contain unicode");
     securityEntryModalPassword.className = "input is-danger"
   }
