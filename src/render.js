@@ -86,46 +86,56 @@ fnameField.onclick = function() {
     this.className = "input"
   }
 };
+
 const lnameField = document.getElementById("last-name-field");
 lnameField.onclick = function() {
   if (this.className !== "input") {
     this.className = "input"
   }
 };
+
 const badgeNumField = document.getElementById("badge-num-field");
 badgeNumField.onclick = function() {
   if (this.className !== "input") {
     this.className = "input"
   }
 };
+
 // About Modal feature
 aboutButton.onclick = function() {
   aboutModal.className = "modal is-active"
 };
+
 // About Modal close
 aboutModalCloseButton.onclick = function() {
   aboutModal.className = "modal"
 };
+
 // About Modal close on background click
 aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
 };
+
 // Security Modal Button
 adminButton.onclick = function() {
   securityEntryModal.className = "modal is-active"
 };
+
 // Security Modal close
 securityEntryModalCloseButton.onclick = function() {
   securityEntryModal.className = "modal"
 };
+
 // Security Modal close on background click
 securityEntryModalBackground.onclick = function() {
   securityEntryModal.className = "modal"
 };
+
 // Security Modal close
 securityExitModalCloseButton.onclick = function() {
   securityExitModal.className = "modal"
 };
+
 // Security Modal close on background click
 securityExitModalBackground.onclick = function() {
   securityExitModal.className = "modal"
