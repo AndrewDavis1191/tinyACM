@@ -54,6 +54,9 @@ const tableContainer = document.getElementById('table-cont');
 const userContainer = document.getElementById('user-input-cont');
 const aboutButton = document.getElementById('about-button');
 const aboutModal = document.getElementById('about-modal');
+const errorModal = document.getElementById('error-modal');
+const errorModalBackground = document.getElementById('error-modal-background');
+const errorNotification = document.getElementById('error-notification');
 const aboutModalCloseButton = document.getElementById('about-modal-close-button');
 const aboutModalBackground = document.getElementById('about-modal-background');
 const securityEntryModal = document.getElementById('security-entry-modal');
@@ -114,6 +117,11 @@ aboutModalCloseButton.onclick = function() {
 // About Modal close on background click
 aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
+};
+
+// Error Modal close on background click
+errorModalBackground.onclick = function() {
+  hide(errorModal)
 };
 
 // Security Modal Button
@@ -178,7 +186,7 @@ document.getElementById('security-exit-pass-field')
 
 // Export data function
 async function exportCsvFile(json) {
-  const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+  const replacer = (key, value) => value === null ? '' : value
   const header = Object.keys(json[0])
   let csv = json.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
   csv.unshift(header.join(','))
@@ -193,7 +201,9 @@ async function exportCsvFile(json) {
 exportUsersButton.onclick = function() {
   db.all('SELECT * FROM users;)', function(err, result) {
     if (result.length === 0) {
-      console.log('There are no users in the database to export')
+      errorNotification.innerText = `There are no users in the database to export.
+                                      Please add users before exporting.`
+      show(errorModal)
     }
     else {
       exportCsvFile(result);
@@ -202,12 +212,12 @@ exportUsersButton.onclick = function() {
 };
 
 // Show an element
-const show = function (elem) {
+const show = function(elem) {
 	elem.style.display = 'block'
 };
 
 // Hide an element
-const hide = function (elem) {
+const hide = function(elem) {
 	elem.style.display = 'none'
 };
 
@@ -232,15 +242,18 @@ function filterUsers(){
 addUserBtn.onclick = function() {
   // Validate text inputs
   if (fname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(fname_cell.value)) {
-    console.log("First Name can not contain a number");
     fname_cell.className = "input is-danger"
+    errorNotification.innerText = 'First Name must contain only letters and cannot be blank.'
+    show(errorModal)
   }
   else if (lname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(lname_cell.value)) {
-    console.log("Last Name can not contain a number");
+    errorNotification.innerText = 'Last Name must contain only letters and cannot be blank.'
+    show(errorModal)
     lname_cell.className = "input is-danger"
   }
   else if (badge_cell.value.length === 0 || /([^(\w|\X)]|\D)/gi.test(badge_cell.value)) {
-    console.log("Badge must be a number");
+    errorNotification.innerText = 'Badge must contain only numbers and cannot be blank.'
+    show(errorModal)
     badge_cell.className = "input is-danger"
   }
   else {
@@ -344,11 +357,13 @@ kioskBtn.onclick = function() {
         securityExitModalButton.onclick = function() {
           // Validate text inputs
           if (securityExitModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
-            console.log("Username can not contain special characters");
+            errorNotification.innerText = 'Username must not be blank.'
+            show(errorModal)
             securityExitModalUsername.className = "input is-danger"
           }
           else if (securityExitModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)) {
-            console.log("Password cannot contain unicode");
+            errorNotification.innerText = 'Password must not be blank'
+            show(errorModal)
             securityExitModalPassword.className = "input is-danger"
           }
           else {
@@ -404,11 +419,13 @@ kioskBtn.onclick = function() {
 securityEntryModalButton.onclick = function() {
   // Validate text inputs
   if (securityEntryModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
-    console.log("Username can not contain special characters");
+    errorNotification.innerText = 'Username must consist of only words and numbers.'
+    show(errorModal)
     securityEntryModalUsername.className = "input is-danger"
   }
   else if (securityEntryModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
-    console.log("Password cannot contain unicode");
+    errorNotification.innerText = 'Password cannot be blank.'
+    show(errorModal)
     securityEntryModalPassword.className = "input is-danger"
   }
   else {
@@ -419,8 +436,8 @@ securityEntryModalButton.onclick = function() {
             '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')
     `, function(err, result) {
       if (err) {
-        console.log('A username already exists with that name')
-        console.log(err)
+        errorNotification.innerText = 'An administrator has already registered with this username.'
+        show(errorModal)
       }
       else {
         // Close Security Entry modal
@@ -467,7 +484,7 @@ fileInput.onchange = () => {
 
 // Table selection and highlighting
 let table = document.querySelector("#table"),rIndex;
-for (let i = 0, len = table.rows.length; i < len; i++) {
+for (let i = 1, len = table.rows.length; i < len; i++) {
   table.rows[i].onclick = function(){
     let table = document.querySelector("#table"),rIndex;
     if (this.className === "is-selected") {
