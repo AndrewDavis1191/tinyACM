@@ -24,6 +24,9 @@ db.serialize(function() {
   db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
     console.log(result)
   });
+  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge BIGINT )', function(err, result) {
+    console.log(result)
+  });
 });
 
 // close the database connection
@@ -66,12 +69,14 @@ const securityExitModalPassword = document.getElementById('security-exit-pass-fi
 const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const exportUsersButton = document.getElementById('export-users-button');
-const table_body = document.getElementById("tbody");
-const fname_cell = document.getElementById("first-name-field");
-const lname_cell = document.getElementById("last-name-field");
-const badge_cell = document.getElementById("badge-num-field");
-const kioskFooterItems = document.getElementById("kiosk-footer-items");
-const normalFooterItems = document.getElementById("normal-footer-items");
+const table_body = document.getElementById('tbody');
+const fname_cell = document.getElementById('first-name-field');
+const lname_cell = document.getElementById('last-name-field');
+const badge_cell = document.getElementById('badge-num-field');
+const kioskFooterItems = document.getElementById('kiosk-footer-items');
+const kioskPlusButton = document.getElementById('kiosk-plus-button');
+const kioskMinusButton = document.getElementById('kiosk-minus-button');
+const normalFooterItems = document.getElementById('normal-footer-items');
 const fileInput_button = document.getElementById('file-js-example');
 
 // Add Event Listeners
@@ -105,7 +110,6 @@ aboutModalCloseButton.onclick = function() {
 aboutModalBackground.onclick = function() {
   aboutModal.className = "modal"
 };
-
 // Security Modal Button
 adminButton.onclick = function() {
   securityEntryModal.className = "modal is-active"
@@ -118,7 +122,6 @@ securityEntryModalCloseButton.onclick = function() {
 securityEntryModalBackground.onclick = function() {
   securityEntryModal.className = "modal"
 };
-
 // Security Modal close
 securityExitModalCloseButton.onclick = function() {
   securityExitModal.className = "modal"
@@ -126,6 +129,14 @@ securityExitModalCloseButton.onclick = function() {
 // Security Modal close on background click
 securityExitModalBackground.onclick = function() {
   securityExitModal.className = "modal"
+};
+kioskPlusButton.onclick = function () {
+  showing++;
+  showColumns();
+};
+kioskMinusButton.onclick = function () {
+  showing--;
+  showColumns();
 };
 
 // Press Add Button on Enter in badge field
@@ -464,3 +475,17 @@ for (let i = 0, len = table.rows.length; i < len; i++) {
     }
   };
 }
+
+// Kiosk Swipe and Show add/remove Function
+let grid = document.getElementById('grid');
+let columns = Array.prototype.slice.call(document.querySelectorAll('#grid > .column'), 0);
+let showing = 4;
+function showColumns() {
+  showing = Math.min(Math.max(parseInt(showing), 1), 8);
+  columns.forEach(function (el) {
+    el.style.display = 'none';
+  });
+  columns.slice(0, showing).forEach(function (el) {
+    el.style.display = 'block';
+  });
+};
