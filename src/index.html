@@ -134,7 +134,7 @@
             <div class="media-content">
               <div class="content">
                 <p>
-                  <strong>Would you like to password protect User Management Mode?</strong>
+                  <strong>Would you like to password protect Kiosk Mode?</strong>
                   <br>
                   <div id="security-entry-input-cont" class="field is-grouped">
                     <div class="field-body">
@@ -166,7 +166,6 @@
                           </span>
                         </p>
                       </div>
-                      <input id="password-checkbox" type="checkbox">
                       <div class="buttons is-grouped">
                         <a id="security-entry-button" class="button">
                           Confirm
@@ -178,6 +177,18 @@
               </div>
             </div>
           </article>
+          <!-- Admin Table -->
+          <div id="admin-table-cont" class="table-container" style="display: none">
+            <table id="admin-table" class="table is-fullwidth is-hoverable">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody id="admin-tbody" style="overflow-y: scroll">
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <button id="security-entry-modal-close-button" class="modal-close is-large" aria-label="close"></button>
@@ -286,7 +297,7 @@
             <th>Badge Number</th>
           </tr>
         </thead>
-        <tbody id="tbody">
+        <tbody id="tbody" style="overflow-y: scroll">
           <tr>
             <td>Karl</td>
             <td>Dandleton</td>

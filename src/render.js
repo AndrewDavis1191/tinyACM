@@ -12,7 +12,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 });
 
 // Create user table and populate with starter info
-db.serialize(function() {
+db.serialize(function(err, result) {
   db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number BIGINT PRIMARY KEY)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
           VALUES('Karl','Dandleton',5555555555),
@@ -21,12 +21,9 @@ db.serialize(function() {
                 ('Sleve','McDichael',3433445543);
   `);
   // Create admin table
-  db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)', function(err, result) {
-    console.log(result)
-  });
-  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge BIGINT )', function(err, result) {
-    console.log(result)
-  });
+  db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
+  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge BIGINT )');
+  console.log(err)
 });
 
 // close the database connection
@@ -51,6 +48,7 @@ const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
 const adminButton = document.getElementById('admin-button');
 const tableContainer = document.getElementById('table-cont');
+const adminTableContainer = document.getElementById('admin-table-cont');
 const userContainer = document.getElementById('user-input-cont');
 const aboutButton = document.getElementById('about-button');
 const aboutModal = document.getElementById('about-modal');
@@ -63,6 +61,7 @@ const securityEntryModal = document.getElementById('security-entry-modal');
 const securityEntryModalButton = document.getElementById('security-entry-button');
 const securityEntryModalUsername = document.getElementById('security-entry-name-field');
 const securityEntryModalPassword = document.getElementById('security-entry-pass-field');
+const securityEntryModalPassword2 = document.getElementById('security-entry-pass-field2');
 const securityEntryModalCloseButton = document.getElementById('security-entry-modal-close-button');
 const securityEntryModalBackground = document.getElementById('security-entry-modal-background');
 const securityExitModal = document.getElementById('security-exit-modal');
@@ -73,6 +72,7 @@ const securityExitModalCloseButton = document.getElementById('security-exit-moda
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const exportUsersButton = document.getElementById('export-users-button');
 const table_body = document.getElementById('tbody');
+const adminTable_Body = document.getElementById('admin-tbody');
 const fname_cell = document.getElementById('first-name-field');
 const lname_cell = document.getElementById('last-name-field');
 const badge_cell = document.getElementById('badge-num-field');
@@ -428,8 +428,16 @@ securityEntryModalButton.onclick = function() {
     show(errorModal)
     securityEntryModalPassword.className = "input is-danger"
   }
+  else if (securityEntryModalPassword.value !== securityEntryModalPassword2.value) {
+    errorNotification.innerText = 'Passwords do not match.'
+    show(errorModal)
+    securityEntryModalPassword2.className = "input is-danger"
+  }
   else {
     // Encrypt
+    let row = adminTable_Body.insertRow();
+    let cell = row.insertCell(0);
+    cell.innerHTML = `${securityEntryModalUsername.value}`
     let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
     db.run(`INSERT INTO admins(username,password)
             VALUES('${securityEntryModalUsername.value}',
@@ -441,11 +449,13 @@ securityEntryModalButton.onclick = function() {
       }
       else {
         // Close Security Entry modal
-        securityEntryModal.className = "modal";
+        show(adminTableContainer);
         securityEntryModalUsername.value = "";
         securityEntryModalPassword.value = "";
+        securityEntryModalPassword2.value = "";
         securityEntryModalUsername.className = "input";
         securityEntryModalPassword.className = "input";
+        securityEntryModalPassword2.className = "input";
       }
     });
   }
@@ -503,7 +513,7 @@ for (let i = 1, len = table.rows.length; i < len; i++) {
   };
 }
 
-// Kiosk Swipe and Show add/remove Function
+// Kiosk Swipe and Show add/remove grid function
 let grid = document.getElementById('grid');
 let columns = Array.prototype.slice.call(document.querySelectorAll('#grid > .column'), 0);
 let showing = 4;

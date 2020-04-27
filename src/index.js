@@ -1,5 +1,6 @@
-const { app, shell, BrowserWindow } = require('electron');
+const { app, shell, BrowserWindow, dialog } = require('electron');
 const path = require('path');
+//app.showExitPrompt = true
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -19,6 +20,24 @@ const createWindow = () => {
       nodeIntegration: true,
     }
   });
+  //mainWindow.on('close', (e) => {
+  //  if (app.showExitPrompt) {
+  //    e.preventDefault() // Prevents the window from closing
+  //    dialog.showMessageBox({
+  //      type: 'question',
+  //      buttons: ['Yes', 'No'],
+  //      title: 'Confirm',
+  //      message: 'Unsaved data will be lost. Are you sure you want to quit?'
+  //    }, function(response) {
+  //      if (response === 0) { // Runs the following if 'Yes' is clicked
+  //        console.log('closing app')
+  //        app.showExitPrompt = false
+  //        mainWindow.destroy();
+  //        app.quit();
+  //      }
+  //    });
+  //  }
+  //});
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
