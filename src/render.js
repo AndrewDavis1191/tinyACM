@@ -13,7 +13,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 
 // Create user table and populate with starter info
 db.serialize(function() {
-  db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT PRIMARY KEY)');
+  db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number BIGINT PRIMARY KEY)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
           VALUES('Karl','Dandleton',5555555555),
                 ('Bobson','Dugnutt',1123345566),
@@ -70,9 +70,8 @@ const table_body = document.getElementById("tbody");
 const fname_cell = document.getElementById("first-name-field");
 const lname_cell = document.getElementById("last-name-field");
 const badge_cell = document.getElementById("badge-num-field");
-const kiosk_field = document.getElementById("kiosk-field");
-const kiosk_field2 = document.getElementById("kiosk-field2");
-const footer_items = document.getElementById("footer-items");
+const kioskFooterItems = document.getElementById("kiosk-footer-items");
+const normalFooterItems = document.getElementById("normal-footer-items");
 const fileInput_button = document.getElementById('file-js-example');
 
 // Add Event Listeners
@@ -172,7 +171,12 @@ async function exportCsvFile(json) {
 // Export Users
 exportUsersButton.onclick = function() {
   db.all('SELECT * FROM users;)', function(err, result) {
-    exportCsvFile(result);
+    if (result.length === 0) {
+      console.log('There are no users in the database to export')
+    }
+    else {
+      exportCsvFile(result);
+    }
   });
 };
 
@@ -301,8 +305,8 @@ kioskBtn.onclick = function() {
         hide(userContainer);
         hide(deleteUserBtn);
         hide(fileInput_button);
-        show(kiosk_field);
-        show(kiosk_field2);
+        hide(normalFooterItems);
+        show(kioskFooterItems);
       }
       else {
         // Security Modal feature
@@ -340,11 +344,11 @@ kioskBtn.onclick = function() {
                   kioskBtn.innerText = "Kiosk Mode"
                   //window.setSize(1045, 615, true)
                   show(addUserBtn);
-                  show(userContainer)
+                  show(userContainer);
                   show(deleteUserBtn);
-                  show(fileInput_button)
-                  hide(kiosk_field);
-                  hide(kiosk_field2);
+                  show(fileInput_button);
+                  show(normalFooterItems);
+                  hide(kioskFooterItems);
                   // Security Exit Modal close
                   securityExitModal.className = "modal"
                   securityExitModalUsername.value = ""
@@ -368,8 +372,8 @@ kioskBtn.onclick = function() {
         show(userContainer);
         show(deleteUserBtn);
         show(fileInput_button);
-        hide(kiosk_field);
-        hide(kiosk_field2);
+        show(normalFooterItems);
+        hide(kioskFooterItems);
       }
     });
   }
