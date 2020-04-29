@@ -298,9 +298,7 @@ addUserBtn.onclick = function() {
 // Delete user from database and javaScript table
 deleteUserBtn.onclick = function() {
   let table = document.getElementById('table');
-  let rowLength = table.rows.length;
   let counter = 0;
-
 	if (table.rows.length >= 1) {
 		for (let i = 0; i < table.rows.length; i++) {
 			if (table.rows[i].className === "is-selected") {
@@ -312,7 +310,6 @@ deleteUserBtn.onclick = function() {
         console.log(result);
         });
 				table.deleteRow(i);
-				rowLength--;
 				i--;
 				counter = counter + 1;
 			}
@@ -460,9 +457,13 @@ securityEntryModalButton.onclick = function() {
 };
 
 // File input function
-const fileInput = document.querySelectorAll('#file-js-example input[type=file]');
+const fileInput = document.querySelector('#file-js-example input[type=file]');
 fileInput.onchange = () => {
   if (fileInput.files.length > 0) {
+    for (let i = 1; i < table.rows.length; i++) {
+      table.deleteRow(i)
+			i--;
+    }
     db.serialize(function() {
       db.run('DROP TABLE users');
       console.log('users table removed')
@@ -470,18 +471,28 @@ fileInput.onchange = () => {
       console.log('users table created')
     });
     let dataArray = [];
-    const fileName = document.getElementById('file-js-example .file-name');
+    const fileName = document.querySelector('#file-js-example .file-name');
     fileName.textContent = fileInput.files[0].name;
     createReadStream(fileInput.files[0].path)
-    .pipe(parse())
+    .pipe(parse()
     .on('data', (row) => {
       dataArray.push(row);
-      db.serialize(function() {
-        db.run(`INSERT INTO users(first_name,last_name,badge_number)
-                VALUES('${row[0]}','${row[1]}',${row[2]});
-        `);
-      })
-    })
+      // Set start under header and limit import to 10,000 rows
+      if (dataArray.indexOf(row) >0 && dataArray.length <= 10002) {
+        db.serialize(function() {
+          db.run(`INSERT INTO users(first_name,last_name,badge_number)
+                  VALUES('${row[0]}','${row[1]}',${row[2]});
+          `);
+        })
+        let tableRow = tableBody.insertRow();
+        let cell1 = tableRow.insertCell(0);
+        let cell2 = tableRow.insertCell(1);
+        let cell3 = tableRow.insertCell(2);
+        cell1.innerHTML = `${row[0]}`
+        cell2.innerHTML = `${row[1]}`
+        cell3.innerHTML = `${row[2]}`
+      }
+    }))
     .on('error', error => console.error(error))
     .on('end', () => {
       console.log('CSV file successfully processed');
