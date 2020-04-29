@@ -456,7 +456,7 @@ securityEntryModalButton.onclick = function() {
 };
 
 // File input function
-const fileInput = document.getElementById('file-js-example input[type=file]');
+const fileInput = document.querySelectorAll('#file-js-example input[type=file]');
 fileInput.onchange = () => {
   if (fileInput.files.length > 0) {
     db.serialize(function() {
