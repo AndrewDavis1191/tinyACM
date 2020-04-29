@@ -22,7 +22,7 @@ db.serialize(function(err, result) {
   `);
   // Create admin table
   db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
-  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge BIGINT )');
+  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge_number BIGINT )');
   console.log(err)
 });
 
@@ -331,21 +331,15 @@ kioskBtn.onclick = function() {
   if (kioskBtn.innerText !== "Exit Kiosk Mode") {
     db.all('SELECT * FROM admins', function(err, result) {
       console.log(result);
-      if (result.length === 0) {
-        console.log('entering kiosk mode');
-        kioskBtn.innerText = "Exit Kiosk Mode"
-        //window.setSize(1045, 770, true)
-        hide(addUserBtn);
-        hide(userContainer);
-        hide(deleteUserBtn);
-        hide(fileInput_button);
-        hide(normalFooterItems);
-        show(kioskFooterItems);
-      }
-      else {
-        // Security Modal feature
-        securityEntryModal.className = "modal is-active"
-      }
+      console.log('entering kiosk mode');
+      kioskBtn.innerText = "Exit Kiosk Mode"
+      //window.setSize(1045, 770, true)
+      hide(addUserBtn);
+      hide(userContainer);
+      hide(deleteUserBtn);
+      hide(fileInput_button);
+      hide(normalFooterItems);
+      show(kioskFooterItems);
     });
   }
   else if (kioskBtn.innerText !== "Kiosk Mode") {
@@ -367,36 +361,36 @@ kioskBtn.onclick = function() {
             securityExitModalPassword.className = "input is-danger"
           }
           else {
-              // Check db and validate password
-              db.all(`SELECT * FROM admins
-                WHERE username = '${securityExitModalUsername.value}'`, function(err, result){
-                console.log(result);
-                // Decrypt result
-                let bytes = Crypto.AES.decrypt(result[0].password, key);
-                let originalText = bytes.toString(Crypto.charenc.UTF8);
-                if (originalText === securityExitModalPassword.value) {
-                  // Security Modal close
-                  console.log('exiting kiosk mode')
-                  kioskBtn.innerText = "Kiosk Mode"
-                  //window.setSize(1045, 615, true)
-                  show(addUserBtn);
-                  show(userContainer);
-                  show(deleteUserBtn);
-                  show(fileInput_button);
-                  show(normalFooterItems);
-                  hide(kioskFooterItems);
-                  // Security Exit Modal close
-                  securityExitModal.className = "modal"
-                  securityExitModalUsername.value = ""
-                  securityExitModalPassword.value = ""
-                  securityExitModalUsername.className = "input"
-                  securityExitModalPassword.className = "input"
-                }
-                else if (originalText !== securityExitModalPassword) {
-                  securityExitModalUsername.className = "input is-danger"
-                  securityExitModalPassword.className = "input is-danger"
-                }
-              });
+            // Check db and validate password
+            db.all(`SELECT * FROM admins
+              WHERE username = '${securityExitModalUsername.value}'`, function(err, result){
+              console.log(result);
+              // Decrypt result
+              let bytes = Crypto.AES.decrypt(result[0].password, key);
+              let originalText = bytes.toString(Crypto.charenc.UTF8);
+              if (originalText === securityExitModalPassword.value) {
+                // Security Modal close
+                console.log('exiting kiosk mode')
+                kioskBtn.innerText = "Kiosk Mode"
+                //window.setSize(1045, 615, true)
+                show(addUserBtn);
+                show(userContainer);
+                show(deleteUserBtn);
+                show(fileInput_button);
+                show(normalFooterItems);
+                hide(kioskFooterItems);
+                // Security Exit Modal close
+                securityExitModal.className = "modal"
+                securityExitModalUsername.value = ""
+                securityExitModalPassword.value = ""
+                securityExitModalUsername.className = "input"
+                securityExitModalPassword.className = "input"
+              }
+              else if (originalText !== securityExitModalPassword) {
+                securityExitModalUsername.className = "input is-danger"
+                securityExitModalPassword.className = "input is-danger"
+              }
+            });
           }
         };
       }
@@ -462,17 +456,17 @@ securityEntryModalButton.onclick = function() {
 };
 
 // File input function
-const fileInput = document.querySelector('#file-js-example input[type=file]');
+const fileInput = document.getElementById('file-js-example input[type=file]');
 fileInput.onchange = () => {
   if (fileInput.files.length > 0) {
     db.serialize(function() {
       db.run('DROP TABLE users');
       console.log('users table removed')
-      db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
+      db.run('CREATE TABLE EXISTS users(first_name text, last_name text, badge_number BIGINT)');
       console.log('users table created')
     });
     let dataArray = [];
-    const fileName = document.querySelector('#file-js-example .file-name');
+    const fileName = document.getElementById('file-js-example .file-name');
     fileName.textContent = fileInput.files[0].name;
     createReadStream(fileInput.files[0].path)
     .pipe(parse())
@@ -493,10 +487,10 @@ fileInput.onchange = () => {
 };
 
 // Table selection and highlighting
-let table = document.querySelector("#table"),rIndex;
+let table = document.getElementById("table"),rIndex;
 for (let i = 1, len = table.rows.length; i < len; i++) {
   table.rows[i].onclick = function(){
-    let table = document.querySelector("#table"),rIndex;
+    let table = document.getElementById("table"),rIndex;
     if (this.className === "is-selected") {
       this.className = ""
       badge = ""
