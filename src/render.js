@@ -71,8 +71,8 @@ const securityExitModalPassword = document.getElementById('security-exit-pass-fi
 const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const exportUsersButton = document.getElementById('export-users-button');
-const table_body = document.getElementById('tbody');
-const adminTable_Body = document.getElementById('admin-tbody');
+const tableBody = document.getElementById('tbody');
+const adminTableBody = document.getElementById('admin-tbody');
 const fname_cell = document.getElementById('first-name-field');
 const lname_cell = document.getElementById('last-name-field');
 const badge_cell = document.getElementById('badge-num-field');
@@ -257,7 +257,7 @@ addUserBtn.onclick = function() {
     badge_cell.className = "input is-danger"
   }
   else {
-    let row = table_body.insertRow();
+    let row = tableBody.insertRow();
     let cell1 = row.insertCell(0);
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
@@ -429,7 +429,7 @@ securityEntryModalButton.onclick = function() {
   }
   else {
     // Encrypt
-    let row = adminTable_Body.insertRow();
+    let row = adminTableBody.insertRow();
     let cell = row.insertCell(0);
     cell.innerHTML = `${securityEntryModalUsername.value}`
     let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
