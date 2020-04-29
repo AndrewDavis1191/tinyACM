@@ -159,8 +159,7 @@ kioskMinusButton.onclick = function () {
 };
 
 // Press Add Button on Enter in badge field
-document.getElementById('badge-num-field')
-.addEventListener('keyup', function(event) {
+badgeNumField.addEventListener('keyup', function(event) {
   event.preventDefault();
   if (event.keyCode === 13) {
       addUserBtn.click();
@@ -168,8 +167,7 @@ document.getElementById('badge-num-field')
 });
 
 // Press Confirm Button on Enter in Security Entry Modal
-document.getElementById('security-entry-pass-field')
-.addEventListener('keyup', function(event) {
+securityEntryModalPassword2.addEventListener('keyup', function(event) {
   event.preventDefault();
   if (event.keyCode === 13) {
       securityEntryModalButton.click();
@@ -177,8 +175,7 @@ document.getElementById('security-entry-pass-field')
 });
 
 // Press Confirm Button on Enter in Security Exit Modal
-document.getElementById('security-exit-pass-field')
-.addEventListener('keyup', function(event) {
+securityExitModalPassword.addEventListener('keyup', function(event) {
   event.preventDefault();
   if (event.keyCode === 13) {
       securityExitModalButton.click();
