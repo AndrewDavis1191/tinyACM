@@ -43,6 +43,7 @@ arr.splice(arr.indexOf(word),1,word);
 const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ');
 
 // Get elements from html
+const navbarMenu = document.getElementById('navbar-menu');
 const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
@@ -334,6 +335,7 @@ kioskBtn.onclick = function() {
       console.log('entering kiosk mode');
       kioskBtn.innerText = "Exit Kiosk Mode"
       //window.setSize(1045, 770, true)
+      hide(navbarMenu);
       hide(addUserBtn);
       hide(userContainer);
       hide(deleteUserBtn);
@@ -373,6 +375,7 @@ kioskBtn.onclick = function() {
                 console.log('exiting kiosk mode')
                 kioskBtn.innerText = "Kiosk Mode"
                 //window.setSize(1045, 615, true)
+                show(navbarMenu);
                 show(addUserBtn);
                 show(userContainer);
                 show(deleteUserBtn);
@@ -398,6 +401,7 @@ kioskBtn.onclick = function() {
         console.log('exiting kiosk mode')
         kioskBtn.innerText = "Kiosk Mode";
         //window.setSize(1045, 615, true);
+        show(navbarMenu);
         show(addUserBtn);
         show(userContainer);
         show(deleteUserBtn);
@@ -462,7 +466,7 @@ fileInput.onchange = () => {
     db.serialize(function() {
       db.run('DROP TABLE users');
       console.log('users table removed')
-      db.run('CREATE TABLE EXISTS users(first_name text, last_name text, badge_number BIGINT)');
+      db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
       console.log('users table created')
     });
     let dataArray = [];
