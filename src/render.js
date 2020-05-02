@@ -1,5 +1,5 @@
 const { remote } = require('electron');
-const { crypto } = require("cryptojs");
+const { crypto } = require('cryptojs');
 const { dialog } = remote;
 const { createReadStream,writeFile } = require('fs');
 const { parse } = require('fast-csv');
@@ -84,40 +84,40 @@ const normalFooterItems = document.getElementById('normal-footer-items');
 const fileInput_button = document.getElementById('file-js-example');
 
 // Add Event Listeners
-const fnameField = document.getElementById("first-name-field");
+const fnameField = document.getElementById('first-name-field');
 fnameField.onclick = function() {
-  if (this.className !== "input") {
-    this.className = "input"
+  if (this.className !== 'input') {
+    this.className = 'input'
   }
 };
 
-const lnameField = document.getElementById("last-name-field");
+const lnameField = document.getElementById('last-name-field');
 lnameField.onclick = function() {
-  if (this.className !== "input") {
-    this.className = "input"
+  if (this.className !== 'input') {
+    this.className = 'input'
   }
 };
 
-const badgeNumField = document.getElementById("badge-num-field");
+const badgeNumField = document.getElementById('badge-num-field');
 badgeNumField.onclick = function() {
-  if (this.className !== "input") {
-    this.className = "input"
+  if (this.className !== 'input') {
+    this.className = 'input'
   }
 };
 
 // About Modal feature
 aboutButton.onclick = function() {
-  aboutModal.className = "modal is-active"
+  aboutModal.className = 'modal is-active'
 };
 
 // About Modal close
 aboutModalCloseButton.onclick = function() {
-  aboutModal.className = "modal"
+  aboutModal.className = 'modal'
 };
 
 // About Modal close on background click
 aboutModalBackground.onclick = function() {
-  aboutModal.className = "modal"
+  aboutModal.className = 'modal'
 };
 
 // Error Modal close on background click
@@ -127,27 +127,27 @@ errorModalBackground.onclick = function() {
 
 // Security Modal Button
 adminButton.onclick = function() {
-  securityEntryModal.className = "modal is-active"
+  securityEntryModal.className = 'modal is-active'
 };
 
 // Security Modal close
 securityEntryModalCloseButton.onclick = function() {
-  securityEntryModal.className = "modal"
+  securityEntryModal.className = 'modal'
 };
 
 // Security Modal close on background click
 securityEntryModalBackground.onclick = function() {
-  securityEntryModal.className = "modal"
+  securityEntryModal.className = 'modal'
 };
 
 // Security Modal close
 securityExitModalCloseButton.onclick = function() {
-  securityExitModal.className = "modal"
+  securityExitModal.className = 'modal'
 };
 
 // Security Modal close on background click
 securityExitModalBackground.onclick = function() {
-  securityExitModal.className = "modal"
+  securityExitModal.className = 'modal'
 };
 kioskPlusButton.onclick = function () {
   showing++;
@@ -240,19 +240,19 @@ function filterUsers(){
 addUserBtn.onclick = function() {
   // Validate text inputs
   if (fname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(fname_cell.value)) {
-    fname_cell.className = "input is-danger"
+    fname_cell.className = 'input is-danger'
     errorNotification.innerText = 'First Name must contain only letters and cannot be blank.'
     show(errorModal)
   }
   else if (lname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(lname_cell.value)) {
     errorNotification.innerText = 'Last Name must contain only letters and cannot be blank.'
     show(errorModal)
-    lname_cell.className = "input is-danger"
+    lname_cell.className = 'input is-danger'
   }
   else if (badge_cell.value.length === 0 || /([^(\w|\X)]|\D)/gi.test(badge_cell.value)) {
     errorNotification.innerText = 'Badge must contain only numbers and cannot be blank.'
     show(errorModal)
-    badge_cell.className = "input is-danger"
+    badge_cell.className = 'input is-danger'
   }
   else {
     let row = tableBody.insertRow();
@@ -271,21 +271,21 @@ addUserBtn.onclick = function() {
           console.log(result);
       });
     });
-    fname_cell.value = ""
-    lname_cell.value = ""
-    badge_cell.value = ""
-    fname_cell.className = "input"
-    lname_cell.className = "input"
-    badge_cell.className = "input"
+    fname_cell.value = ''
+    lname_cell.value = ''
+    badge_cell.value = ''
+    fname_cell.className = 'input'
+    lname_cell.className = 'input'
+    badge_cell.className = 'input'
     row.onclick = function() {
-      if (this.className === "is-selected") {
-        this.className = ""
-        badge = ""
-        rindex = ""
-        console.log("no item selected");
+      if (this.className === 'is-selected') {
+        this.className = ''
+        badge = ''
+        rindex = ''
+        console.log('no item selected');
       }
       else {
-        this.className = "is-selected"
+        this.className = 'is-selected'
         badge = this.cells[2].innerText;
         console.log(badge);
       }
@@ -298,7 +298,7 @@ deleteUserBtn.onclick = function() {
   let counter = 0;
 	if (table.rows.length >= 1) {
 		for (let i = 0; i < table.rows.length; i++) {
-			if (table.rows[i].className === "is-selected") {
+			if (table.rows[i].className === 'is-selected') {
         badge = table.rows[i].cells[2].innerText;
         db.serialize(function(err, result) {
         db.run(`DELETE FROM users
@@ -312,10 +312,10 @@ deleteUserBtn.onclick = function() {
 			}
 		}
 		if (counter == 0) {
-			console.log("Please select the row that you want to delete.");
+			console.log('Please select the row that you want to delete.');
 		}
 	}else {
-		console.log("There are no rows to delete");
+		console.log('There are no rows to delete');
 	}
 };
 
@@ -323,11 +323,11 @@ deleteUserBtn.onclick = function() {
 kioskBtn.onclick = function() {
   const window = remote.getCurrentWindow();
   // Entering Kiosk Mode
-  if (kioskBtn.innerText !== "Exit Kiosk Mode") {
+  if (kioskBtn.innerText !== 'Exit Kiosk Mode') {
     db.all('SELECT * FROM admins', function(err, result) {
       console.log(result);
       console.log('entering kiosk mode');
-      kioskBtn.innerText = "Exit Kiosk Mode"
+      kioskBtn.innerText = 'Exit Kiosk Mode'
       //window.setSize(1045, 770, true)
       hide(navbarMenu);
       hide(addUserBtn);
@@ -338,23 +338,23 @@ kioskBtn.onclick = function() {
       show(kioskFooterItems);
     });
   }
-  else if (kioskBtn.innerText !== "Kiosk Mode") {
+  else if (kioskBtn.innerText !== 'Kiosk Mode') {
     // Exiting Kiosk Mode
     db.all('SELECT * FROM admins', function(err, result) {
     console.log(result);
       if (result.length > 0) {
-        securityExitModal.className = "modal is-active"
+        securityExitModal.className = 'modal is-active'
         securityExitModalButton.onclick = function() {
           // Validate text inputs
           if (securityExitModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
             errorNotification.innerText = 'Username must not be blank.'
             show(errorModal)
-            securityExitModalUsername.className = "input is-danger"
+            securityExitModalUsername.className = 'input is-danger'
           }
           else if (securityExitModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)) {
             errorNotification.innerText = 'Password must not be blank'
             show(errorModal)
-            securityExitModalPassword.className = "input is-danger"
+            securityExitModalPassword.className = 'input is-danger'
           }
           else {
             // Check db and validate password
@@ -367,7 +367,7 @@ kioskBtn.onclick = function() {
               if (originalText === securityExitModalPassword.value) {
                 // Security Modal close
                 console.log('exiting kiosk mode')
-                kioskBtn.innerText = "Kiosk Mode"
+                kioskBtn.innerText = 'Kiosk Mode'
                 //window.setSize(1045, 615, true)
                 show(navbarMenu);
                 show(addUserBtn);
@@ -377,15 +377,15 @@ kioskBtn.onclick = function() {
                 show(normalFooterItems);
                 hide(kioskFooterItems);
                 // Security Exit Modal close
-                securityExitModal.className = "modal"
-                securityExitModalUsername.value = ""
-                securityExitModalPassword.value = ""
-                securityExitModalUsername.className = "input"
-                securityExitModalPassword.className = "input"
+                securityExitModal.className = 'modal'
+                securityExitModalUsername.value = ''
+                securityExitModalPassword.value = ''
+                securityExitModalUsername.className = 'input'
+                securityExitModalPassword.className = 'input'
               }
               else if (originalText !== securityExitModalPassword) {
-                securityExitModalUsername.className = "input is-danger"
-                securityExitModalPassword.className = "input is-danger"
+                securityExitModalUsername.className = 'input is-danger'
+                securityExitModalPassword.className = 'input is-danger'
               }
             });
           }
@@ -393,7 +393,7 @@ kioskBtn.onclick = function() {
       }
       else if (result.length === 0) {
         console.log('exiting kiosk mode')
-        kioskBtn.innerText = "Kiosk Mode";
+        kioskBtn.innerText = 'Kiosk Mode';
         //window.setSize(1045, 615, true);
         show(navbarMenu);
         show(addUserBtn);
@@ -413,17 +413,17 @@ securityEntryModalButton.onclick = function() {
   if (securityEntryModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
     errorNotification.innerText = 'Username must consist of only words and numbers.'
     show(errorModal)
-    securityEntryModalUsername.className = "input is-danger"
+    securityEntryModalUsername.className = 'input is-danger'
   }
   else if (securityEntryModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
     errorNotification.innerText = 'Password cannot be blank.'
     show(errorModal)
-    securityEntryModalPassword.className = "input is-danger"
+    securityEntryModalPassword.className = 'input is-danger'
   }
   else if (securityEntryModalPassword.value !== securityEntryModalPassword2.value) {
     errorNotification.innerText = 'Passwords do not match.'
     show(errorModal)
-    securityEntryModalPassword2.className = "input is-danger"
+    securityEntryModalPassword2.className = 'input is-danger'
   }
   else {
     // Encrypt
@@ -442,12 +442,12 @@ securityEntryModalButton.onclick = function() {
       else {
         // Close Security Entry modal
         show(adminTableContainer);
-        securityEntryModalUsername.value = "";
-        securityEntryModalPassword.value = "";
-        securityEntryModalPassword2.value = "";
-        securityEntryModalUsername.className = "input";
-        securityEntryModalPassword.className = "input";
-        securityEntryModalPassword2.className = "input";
+        securityEntryModalUsername.value = '';
+        securityEntryModalPassword.value = '';
+        securityEntryModalPassword2.value = '';
+        securityEntryModalUsername.className = 'input';
+        securityEntryModalPassword.className = 'input';
+        securityEntryModalPassword2.className = 'input';
       }
     });
   }
@@ -493,24 +493,24 @@ fileInput.onchange = () => {
     .on('error', error => console.error(error))
     .on('end', () => {
       console.log('CSV file successfully processed');
-      fileName.textContent = "";
+      fileName.textContent = '';
     });
   }
 };
 
 // Table selection and highlighting
-let table = document.getElementById("table"),rIndex;
+let table = document.getElementById('table'),rIndex;
 for (let i = 1, len = table.rows.length; i < len; i++) {
   table.rows[i].onclick = function(){
-    let table = document.getElementById("table"),rIndex;
-    if (this.className === "is-selected") {
-      this.className = ""
-      badge = ""
-      rindex = ""
-      console.log("no item selected");
+    let table = document.getElementById('table'),rIndex;
+    if (this.className === 'is-selected') {
+      this.className = ''
+      badge = ''
+      rindex = ''
+      console.log('no item selected');
     }
     else {
-      this.className = "is-selected"
+      this.className = 'is-selected'
       rIndex = this.rowIndex;
       badge = this.cells[2].innerText;
       console.log(rIndex);
