@@ -96,54 +96,47 @@ badgeNumField.onclick = function() {
   }
 };
 
-// About Modal feature
 aboutButton.onclick = function() {
   aboutModal.className = 'modal is-active'
 };
 
-// About Modal close
 aboutModalCloseButton.onclick = function() {
   aboutModal.className = 'modal'
 };
 
-// About Modal close on background click
 aboutModalBackground.onclick = function() {
   aboutModal.className = 'modal'
 };
 
-// Error Modal close on background click
 errorModalBackground.onclick = function() {
   hide(errorModal)
 };
 
-// Security Modal Button
 adminButton.onclick = function() {
   securityEntryModal.className = 'modal is-active'
 };
 
-// Security Modal close
 securityEntryModalCloseButton.onclick = function() {
   securityEntryModal.className = 'modal'
 };
 
-// Security Modal close on background click
 securityEntryModalBackground.onclick = function() {
   securityEntryModal.className = 'modal'
 };
 
-// Security Modal close
 securityExitModalCloseButton.onclick = function() {
   securityExitModal.className = 'modal'
 };
 
-// Security Modal close on background click
 securityExitModalBackground.onclick = function() {
   securityExitModal.className = 'modal'
 };
+
 kioskPlusButton.onclick = function () {
   showing++;
   showColumns();
 };
+
 kioskMinusButton.onclick = function () {
   showing--;
   showColumns();
@@ -186,7 +179,7 @@ async function exportCsvFile(json) {
   writeFile(filePath.filePath, csv, () => console.log('csv saved successfully'))
 };
 
-// Export Users
+// Export users table
 exportUsersButton.onclick = function() {
   db.all('SELECT * FROM users;)', function(err, result) {
     if (result.length === 0) {
@@ -210,7 +203,7 @@ const hide = function(elem) {
 	elem.style.display = 'none'
 };
 
-// Search Feature
+// Search function
 let searchInput = document.getElementById('search-input');
 searchInput.addEventListener('keyup', filterUsers);
 function filterUsers(){
@@ -227,9 +220,8 @@ function filterUsers(){
   };
 };
 
-// Add user to database and javaScript table
+// Add user to database and html table
 addUserBtn.onclick = function() {
-  // Validate text inputs
   if (fname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(fname_cell.value)) {
     fname_cell.className = 'input is-danger'
     errorNotification.innerText = 'First Name must contain only letters and cannot be blank.'
@@ -283,7 +275,8 @@ addUserBtn.onclick = function() {
     };
   }
 };
-// Delete user from database and javaScript table
+
+// Delete user from database and html table
 deleteUserBtn.onclick = function() {
   let table = document.getElementById('table');
   let counter = 0;
@@ -319,7 +312,6 @@ kioskBtn.onclick = function() {
       console.log(result);
       console.log('entering kiosk mode');
       kioskBtn.innerText = 'Exit Kiosk Mode'
-      //window.setSize(1045, 770, true)
       hide(navbarMenu);
       hide(addUserBtn);
       hide(userContainer);
@@ -336,7 +328,6 @@ kioskBtn.onclick = function() {
       if (result.length > 0) {
         securityExitModal.className = 'modal is-active'
         securityExitModalButton.onclick = function() {
-          // Validate text inputs
           if (securityExitModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
             errorNotification.innerText = 'Username must not be blank.'
             show(errorModal)
@@ -352,14 +343,11 @@ kioskBtn.onclick = function() {
             db.all(`SELECT * FROM admins
               WHERE username = '${securityExitModalUsername.value}'`, function(err, result){
               console.log(result);
-              // Decrypt result
               let bytes = Crypto.AES.decrypt(result[0].password, key);
               let originalText = bytes.toString(Crypto.charenc.UTF8);
               if (originalText === securityExitModalPassword.value) {
-                // Security Modal close
                 console.log('exiting kiosk mode')
                 kioskBtn.innerText = 'Kiosk Mode'
-                //window.setSize(1045, 615, true)
                 show(navbarMenu);
                 show(addUserBtn);
                 show(userContainer);
@@ -367,7 +355,6 @@ kioskBtn.onclick = function() {
                 show(fileInput_button);
                 show(normalFooterItems);
                 hide(kioskFooterItems);
-                // Security Exit Modal close
                 securityExitModal.className = 'modal'
                 securityExitModalUsername.value = ''
                 securityExitModalPassword.value = ''
@@ -385,7 +372,6 @@ kioskBtn.onclick = function() {
       else if (result.length === 0) {
         console.log('exiting kiosk mode')
         kioskBtn.innerText = 'Kiosk Mode';
-        //window.setSize(1045, 615, true);
         show(navbarMenu);
         show(addUserBtn);
         show(userContainer);
@@ -400,7 +386,6 @@ kioskBtn.onclick = function() {
 
 // Security entry modal function
 securityEntryModalButton.onclick = function() {
-  // Validate text inputs
   if (securityEntryModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
     errorNotification.innerText = 'Username must consist of only words and numbers.'
     show(errorModal)
@@ -417,7 +402,6 @@ securityEntryModalButton.onclick = function() {
     securityEntryModalPassword2.className = 'input is-danger'
   }
   else {
-    // Encrypt
     let row = adminTableBody.insertRow();
     let cell = row.insertCell(0);
     cell.innerHTML = `${securityEntryModalUsername.value}`
