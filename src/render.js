@@ -11,7 +11,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
   console.log('Connected to the in-memory SQlite database.');
 });
 
-// Create user table and populate with starter info
+// Create required tables and populate with starter info
 db.serialize(function(err, result) {
   db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number BIGINT PRIMARY KEY)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
@@ -20,19 +20,10 @@ db.serialize(function(err, result) {
                 ('Glennalon','Mixon',3334445555),
                 ('Sleve','McDichael',3433445543);
   `);
-  // Create admin table
   db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
   db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge_number BIGINT )');
   console.log(err)
 });
-
-// close the database connection
-//db.close((err) => {
-//  if (err) {
-//    return console.error(err.message);
-//  }
-//  console.log('Close the database connection.');
-//});
 
 // Encryption Key
 const keysentence = 'Now you’re looking for the secret, but you won’t find it, because of course you’re not really looking. You don’t really want to know. You want to be fooled.'
