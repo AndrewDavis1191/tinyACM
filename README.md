@@ -23,6 +23,11 @@ Journal --> To log entries and exits in the database
 ## Usage
 Populate the users via the CRUD, or import a CSV of your users (this can be exported from your established Access Management System if you have one in place)
 
+>Note: Format csv with columns: first_name, last_name, badge_number
+
+Anyone in your list is considered "access granted"
+Exclude users if you do not want them to have access
+
 Set up a device that can accept badge reads via USB, like one of the PcProx readers shown below:
 ![Image of pcprox](https://github.com/AndrewDavis1191/PicoACM-Electron/blob/master/images/pscprox%20reader.png)
 ![Image of pcproxalt](https://github.com/AndrewDavis1191/PicoACM-Electron/blob/master/images/pcprox%20reader%20alt.png)
@@ -35,7 +40,7 @@ HTML
 CSS (bulma)
 
 JS (node/electron)
-  CryptoJS
+⋅⋅*CryptoJS
   fast-csv
   
 SQLite3
@@ -58,6 +63,7 @@ npm start
 Please send feedback to me if you have suggestions on code in any manner; operation, readability, overall JavaScript best practices.
 
 This is my first time messing around with JavaScript, Most of what I've done professionally is Powershell.:poop:
+
 I wanted to go vanilla JS, as I'd like to move into React native and actually appreciate the problems it solves.
 
 ## License
