@@ -331,11 +331,22 @@
       <div class='container is-fullwidth'>
         <header class='bd-index-header'>
           <h3 class='title is-3'>
-            <a href='https://bulma.io/documentation/columns/basics'>
+            <button id='kiosk-minus-button' class='button'>
+              <span class='icon'>
+                <svg class='svg-inline--fa fa-minus fa-w-14 svg-inline--fas' aria-hidden='true' data-prefix='fas' data-icon='minus' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'></path></svg>
+              </span>
+            </button>
+            <a>
               Swipe and Show Activity
             </a>
+            <button id='kiosk-plus-button' class='button'>
+              <span class='icon'>
+                <svg class='svg-inline--fa fa-plus fa-w-14' aria-hidden='true' data-prefix='fa' data-icon='plus' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'></path></svg>
+              </span>
+            </button>
           </h3>
         </header>
+        <hr />
         <div id='grid' class='columns is-fullwidth'>
           <div class='column' style='display: block;'>
             <div id='kiosk-field' class='tile is-12'>
@@ -426,16 +437,6 @@
             </div>
           </div>
         </div>
-        <button id='kiosk-plus-button' class='button'>
-          <span class='icon'>
-            <svg class='svg-inline--fa fa-plus fa-w-14' aria-hidden='true' data-prefix='fa' data-icon='plus' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'></path></svg>
-          </span>
-        </button>
-        <button id='kiosk-minus-button' class='button'>
-          <span class='icon'>
-            <svg class='svg-inline--fa fa-minus fa-w-14 svg-inline--fas' aria-hidden='true' data-prefix='fas' data-icon='minus' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'></path></svg>
-          </span>
-        </button>
         </div>
       </div>
       <div id='normal-footer-items' class='box has-text-centered'>

@@ -578,7 +578,7 @@ function badgeMatcher(event) {
               WHERE badge_number = '${filteredBadge}'`, function(err, result) {
         if (result.length === 0) {
           kioskBoxes[currentSlide].firstElementChild.className = 'tile is-child notification is-danger'
-          kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = "Access Denied"
+          kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = 'Access Denied'
           kioskBoxes[currentSlide].firstElementChild.children[1].innerText = filteredBadge
           currentSlide = (currentSlide+1)%kioskBoxes.length;
           journalDeny(filteredBadge)
