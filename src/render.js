@@ -540,17 +540,16 @@ function showColumns() {
   columns.slice(0, showing).forEach(function (el) {
     el.style.display = 'block';
   });
+  kioskPlusButton.blur();
+  kioskMinusButton.blur();
 };
 
-// Kiosk Tile swipe and show carousel
-// Kiosk Swipe and Show add/remove grid function
-let kioskBoxes = Array.prototype.slice.call(document.querySelectorAll('#kiosk-field'), 0);
-let currentSlide = 0;
-
+// Global replace for input filter
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(find, 'g'), replace);
-}
+};
 
+// Date format for sqlite journal entry
 function getDateString() {
   let date_ob = new Date();
   let date = ('0' + date_ob.getDate()).slice(-2);
@@ -561,22 +560,24 @@ function getDateString() {
   let seconds = date_ob.getSeconds();
   let milsec = Date.now().toString().substr(10,13)
   return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milsec
-}
+};
 
 function journalAllow(result) {
   let date_ob = getDateString();
   db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
         VALUES('Access Approved','${date_ob}','Your badge is listed for event access',${result[0].badge_number});
   `);
-}
+};
 
 function journalDeny(result) {
   let date_ob = getDateString();
   db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
         VALUES('Access Denied','${date_ob}','Your badge was not found in access list',${result});
   `);
-}
+};
 
+// Kiosk Tile swipe and show carousel
+let currentSlide = 0;
 // Function to grab badge number from pcProx reader correctly
 let charsTyped = [];
 function badgeMatcher(event) {
@@ -584,30 +585,32 @@ function badgeMatcher(event) {
     charsTyped.push(String.fromCharCode(event.charCode));
     console.log(charsTyped);
     if (event.keyCode === 13) {
-      filter = replaceAll(charsTyped.toString(), ',', '')
-      filteredBadge = filter.split(':')[1]
+      filter = replaceAll(charsTyped.toString(), ',', '');
+      filteredBadge = filter.split(':')[1];
       console.log(filteredBadge);
-      charsTyped = [];
+      charsTyped = []
       db.all(`SELECT *
               FROM users
               WHERE badge_number = '${filteredBadge}'`, function(err, result) {
         if (result.length === 0) {
-          kioskBoxes[currentSlide].firstElementChild.className = 'tile is-child notification is-danger'
-          kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = 'Access Denied'
-          kioskBoxes[currentSlide].firstElementChild.children[1].innerText = filteredBadge
-          currentSlide = (currentSlide+1)%kioskBoxes.length;
-          journalDeny(filteredBadge)
+          // Kiosk Tile swipe and show carousel Deny
+          columns[currentSlide].firstElementChild.firstElementChild.className = 'tile is-child notification is-danger'
+          columns[currentSlide].firstElementChild.firstElementChild.children[0].innerText = 'Access Denied'
+          columns[currentSlide].firstElementChild.firstElementChild.children[1].innerText = filteredBadge
+          currentSlide = (currentSlide+1)%showing
+          journalDeny(filteredBadge);
         }
         else if (err) {
           errorNotification.innerText = `Invalid badge input, be sure you are using the correct reader`
-          show(errorModal)
+          show(errorModal);
         }
         else {
-          kioskBoxes[currentSlide].firstElementChild.className = 'tile is-child notification is-primary'
-          kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = result[0].first_name + '\n' + result[0].last_name
-          kioskBoxes[currentSlide].firstElementChild.children[1].innerText = result[0].badge_number
-          currentSlide = (currentSlide+1)%kioskBoxes.length;
-          journalAllow(result)
+          // Kiosk Tile swipe and show carousel Allow
+          columns[currentSlide].firstElementChild.firstElementChild.className = 'tile is-child notification is-primary'
+          columns[currentSlide].firstElementChild.firstElementChild.children[0].innerText = result[0].first_name + '\n' + result[0].last_name
+          columns[currentSlide].firstElementChild.firstElementChild.children[1].innerText = result[0].badge_number
+          currentSlide = (currentSlide+1)%showing
+          journalAllow(result);
         }
       });
     }
