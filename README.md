@@ -40,8 +40,8 @@ HTML
 CSS (bulma)
 
 JS (node/electron)
-⋅⋅*CryptoJS
-  fast-csv
++CryptoJS
++fast-csv
   
 SQLite3
 
