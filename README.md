@@ -35,6 +35,7 @@ Set up a device that can accept badge reads via USB, like one of the PcProx read
 Switch to kiosk mode, and your AdHoc Access Control is ready to go!
 
 ## Tech used (so far)
+```bash
 ├──HTML
 │
 ├── CSS (bulma)
@@ -44,6 +45,7 @@ Switch to kiosk mode, and your AdHoc Access Control is ready to go!
 │   └── fast-csv
 │ 
 ├── SQLite3
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
