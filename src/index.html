@@ -23,7 +23,6 @@
         <a class='navbar-item'>
           <img src='images/picoacmlogo.png' style='width:112px;height:28px;'>
         </a>
-
         <a role='button' class='navbar-burger burger' aria-label='menu' aria-expanded='false' data-target='navbar'>
           <span aria-hidden='true'></span>
           <span aria-hidden='true'></span>
@@ -68,7 +67,6 @@
         </div>
       </div>
     </nav>
-
     <!--modal about box-->
     <div id='about-modal' class='modal'>
       <div id='about-modal-background' class='modal-background'></div>
@@ -117,10 +115,16 @@
       </div>
       <button id='about-modal-close-button' class='modal-close is-large' aria-label='close'></button>
     </div>
-
     <!--modal security kiosk entry box-->
     <div id='security-entry-modal' class='modal'>
       <div id='security-entry-modal-background' class='modal-background'></div>
+      <div id='security-entry-error-modal' class='modal' style='display: none;'>
+        <div id='security-entry-error-modal-background' class='modal-background'></div>
+        <div class='modal-content'>
+          <div id='security-entry-error-notification' class='notification is-danger'>
+          </div>
+        </div>
+      </div>
       <div class='modal-content'>
         <div class='box'>
           <article class='media'>
@@ -191,10 +195,16 @@
       </div>
       <button id='security-entry-modal-close-button' class='modal-close is-large' aria-label='close'></button>
     </div>
-
     <!--modal security kiosk exit box-->
     <div id='security-exit-modal' class='modal'>
       <div id='security-exit-modal-background' class='modal-background'></div>
+      <div id='security-exit-error-modal' class='modal' style='display: none;'>
+        <div id='security-exit-error-modal-background' class='modal-background'></div>
+        <div class='modal-content'>
+          <div id='security-exit-error-notification' class='notification is-danger'>
+          </div>
+        </div>
+      </div>
       <div class='modal-content'>
         <div class='box'>
           <article class='media'>
@@ -241,7 +251,6 @@
       </div>
       <button id='security-exit-modal-close-button' class='modal-close is-large' aria-label='close'></button>
     </div>
-
     <!-- New User Input -->
     <div class ='box'>
       <div id='user-input-cont' class='field is-grouped'>
@@ -277,7 +286,6 @@
         </div>
       </div>
     </div>
-
     <!-- user table -->
     <div class='field is-grouped'>
       <p class='control is-expanded'>

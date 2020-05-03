@@ -46,7 +46,13 @@ const aboutButton = document.getElementById('about-button');
 const aboutModal = document.getElementById('about-modal');
 const errorModal = document.getElementById('error-modal');
 const errorModalBackground = document.getElementById('error-modal-background');
+const securityEntryErrorModal = document.getElementById('security-entry-error-modal');
+const securityEntryErrorModalBackground = document.getElementById('security-entry-error-modal-background');
+const securityExitErrorModal = document.getElementById('security-exit-error-modal');
+const securityExitErrorModalBackground = document.getElementById('security-exit-error-modal-background');
 const errorNotification = document.getElementById('error-notification');
+const securityEntryErrorNotification = document.getElementById('security-entry-error-notification');
+const securityExitErrorNotification = document.getElementById('security-exit-error-notification');
 const aboutModalCloseButton = document.getElementById('about-modal-close-button');
 const aboutModalBackground = document.getElementById('about-modal-background');
 const securityEntryModal = document.getElementById('security-entry-modal');
@@ -110,6 +116,14 @@ aboutModalBackground.onclick = function() {
 
 errorModalBackground.onclick = function() {
   hide(errorModal)
+};
+
+securityEntryErrorModalBackground.onclick = function() {
+  hide(securityEntryErrorModal)
+};
+
+securityExitErrorModalBackground.onclick = function() {
+  hide(securityExitErrorModal)
 };
 
 adminButton.onclick = function() {
@@ -329,13 +343,13 @@ kioskBtn.onclick = function() {
         securityExitModal.className = 'modal is-active'
         securityExitModalButton.onclick = function() {
           if (securityExitModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)) {
-            errorNotification.innerText = 'Username must not be blank.'
-            show(errorModal)
+            securityExitErrorNotification.innerText = 'Username must consist of only words and numbers.'
+            show(securityExitErrorModal)
             securityExitModalUsername.className = 'input is-danger'
           }
           else if (securityExitModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)) {
-            errorNotification.innerText = 'Password must not be blank'
-            show(errorModal)
+            securityExitErrorNotification.innerText = 'Password must not be blank'
+            show(securityExitErrorModal)
             securityExitModalPassword.className = 'input is-danger'
           }
           else {
@@ -364,6 +378,8 @@ kioskBtn.onclick = function() {
               else if (originalText !== securityExitModalPassword) {
                 securityExitModalUsername.className = 'input is-danger'
                 securityExitModalPassword.className = 'input is-danger'
+                securityExitErrorNotification.innerText = 'Username or Password entered is incorrect'
+                show(securityExitErrorModal)
               }
             });
           }
@@ -387,18 +403,18 @@ kioskBtn.onclick = function() {
 // Security entry modal function
 securityEntryModalButton.onclick = function() {
   if (securityEntryModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
-    errorNotification.innerText = 'Username must consist of only words and numbers.'
-    show(errorModal)
+    securityEntryErrorNotification.innerText = 'Username must consist of only words and numbers.'
+    show(securityEntryErrorModal)
     securityEntryModalUsername.className = 'input is-danger'
   }
   else if (securityEntryModalPassword.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)) {
-    errorNotification.innerText = 'Password cannot be blank.'
-    show(errorModal)
+    securityEntryErrorNotification.innerText = 'Password cannot be blank.'
+    show(securityEntryErrorModal)
     securityEntryModalPassword.className = 'input is-danger'
   }
   else if (securityEntryModalPassword.value !== securityEntryModalPassword2.value) {
-    errorNotification.innerText = 'Passwords do not match.'
-    show(errorModal)
+    securityEntryErrorNotification.innerText = 'Passwords do not match.'
+    show(securityEntryErrorModal)
     securityEntryModalPassword2.className = 'input is-danger'
   }
   else {
@@ -411,8 +427,8 @@ securityEntryModalButton.onclick = function() {
             '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')
     `, function(err, result) {
       if (err) {
-        errorNotification.innerText = 'An administrator has already registered with this username.'
-        show(errorModal)
+        securityEntryErrorNotification.innerText = 'An administrator has already registered with this username.'
+        show(securityEntryErrorModal)
       }
       else {
         // Close Security Entry modal
