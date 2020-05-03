@@ -9,13 +9,13 @@ It seems that largely, the infrastructure and initial investment for something s
 So I thought it would be neat to build a simple cross-platform app that can satisfy this little niche need.
 
 ## The goals
-Lightweight (Relatively... it is electron, afterall)
+Lightweight (Relatively... it is electron, afterall) :heavy_check_mark:
 
-No need for internet (Party in the desert?)
+No need for internet (Party in the desert?) :heavy_check_mark:
 
-Operator Mode --> To station someone to handle the badging, if desired
+Operator Mode --> To station someone to handle the badging, if desired :heavy_check_mark:
 
-Journal --> To log entries and exits in the database
+Journal --> To log entries and exits in the database :heavy_check_mark:
 
 ## Installation
 --> Links to installers here! <--
@@ -40,8 +40,8 @@ HTML
 CSS (bulma)
 
 JS (node/electron)
-+CryptoJS
-+fast-csv
+*CryptoJS
+*fast-csv
   
 SQLite3
 
