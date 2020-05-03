@@ -18,12 +18,7 @@ Operator Mode --> To station someone to handle the badging, if desired
 Journal --> To log entries and exits in the database
 
 ## Installation
-```bash
-# clone the repo locally
-git clone https://github.com/AndrewDavis1191/PicoACM-Electron.git
-# start the app with npm
-npm start
-```
+--> Links to installers here! <--
 
 ## Usage
 Populate the users via the CRUD, or import a CSV of your users (this can be exported from your established Access Management System if you have one in place)
@@ -40,7 +35,9 @@ HTML
 CSS (bulma)
 
 JS (node/electron)
-
+  CryptoJS
+  fast-csv
+  
 SQLite3
 
 ## Contributing
@@ -48,10 +45,20 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## Constructive Criticism!
-Please please please send feedback to me if you have suggestions on code in any manner; operation, readability, overall javascript best practices.
+```bash
+# clone the repo locally
+git clone https://github.com/AndrewDavis1191/PicoACM-Electron.git
+# install dependencies
+npm install package.json
+# start the app with npm
+npm start
+```
 
-This is my first time messing around with JavaScript, and I wanted to go vanilla, as I'd like to move into react and actually appreciate the problems it solves; Most of what I've done professionally is Powershell.:poop:
+## Constructive Criticism!
+Please send feedback to me if you have suggestions on code in any manner; operation, readability, overall JavaScript best practices.
+
+This is my first time messing around with JavaScript, Most of what I've done professionally is Powershell.:poop:
+I wanted to go vanilla JS, as I'd like to move into React native and actually appreciate the problems it solves.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
