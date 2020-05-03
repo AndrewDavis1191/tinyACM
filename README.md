@@ -1,4 +1,4 @@
-# PicoACM
+# tinyACM
 A small, lightweight Access Control application for AdHoc situations.
 
 ## Backstory
@@ -52,7 +52,7 @@ Please make sure to update tests as appropriate.
 
 ```bash
 # clone the repo locally
-git clone https://github.com/AndrewDavis1191/PicoACM-Electron.git
+git clone https://github.com/AndrewDavis1191/tinyACM.git
 # install dependencies
 npm install package.json
 # start the app with npm
