@@ -156,6 +156,9 @@ kioskMinusButton.onclick = function () {
   showColumns();
 };
 
+// Badge matcher
+document.onkeypress = badgeMatcher;
+
 // Press Add Button on Enter in badge field
 badgeNumField.addEventListener('keyup', function(event) {
   event.preventDefault();
@@ -522,4 +525,48 @@ function showColumns() {
   columns.slice(0, showing).forEach(function (el) {
     el.style.display = 'block';
   });
+};
+
+// Kiosk Tile swipe and show carousel
+// Kiosk Swipe and Show add/remove grid function
+let kioskBoxes = Array.prototype.slice.call(document.querySelectorAll('#kiosk-field'), 0);
+let currentSlide = 0;
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
+let charsTyped = [];
+// Function to grab badge number from pcProx reader correctly
+function badgeMatcher(event) {
+  if (badge_cell.className !== document.activeElement.nodeName || searchInput.className !== document.activeElement.nodeName || securityEntryModalPassword2.className !== document.activeElement.nodeName
+  || securityExitModalPassword.className !== document.activeElement.nodeName) {
+    charsTyped.push(String.fromCharCode(event.charCode));
+    console.log(charsTyped);
+    if (event.keyCode === 13) {
+      filter = replaceAll(charsTyped.toString(), ',', '')
+      filteredBadge = filter.split(':')[1]
+      console.log(filteredBadge);
+      charsTyped = [];
+      db.all(`SELECT *
+              FROM users
+              WHERE badge_number = '${filteredBadge}'`, function(err, result) {
+        if (result.length === 0) {
+          kioskBoxes[currentSlide].firstElementChild.className = 'tile is-child notification is-danger'
+          kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = "Access Denied"
+          kioskBoxes[currentSlide].firstElementChild.children[1].innerText = filteredBadge
+          currentSlide = (currentSlide+1)%kioskBoxes.length;
+        }
+        else if (err) {
+          errorNotification.innerText = `Invalid badge input, be sure you are using the correct reader`
+          show(errorModal)
+        }
+        else {
+          kioskBoxes[currentSlide].firstElementChild.className = 'tile is-child notification is-primary'
+          kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = result[0].first_name + '\n' + result[0].last_name
+          kioskBoxes[currentSlide].firstElementChild.children[1].innerText = result[0].badge_number
+          currentSlide = (currentSlide+1)%kioskBoxes.length;
+        }
+      });
+    }
+  }
 };
