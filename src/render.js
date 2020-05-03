@@ -69,6 +69,7 @@ const securityExitModalPassword = document.getElementById('security-exit-pass-fi
 const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const exportUsersButton = document.getElementById('export-users-button');
+const exportJournalButton = document.getElementById('export-journal-button');
 const tableBody = document.getElementById('tbody');
 const adminTableBody = document.getElementById('admin-tbody');
 const fname_cell = document.getElementById('first-name-field');
@@ -202,6 +203,20 @@ exportUsersButton.onclick = function() {
     if (result.length === 0) {
       errorNotification.innerText = `There are no users in the database to export.
                                       Please add users before exporting.`
+      show(errorModal)
+    }
+    else {
+      exportCsvFile(result);
+    }
+  });
+};
+
+// Export journal table
+exportJournalButton.onclick = function() {
+  db.all('SELECT * FROM journal;)', function(err, result) {
+    if (result.length === 0) {
+      errorNotification.innerText = `There have not been any actions recorded in journal yet.
+                                      Try again once you've encountered a badge read`
       show(errorModal)
     }
     else {
