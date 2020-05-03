@@ -13,7 +13,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 
 // Create required tables and populate with starter info
 db.serialize(function(err, result) {
-  db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number BIGINT PRIMARY KEY)');
+  db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY)');
   db.run(`INSERT INTO users(first_name,last_name,badge_number)
           VALUES('Karl','Dandleton',5555555555),
                 ('Bobson','Dugnutt',1123345566),
@@ -21,7 +21,7 @@ db.serialize(function(err, result) {
                 ('Sleve','McDichael',3433445543);
   `);
   db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
-  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date DATE, message TEXT, badge_number BIGINT )');
+  db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date TEXT, message TEXT, badge_number INT)');
   console.log(err)
 });
 
@@ -535,11 +535,37 @@ let currentSlide = 0;
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(find, 'g'), replace);
 }
-let charsTyped = [];
+
+function getDateString() {
+  let date_ob = new Date();
+  let date = ('0' + date_ob.getDate()).slice(-2);
+  let month = ('0' + (date_ob.getMonth() + 1)).slice(-2);
+  let year = date_ob.getFullYear();
+  let hours = date_ob.getHours();
+  let minutes = date_ob.getMinutes();
+  let seconds = date_ob.getSeconds();
+  let milsec = Date.now().toString().substr(10,13)
+  return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milsec
+}
+
+function journalAllow(result) {
+  let date_ob = getDateString();
+  db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
+        VALUES('Access Approved','${date_ob}','Your badge is listed for event access',${result[0].badge_number});
+  `);
+}
+
+function journalDeny(result) {
+  let date_ob = getDateString();
+  db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
+        VALUES('Access Denied','${date_ob}','Your badge was not found in access list',${result});
+  `);
+}
+
 // Function to grab badge number from pcProx reader correctly
+let charsTyped = [];
 function badgeMatcher(event) {
-  if (badge_cell.className !== document.activeElement.nodeName || searchInput.className !== document.activeElement.nodeName || securityEntryModalPassword2.className !== document.activeElement.nodeName
-  || securityExitModalPassword.className !== document.activeElement.nodeName) {
+  if (document.activeElement.id === 'search-input' || document.activeElement.nodeName !== 'INPUT') {
     charsTyped.push(String.fromCharCode(event.charCode));
     console.log(charsTyped);
     if (event.keyCode === 13) {
@@ -555,6 +581,7 @@ function badgeMatcher(event) {
           kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = "Access Denied"
           kioskBoxes[currentSlide].firstElementChild.children[1].innerText = filteredBadge
           currentSlide = (currentSlide+1)%kioskBoxes.length;
+          journalDeny(filteredBadge)
         }
         else if (err) {
           errorNotification.innerText = `Invalid badge input, be sure you are using the correct reader`
@@ -565,6 +592,7 @@ function badgeMatcher(event) {
           kioskBoxes[currentSlide].firstElementChild.firstElementChild.innerText = result[0].first_name + '\n' + result[0].last_name
           kioskBoxes[currentSlide].firstElementChild.children[1].innerText = result[0].badge_number
           currentSlide = (currentSlide+1)%kioskBoxes.length;
+          journalAllow(result)
         }
       });
     }
