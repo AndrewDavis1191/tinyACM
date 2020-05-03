@@ -1,12 +1,12 @@
 # tinyACM
-A small, lightweight Access Control application for AdHoc situations.
+A lightweight Access Control application for AdHoc situations.
 
 ## Backstory
 A freind came to me with an issue of hosting a holiday party at a company, and wanted to implement access control.
 
 It seems that largely, the infrastructure and initial investment for something so simple just didn't make sense.
 
-So I thought it would be neat to build a simple cross-platform app that can satisfy this little niche need.
+So I thought it would be neat to build a simple cross-platform app that can satisfy this niche need.
 
 ## The goals
 Lightweight (Relatively... it is electron, afterall) :heavy_check_mark:
@@ -35,15 +35,15 @@ Set up a device that can accept badge reads via USB, like one of the PcProx read
 Switch to kiosk mode, and your AdHoc Access Control is ready to go!
 
 ## Tech used (so far)
-HTML
-
-CSS (bulma)
-
-JS (node/electron)
-*CryptoJS
-*fast-csv
-  
-SQLite3
+├──HTML
+│
+├── CSS (bulma)
+│
+├── JavaScript (Nodejs/Electron)
+│   ├── CryptoJS
+│   └── fast-csv
+│ 
+├── SQLite3
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -58,6 +58,9 @@ npm install package.json
 # start the app with npm
 npm start
 ```
+
+## current status and goals
+This is currently what I wanted for MVP, but future goals would be to either use the node-serialport library to explore reading USB input directly or shell out the $200 for the PcProx sdk. I'd like to look into different readers and card types to understand the differences (hard to get my hands on different cards), and ultimately, it would be awesome to get this working with an iSTAR panel directly.
 
 ## Constructive Criticism!
 Please send feedback to me if you have suggestions on code in any manner; operation, readability, overall JavaScript best practices.
