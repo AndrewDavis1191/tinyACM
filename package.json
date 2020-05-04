@@ -25,7 +25,7 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "tinyacm",
-            "icon": "C:/Users/ardavis/Desktop/PicoACMProd/PicoACM-Electron/images/tinyACMLogo.ico"
+            "icon": "C:/Users/ardavis/Desktop/tinyACM/images/tinyACMLogo.ico"
           }
         },
         {
@@ -38,7 +38,7 @@
           "name": "@electron-forge/maker-deb",
           "config": {
             "name": "tinyacm",
-            "icon": "C:/Users/ardavis/Desktop/PicoACMProd/PicoACM-Electron/images/tinyACMLogo.icns"
+            "icon": "C:/Users/ardavis/Desktop/tinyacm/images/tinyACMLogo.icns"
           }
         },
         {
