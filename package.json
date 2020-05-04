@@ -19,13 +19,15 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./images/icon.ico"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "tinyacm",
-            "icon": "C:/Users/ardavis/Desktop/tinyACM/images/tinyACMLogo.ico"
+            "icon": "./images/icon.ico"
           }
         },
         {
@@ -38,7 +40,7 @@
           "name": "@electron-forge/maker-deb",
           "config": {
             "name": "tinyacm",
-            "icon": "C:/Users/ardavis/Desktop/tinyacm/images/tinyACMLogo.icns"
+            "icon": "./images/icon.icns"
           }
         },
         {
@@ -53,6 +55,7 @@
     "cryptojs": "^2.5.3",
     "electron-squirrel-startup": "^1.0.0",
     "fast-csv": "^4.1.3",
+    "package.json": "^2.0.1",
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {

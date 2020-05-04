@@ -14,7 +14,7 @@ const createWindow = () => {
     resizable: true,
     maximizable: true,
     autoHideMenuBar: true,
-    icon: './images/icon.png',
+    icon: __dirname + './images/icon.png',
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
