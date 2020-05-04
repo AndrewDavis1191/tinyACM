@@ -17,6 +17,9 @@ Operator Mode --> To station someone to handle the badging, if desired :heavy_ch
 
 Journal --> To log entries and exits in the database :heavy_check_mark:
 
+## Demo
+![tinyACM Demo](demo/tinacmdemo.gif)
+
 ## Installation
 ######Windows
 [Click Here for Windows Installer!](https://github.com/AndrewDavis1191/tinyACM/blob/master/Installers/Windows/tinyacm-1.0.0%20Setup.exe)
