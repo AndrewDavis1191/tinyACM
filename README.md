@@ -18,7 +18,8 @@ Operator Mode --> To station someone to handle the badging, if desired :heavy_ch
 Journal --> To log entries and exits in the database :heavy_check_mark:
 
 ## Installation
---> Links to installers here! <--
+######Windows
+[Click Here for Windows Installer!](https://github.com/AndrewDavis1191/tinyACM/blob/master/Installers/Windows/tinyacm-1.0.0%20Setup.exe)
 
 ## Usage
 Populate the users via the CRUD, or import a CSV of your users (this can be exported from your established Access Management System if you have one in place)
@@ -43,7 +44,7 @@ Switch to kiosk mode, and your AdHoc Access Control is ready to go!
 ├── JavaScript (Nodejs/Electron)
 │   ├── CryptoJS
 │   └── fast-csv
-│ 
+│
 ├── SQLite3
 ```
 
@@ -59,6 +60,8 @@ git clone https://github.com/AndrewDavis1191/tinyACM.git
 npm install package.json
 # start the app with npm
 npm start
+# if you want to build installer for your OS(mac/linux)
+npm run make
 ```
 
 ## current status and goals
