@@ -65,7 +65,7 @@ npm run make
 ```
 
 ## current status and goals
-This is currently what I wanted for MVP, but future goals would be to either use the node-serialport library to explore reading USB input directly or shell out the $200 for the PcProx sdk. I'd like to look into different readers and card types to understand the differences (hard to get my hands on different cards), and ultimately, it would be awesome to get this working with an iSTAR panel directly.
+This is currently what I wanted for MVP, but future goals would be to either use the node-serialport library to explore reading USB input directly or shell out the $200 for the PcProx sdk. I'd like to look into different readers and card types to understand the differences (hard to get my hands on different cards), and ultimately, it would be awesome to get this working with an iSTAR panel directly. Sort term goals involve blob management in sqlite to store and display photos on swipe and show.
 
 ## Constructive Criticism!
 Please send feedback to me if you have suggestions on code in any manner; operation, readability, overall JavaScript best practices.
