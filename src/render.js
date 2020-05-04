@@ -70,11 +70,11 @@ const securityExitModalCloseButton = document.getElementById('security-exit-moda
 const securityExitModalBackground = document.getElementById('security-exit-modal-background');
 const exportUsersButton = document.getElementById('export-users-button');
 const exportJournalButton = document.getElementById('export-journal-button');
-const tableBody = document.getElementById('tbody');
+const userTableBody = document.getElementById('user-tbody');
 const adminTableBody = document.getElementById('admin-tbody');
-const fname_cell = document.getElementById('first-name-field');
-const lname_cell = document.getElementById('last-name-field');
-const badge_cell = document.getElementById('badge-num-field');
+const firstNameField = document.getElementById('first-name-field');
+const lastNameField = document.getElementById('last-name-field');
+const badgeNumField = document.getElementById('badge-num-field');
 const kioskFooterItems = document.getElementById('kiosk-footer-items');
 const kioskPlusButton = document.getElementById('kiosk-plus-button');
 const kioskMinusButton = document.getElementById('kiosk-minus-button');
@@ -82,21 +82,18 @@ const normalFooterItems = document.getElementById('normal-footer-items');
 const fileInput_button = document.getElementById('file-js-example');
 
 // Add Event Listeners
-const fnameField = document.getElementById('first-name-field');
-fnameField.onclick = function() {
+firstNameField.onclick = function() {
   if (this.className !== 'input') {
     this.className = 'input'
   }
 };
 
-const lnameField = document.getElementById('last-name-field');
-lnameField.onclick = function() {
+lastNameField.onclick = function() {
   if (this.className !== 'input') {
     this.className = 'input'
   }
 };
 
-const badgeNumField = document.getElementById('badge-num-field');
 badgeNumField.onclick = function() {
   if (this.className !== 'input') {
     this.className = 'input'
@@ -254,44 +251,44 @@ function filterUsers(){
 
 // Add user to database and html table
 addUserBtn.onclick = function() {
-  if (fname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(fname_cell.value)) {
-    fname_cell.className = 'input is-danger'
+  if (firstNameField.value.length === 0 || /[^\D]\d|\W/gi.test(firstNameField.value)) {
+    firstNameField.className = 'input is-danger'
     errorNotification.innerText = 'First Name must contain only letters and cannot be blank.'
     show(errorModal)
   }
-  else if (lname_cell.value.length === 0 || /[^\D]\d|\W/gi.test(lname_cell.value)) {
+  else if (lastNameField.value.length === 0 || /[^\D]\d|\W/gi.test(lastNameField.value)) {
     errorNotification.innerText = 'Last Name must contain only letters and cannot be blank.'
     show(errorModal)
-    lname_cell.className = 'input is-danger'
+    lastNameField.className = 'input is-danger'
   }
-  else if (badge_cell.value.length === 0 || /([^(\w|\X)]|\D)/gi.test(badge_cell.value)) {
+  else if (badgeNumField.value.length === 0 || /([^(\w|\X)]|\D)/gi.test(badgeNumField.value)) {
     errorNotification.innerText = 'Badge must contain only numbers and cannot be blank.'
     show(errorModal)
-    badge_cell.className = 'input is-danger'
+    badgeNumField.className = 'input is-danger'
   }
   else {
-    let row = tableBody.insertRow();
+    let row = userTableBody.insertRow();
     let cell1 = row.insertCell(0);
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
-    cell1.innerHTML = `${fname_cell.value}`
-    cell2.innerHTML = `${lname_cell.value}`
-    cell3.innerHTML = `${badge_cell.value}`
+    cell1.innerHTML = `${firstNameField.value}`
+    cell2.innerHTML = `${lastNameField.value}`
+    cell3.innerHTML = `${badgeNumField.value}`
     console.log('adding user');
     db.serialize(function() {
       db.run(`INSERT INTO users(first_name,last_name,badge_number)
-              VALUES('${fname_cell.value}','${lname_cell.value}','${badge_cell.value}');
+              VALUES('${firstNameField.value}','${lastNameField.value}','${badgeNumField.value}');
       `);
       db.all('SELECT * FROM users', function(err, result) {
           console.log(result);
       });
     });
-    fname_cell.value = ''
-    lname_cell.value = ''
-    badge_cell.value = ''
-    fname_cell.className = 'input'
-    lname_cell.className = 'input'
-    badge_cell.className = 'input'
+    firstNameField.value = ''
+    lastNameField.value = ''
+    badgeNumField.value = ''
+    firstNameField.className = 'input'
+    lastNameField.className = 'input'
+    badgeNumField.className = 'input'
     row.onclick = function() {
       if (this.className === 'is-selected') {
         this.className = ''
@@ -387,6 +384,9 @@ kioskBtn.onclick = function() {
                 show(fileInput_button);
                 show(normalFooterItems);
                 hide(kioskFooterItems);
+                firstNameField.value = ''
+                lastNameField.value = ''
+                badgeNumField.value = ''
                 securityExitModal.className = 'modal'
                 securityExitModalUsername.value = ''
                 securityExitModalPassword.value = ''
@@ -495,7 +495,7 @@ fileInput.onchange = () => {
                   VALUES('${row[0]}','${row[1]}',${row[2]});
           `);
         })
-        let tableRow = tableBody.insertRow();
+        let tableRow = userTableBody.insertRow();
         let cell1 = tableRow.insertCell(0);
         let cell2 = tableRow.insertCell(1);
         let cell3 = tableRow.insertCell(2);
