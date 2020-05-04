@@ -12,7 +12,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 });
 
 // Create required tables and populate with starter info
-db.serialize(function (err, result) {
+db.serialize(function (err) {
 	db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY)');
 	db.run(`INSERT INTO users(first_name,last_name,badge_number)
           VALUES('Karl','Dandleton',5555555555),
@@ -44,7 +44,6 @@ const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
 const kioskBtn = document.getElementById('kiosk-mode-button');
 const adminButton = document.getElementById('admin-button');
-const tableContainer = document.getElementById('table-cont');
 const adminTableContainer = document.getElementById('admin-table-cont');
 const userContainer = document.getElementById('user-input-cont');
 const aboutButton = document.getElementById('about-button');
@@ -216,6 +215,8 @@ exportUsersButton.onclick = function () {
 			errorNotification.innerText = `There are no users in the database to export.
                                       Please add users before exporting.`;
 			show(errorModal);
+    } else if (err) {
+      console.log(err)
 		} else {
 			exportCsvFile(result);
 		}
@@ -229,6 +230,8 @@ exportJournalButton.onclick = function () {
 			errorNotification.innerText = `There have not been any actions recorded in journal yet.
                                       Try again once you've encountered a badge read`;
 			show(errorModal);
+    } else if (err) {
+      console.log(err)
 		} else {
 			exportCsvFile(result);
 		}
@@ -337,7 +340,7 @@ kioskBtn.onclick = function () {
 	const window = remote.getCurrentWindow();
 	// Entering Kiosk Mode
 	if (kioskBtn.innerText !== 'Exit Kiosk Mode') {
-		db.all('SELECT * FROM admins', function (err, result) {
+		db.all('SELECT * FROM admins', function (result) {
 			console.log(result);
 			console.log('entering kiosk mode');
 			kioskBtn.innerText = 'Exit Kiosk Mode';
@@ -351,7 +354,7 @@ kioskBtn.onclick = function () {
 		});
 	} else if (kioskBtn.innerText !== 'Kiosk Mode') {
 		// Exiting Kiosk Mode
-		db.all('SELECT * FROM admins', function (err, result) {
+		db.all('SELECT * FROM admins', function (result) {
 			console.log(result);
 			if (result.length > 0) {
 				securityExitModal.className = 'modal is-active';
@@ -375,7 +378,7 @@ kioskBtn.onclick = function () {
 						db.all(
 							`SELECT * FROM admins
               WHERE username = '${securityExitModalUsername.value}'`,
-							function (err, result) {
+							function (result) {
 								console.log(result);
 								let bytes = Crypto.AES.decrypt(result[0].password, key);
 								let originalText = bytes.toString(Crypto.charenc.UTF8);
@@ -444,7 +447,7 @@ securityEntryModalButton.onclick = function () {
 		db.all(
 			`SELECT * FROM admins
       WHERE username = '${securityEntryModalUsername.value}'`,
-			function (err, result) {
+			function (result) {
 				console.log(result);
 				if (result.length > 0) {
 					securityEntryErrorNotification.innerText =
@@ -459,7 +462,7 @@ securityEntryModalButton.onclick = function () {
 						`INSERT INTO admins(username,password)
             VALUES('${securityEntryModalUsername.value}',
             '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')`,
-						function (err, result) {
+						function (err) {
 							if (err) {
 								console.log('error inserting new admin to table');
 							}
