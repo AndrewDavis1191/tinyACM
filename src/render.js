@@ -436,29 +436,34 @@ securityEntryModalButton.onclick = function() {
     securityEntryModalPassword2.className = 'input is-danger'
   }
   else {
-    let row = adminTableBody.insertRow();
-    let cell = row.insertCell(0);
-    cell.innerHTML = `${securityEntryModalUsername.value}`
-    let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
-    db.run(`INSERT INTO admins(username,password)
+    db.all(`SELECT * FROM admins
+      WHERE username = '${securityEntryModalUsername.value}'`, function(err, result){
+        console.log(result);
+        if (result.length > 0) {
+          securityEntryErrorNotification.innerText = 'An administrator has already registered with this username.'
+          show(securityEntryErrorModal)
+        }
+        else {
+          let row = adminTableBody.insertRow();
+          let cell = row.insertCell(0);
+          cell.innerHTML = `${securityEntryModalUsername.value}`
+          let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
+          db.run(`INSERT INTO admins(username,password)
             VALUES('${securityEntryModalUsername.value}',
-            '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')
-    `, function(err, result) {
-      if (err) {
-        securityEntryErrorNotification.innerText = 'An administrator has already registered with this username.'
-        show(securityEntryErrorModal)
-      }
-      else {
-        // Close Security Entry modal
-        show(adminTableContainer);
-        securityEntryModalUsername.value = '';
-        securityEntryModalPassword.value = '';
-        securityEntryModalPassword2.value = '';
-        securityEntryModalUsername.className = 'input';
-        securityEntryModalPassword.className = 'input';
-        securityEntryModalPassword2.className = 'input';
-      }
-    });
+            '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')`, function(err, result) {
+              if (err) {
+                console.log('error inserting new admin to table')
+              }
+            });
+          show(adminTableContainer);
+          securityEntryModalUsername.value = '';
+          securityEntryModalPassword.value = '';
+          securityEntryModalPassword2.value = '';
+          securityEntryModalUsername.className = 'input';
+          securityEntryModalPassword.className = 'input';
+          securityEntryModalPassword2.className = 'input';
+        }
+      });
   }
 };
 
@@ -576,7 +581,6 @@ function journalDeny(result) {
   `);
 };
 
-// Kiosk Tile swipe and show carousel
 let currentSlide = 0;
 // Function to grab badge number from pcProx reader correctly
 let charsTyped = [];
