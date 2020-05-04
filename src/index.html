@@ -1,470 +1,550 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css'>
-    <style>
-    </style>
-    <script defer src='https://use.fontawesome.com/releases/v5.3.1/js/all.js'></script>
-    <script defer src='render.js'></script>
-  </head>
-  <body>
-    <div id='error-modal' class='modal' style='display: none;'>
-      <div id='error-modal-background' class='modal-background'></div>
-      <div class='modal-content'>
-        <div id='error-notification' class='notification is-danger'>
-        </div>
-      </div>
-    </div>
-    <!-- NavBar -->
-    <nav class='navbar' role='navigation' aria-label='main navigation'>
-      <div class='navbar-brand'>
-        <a class='navbar-item'>
-          <img src='https://github.com/AndrewDavis1191/tinyACM/blob/master/images/tinyACMLogoText.svg' width='112' height='28'>
-        </a>
-        <a id='navbar-burger' role='button' class='navbar-burger burger' aria-label='menu' aria-expanded='false' data-target='navbar'>
-          <span aria-hidden='true'></span>
-          <span aria-hidden='true'></span>
-          <span aria-hidden='true'></span>
-        </a>
-      </div>
-      <div id='navbar' class='navbar-menu'>
-        <div class='navbar-start'>
-          <div id='navbar-menu' class='navbar-item has-dropdown is-hoverable'>
-            <a class='navbar-link'>
-              Menu
-            </a>
-            <div class='navbar-dropdown'>
-              <a id='admin-button' class='navbar-item'>
-                Administrators
-              </a>
-              <a id='export-journal-button' class='navbar-item'>
-                Export Journal
-              </a>
-              <a id='export-users-button' class='navbar-item'>
-                Export Users
-              </a>
-              <hr class='navbar-divider'>
-              <a class='navbar-item' href='https://github.com/tinyACM/issues/new' target='_blank'>
-                Report an issue
-              </a>
-              <a id='about-button' class='navbar-item'>
-                About
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class='navbar-end'>
-          <div class='navbar-item'>
-            <div class='buttons'>
-              <a id='kiosk-mode-button' class='button is-primary'>
-                <strong>Kiosk Mode</strong>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <!--modal about box-->
-    <div id='about-modal' class='modal'>
-      <div id='about-modal-background' class='modal-background'></div>
-      <div class='modal-content'>
-        <div class='box'>
-          <article class='media'>
-            <div class='media-left'>
-              <figure class='image is-64x64'>
-                <img src='https://avatars0.githubusercontent.com/u/8334795?s=400&u=0dc4db155561d987fd85d4316672e72814b987d4&v=4' alt='Image'>
-              </figure>
-            </div>
-            <div class='media-content'>
-              <div class='content'>
-                <p>
-                  <strong>Andrew Ryan Davis</strong>
-                  <br>
-                  Hope you're enjoying the app!
-
-                  Find it useful? Buy me a coffee!
-                </p>
-              </div>
-              <nav class='level is-mobile'>
-                <div class='level-left'>
-                  <a class='level-item' aria-label='kofi'>
-                    <span class='icon is-small'>
-                      <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'Q5Q81MWOW');kofiwidget2.draw();</script>
-                    </span>
-                  </a>
-                <div class='level-right'>
-                  <a class='level-item' aria-label='linkedin'>
-                    <span class='icon is-medium'>
-                      <i class='fab fa-linkedin' href='https://www.linkedin.com/ARD1' target='_blank' aria-hidden='true'></i>
-                    </span>
-                  </a>
-                  <a class='level-item' aria-label='github'>
-                    <span class='icon is-medium'>
-                      <i class='fab fa-github' href='https://github.com/AndrewDavis1191' target='_blank' aria-hidden='true'></i>
-                    </span>
-                  </a>
-                </div>
-                </div>
-              </nav>
-            </div>
-          </article>
-        </div>
-      </div>
-      <button id='about-modal-close-button' class='modal-close is-large' aria-label='close'></button>
-    </div>
-    <!--modal security kiosk entry box-->
-    <div id='security-entry-modal' class='modal'>
-      <div id='security-entry-modal-background' class='modal-background'></div>
-      <div id='security-entry-error-modal' class='modal' style='display: none;'>
-        <div id='security-entry-error-modal-background' class='modal-background'></div>
-        <div class='modal-content'>
-          <div id='security-entry-error-notification' class='notification is-danger'>
-          </div>
-        </div>
-      </div>
-      <div class='modal-content'>
-        <div class='box'>
-          <article class='media'>
-            <div class='media-left'>
-              <figure class='image is-64x64'>
-                <img src='images/Padlock.png' alt='Image'>
-              </figure>
-            </div>
-            <div class='media-content'>
-              <div class='content'>
-                  <strong>Would you like to password protect Kiosk Mode?</strong>
-                  <br>
-                  <div id='security-entry-input-cont' class='field is-grouped'>
-                    <div class='field-body'>
-                      <div class='field'>
-                        <p class='control is-expanded has-icons-left'>
-                          <input id= 'security-entry-name-field' class='input' type='text' placeholder='Username'>
-                          <span class='icon is-small is-left'>
-                            <i class='fas fa-user'></i>
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div id='security-entry-input-cont' class='field is-grouped'>
-                    <div class='field-body'>
-                      <div class='field'>
-                        <p class='control is-expanded has-icons-left'>
-                          <input id= 'security-entry-pass-field' class='input' type='password' placeholder='Password'>
-                          <span class='icon is-small is-left'>
-                            <i class='fas fa-key'></i>
-                          </span>
-                        </p>
-                      </div>
-                      <div class='field'>
-                        <p class='control is-expanded has-icons-left'>
-                          <input id= 'security-entry-pass-field2' class='input' type='password' placeholder='Confirm Password'>
-                          <span class='icon is-small is-left'>
-                            <i class='fas fa-key'></i>
-                          </span>
-                        </p>
-                      </div>
-                      <div class='buttons is-grouped'>
-                        <a id='security-entry-button' class='button'>
-                          Confirm
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </article>
-          <!-- Admin Table -->
-          <div id='admin-table-cont' class='table-container' style='display: none; max-height:240px; overflow-y: scroll'>
-            <table id='admin-table' class='table is-fullwidth is-hoverable'>
-              <thead>
-                <tr>
-                  <th>Username</th>
-                </tr>
-              </thead>
-              <tbody id='admin-tbody'>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <button id='security-entry-modal-close-button' class='modal-close is-large' aria-label='close'></button>
-    </div>
-    <!--modal security kiosk exit box-->
-    <div id='security-exit-modal' class='modal'>
-      <div id='security-exit-modal-background' class='modal-background'></div>
-      <div id='security-exit-error-modal' class='modal' style='display: none;'>
-        <div id='security-exit-error-modal-background' class='modal-background'></div>
-        <div class='modal-content'>
-          <div id='security-exit-error-notification' class='notification is-danger'>
-          </div>
-        </div>
-      </div>
-      <div class='modal-content'>
-        <div class='box'>
-          <article class='media'>
-            <div class='media-left'>
-              <figure class='image is-64x64'>
-                <img src='images/Padlock.png' alt='Image'>
-              </figure>
-            </div>
-            <div class='media-content'>
-              <div class='content'>
-                  <strong>A password has been set to lock in this state, log in to exit</strong>
-                  <br>
-                  <div id='security-exit-input-cont' class='field is-grouped'>
-                    <div class='field-body'>
-                      <div class='field'>
-                        <p class='control is-expanded has-icons-left'>
-                          <input id= 'security-exit-name-field' class='input' type='text' placeholder='Username'>
-                          <span class='icon is-small is-left'>
-                            <i class='fas fa-user'></i>
-                          </span>
-                        </p>
-                      </div>
-                      <div class='field'>
-                        <p class='control is-expanded has-icons-left'>
-                          <input id= 'security-exit-pass-field' class='input' type='password' placeholder='Password'>
-                          <span class='icon is-small is-left'>
-                            <i class='fas fa-key'></i>
-                          </span>
-                        </p>
-                      </div>
-                      <div class='buttons is-grouped'>
-                        <a id='security-exit-button' class='button'>
-                          Confirm
-                        </a>
-                      </div>
-                    </div>
-                  </div>y
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-      <button id='security-exit-modal-close-button' class='modal-close is-large' aria-label='close'></button>
-    </div>
-    <!-- New User Input -->
-    <div class ='box'>
-      <div id='user-input-cont' class='field is-grouped'>
-      <div class='field-body'>
-        <div class='field'>
-          <p class='control is-expanded has-icons-left'>
-            <input id= 'first-name-field' class='input' type='text' placeholder='First Name'>
-            <span class='icon is-small is-left'>
-              <i class='fas fa-user'></i>
-            </span>
-          </p>
-        </div>
-        <div class='field'>
-          <p class='control is-expanded has-icons-left'>
-            <input id= 'last-name-field' class='input' type='text' placeholder='Last Name'>
-            <span class='icon is-small is-left'>
-              <i class='fas fa-user'></i>
-            </span>
-          </p>
-        </div>
-        <div class='field'>
-          <p class='control is-expanded has-icons-left'>
-            <input id= 'badge-num-field' class='input' type='numbers' placeholder='84738857'>
-            <span class='icon is-small is-left'>
-              <i class='fas fa-id-badge'></i>
-            </span>
-          </p>
-        </div>
-        <div class='buttons'>
-          <a id='add-user-button' class='button'>
-            Add User
-            </a>
-        </div>
-      </div>
-    </div>
-    <!-- user table -->
-    <div class='field is-grouped'>
-      <p class='control is-expanded'>
-        <input id='search-input' class='input' type='text' placeholder='Find a User...'>
-      </p>
-      <p class='control'>
-      </p>
-    </div>
-    <div id='table-cont' class='table-container' style='max-height:210px; overflow-y: scroll'>
-      <table id='table' class='table is-fullwidth is-hoverable'>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Badge Number</th>
-          </tr>
-        </thead>
-          <tbody id='user-tbody'>
-            <tr>
-              <td>Karl</td>
-              <td>Dandleton</td>
-              <td>5555555555</td>
-            </tr>
-              <td>Bobson</td>
-              <td>Dugnutt</td>
-              <td>1123345566</td>
-            <tr>
-              <td>Glennalon</td>
-              <td>Mixon</td>
-              <td>3334445555</td>
-            </tr>
-            <tr>
-              <td>Sleve</td>
-              <td>McDichael</td>
-              <td>3433445543</td>
-            </tr>
-          </tbody>
-      </table>
-    </div>
-    <hr />
-    <div id='kiosk-footer-items' class='box has-text-centered is-fullwidth' style='display:none'>
-      <!-- Kiosk fields -->
-      <div class='container is-fullwidth'>
-        <header class='bd-index-header'>
-          <h3 class='title is-3'>
-            <button id='kiosk-minus-button' class='button'>
-              <span class='icon'>
-                <svg class='svg-inline--fa fa-minus fa-w-14 svg-inline--fas' aria-hidden='true' data-prefix='fas' data-icon='minus' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'></path></svg>
-              </span>
-            </button>
-            <a>
-              Swipe and Show Activity
-            </a>
-            <button id='kiosk-plus-button' class='button'>
-              <span class='icon'>
-                <svg class='svg-inline--fa fa-plus fa-w-14' aria-hidden='true' data-prefix='fa' data-icon='plus' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'></path></svg>
-              </span>
-            </button>
-          </h3>
-        </header>
-        <hr />
-        <div id='grid' class='columns is-fullwidth'>
-          <div class='column' style='display: block;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: block;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: block;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: block;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: none;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: none;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: none;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-          <div class='column' style='display: none;'>
-            <div id='kiosk-field' class='tile is-12'>
-              <article class='tile is-child box'>
-                <p class='title'>User Name</p>
-                <p class='subtitle'>Badge Number</p>
-                <figure class='image is-4by3'>
-                  <img src='https://bulma.io/images/placeholders/640x480.png'>
-                </figure>
-              </article>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-      <div id='normal-footer-items' class='box has-text-centered'>
-        <nav class='level'>
-          <!-- Left side -->
-          <div class='level-left'>
-            <div class='buttons'>
-              <a id='delete-user-button' class='button is-warning'>
-                Delete
-              </a>
-            </div>
-          </div>
-          <!-- Right side -->
-          <div class='level-right'>
-            <div id='file-js-example' class='file has-name is-pulled-right'>
-              <label class='file-label'>
-                <input class='file-input' type='file' name='resume'>
-                <span class='file-cta'>
-                  <span class='file-icon'>
-                    <i class='fas fa-upload'></i>
-                  </span>
-                  <span class='file-label'>
-                    Choose a file…
-                  </span>
-                </span>
-                <span class='file-name'>
-                  No file uploaded
-                </span>
-              </label>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
+		<style></style>
+		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+		<script defer src="render.js"></script>
+	</head>
+	<body>
+		<div id="error-modal" class="modal" style="display: none;">
+			<div id="error-modal-background" class="modal-background"></div>
+			<div class="modal-content">
+				<div id="error-notification" class="notification is-danger"></div>
+			</div>
+		</div>
+		<!-- NavBar -->
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+				<a class="navbar-item">
+					<img
+						src="https://github.com/AndrewDavis1191/tinyACM/blob/master/images/tinyACMLogoText.svg"
+						width="112"
+						height="28"
+					/>
+				</a>
+				<a
+					id="navbar-burger"
+					role="button"
+					class="navbar-burger burger"
+					aria-label="menu"
+					aria-expanded="false"
+					data-target="navbar"
+				>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+			<div id="navbar" class="navbar-menu">
+				<div class="navbar-start">
+					<div id="navbar-menu" class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link">
+							Menu
+						</a>
+						<div class="navbar-dropdown">
+							<a id="admin-button" class="navbar-item">
+								Administrators
+							</a>
+							<a id="export-journal-button" class="navbar-item">
+								Export Journal
+							</a>
+							<a id="export-users-button" class="navbar-item">
+								Export Users
+							</a>
+							<hr class="navbar-divider" />
+							<a class="navbar-item" href="https://github.com/tinyACM/issues/new" target="_blank">
+								Report an issue
+							</a>
+							<a id="about-button" class="navbar-item">
+								About
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="navbar-end">
+					<div class="navbar-item">
+						<div class="buttons">
+							<a id="kiosk-mode-button" class="button is-primary">
+								<strong>Kiosk Mode</strong>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<!--modal about box-->
+		<div id="about-modal" class="modal">
+			<div id="about-modal-background" class="modal-background"></div>
+			<div class="modal-content">
+				<div class="box">
+					<article class="media">
+						<div class="media-left">
+							<figure class="image is-64x64">
+								<img
+									src="https://avatars0.githubusercontent.com/u/8334795?s=400&u=0dc4db155561d987fd85d4316672e72814b987d4&v=4"
+									alt="Image"
+								/>
+							</figure>
+						</div>
+						<div class="media-content">
+							<div class="content">
+								<p>
+									<strong>Andrew Ryan Davis</strong>
+									<br />
+									Hope you're enjoying the app! Find it useful? Buy me a coffee!
+								</p>
+							</div>
+							<nav class="level is-mobile">
+								<div class="level-left">
+									<a class="level-item" aria-label="kofi">
+										<span class="icon is-small">
+											<script
+												type="text/javascript"
+												src="https://ko-fi.com/widgets/widget_2.js"
+											></script>
+											<script type="text/javascript">
+												kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'Q5Q81MWOW');
+												kofiwidget2.draw();
+											</script>
+										</span>
+									</a>
+									<div class="level-right">
+										<a class="level-item" aria-label="linkedin">
+											<span class="icon is-medium">
+												<i
+													class="fab fa-linkedin"
+													href="https://www.linkedin.com/ARD1"
+													target="_blank"
+													aria-hidden="true"
+												></i>
+											</span>
+										</a>
+										<a class="level-item" aria-label="github">
+											<span class="icon is-medium">
+												<i
+													class="fab fa-github"
+													href="https://github.com/AndrewDavis1191"
+													target="_blank"
+													aria-hidden="true"
+												></i>
+											</span>
+										</a>
+									</div>
+								</div>
+							</nav>
+						</div>
+					</article>
+				</div>
+			</div>
+			<button id="about-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+		</div>
+		<!--modal security kiosk entry box-->
+		<div id="security-entry-modal" class="modal">
+			<div id="security-entry-modal-background" class="modal-background"></div>
+			<div id="security-entry-error-modal" class="modal" style="display: none;">
+				<div id="security-entry-error-modal-background" class="modal-background"></div>
+				<div class="modal-content">
+					<div id="security-entry-error-notification" class="notification is-danger"></div>
+				</div>
+			</div>
+			<div class="modal-content">
+				<div class="box">
+					<article class="media">
+						<div class="media-left">
+							<figure class="image is-64x64">
+								<img src="images/Padlock.png" alt="Image" />
+							</figure>
+						</div>
+						<div class="media-content">
+							<div class="content">
+								<strong>Would you like to password protect Kiosk Mode?</strong>
+								<br />
+								<div id="security-entry-input-cont" class="field is-grouped">
+									<div class="field-body">
+										<div class="field">
+											<p class="control is-expanded has-icons-left">
+												<input
+													id="security-entry-name-field"
+													class="input"
+													type="text"
+													placeholder="Username"
+												/>
+												<span class="icon is-small is-left">
+													<i class="fas fa-user"></i>
+												</span>
+											</p>
+										</div>
+									</div>
+								</div>
+								<div id="security-entry-input-cont" class="field is-grouped">
+									<div class="field-body">
+										<div class="field">
+											<p class="control is-expanded has-icons-left">
+												<input
+													id="security-entry-pass-field"
+													class="input"
+													type="password"
+													placeholder="Password"
+												/>
+												<span class="icon is-small is-left">
+													<i class="fas fa-key"></i>
+												</span>
+											</p>
+										</div>
+										<div class="field">
+											<p class="control is-expanded has-icons-left">
+												<input
+													id="security-entry-pass-field2"
+													class="input"
+													type="password"
+													placeholder="Confirm Password"
+												/>
+												<span class="icon is-small is-left">
+													<i class="fas fa-key"></i>
+												</span>
+											</p>
+										</div>
+										<div class="buttons is-grouped">
+											<a id="security-entry-button" class="button">
+												Confirm
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</article>
+					<!-- Admin Table -->
+					<div
+						id="admin-table-cont"
+						class="table-container"
+						style="display: none; max-height: 240px; overflow-y: scroll;"
+					>
+						<table id="admin-table" class="table is-fullwidth is-hoverable">
+							<thead>
+								<tr>
+									<th>Username</th>
+								</tr>
+							</thead>
+							<tbody id="admin-tbody"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<button id="security-entry-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+		</div>
+		<!--modal security kiosk exit box-->
+		<div id="security-exit-modal" class="modal">
+			<div id="security-exit-modal-background" class="modal-background"></div>
+			<div id="security-exit-error-modal" class="modal" style="display: none;">
+				<div id="security-exit-error-modal-background" class="modal-background"></div>
+				<div class="modal-content">
+					<div id="security-exit-error-notification" class="notification is-danger"></div>
+				</div>
+			</div>
+			<div class="modal-content">
+				<div class="box">
+					<article class="media">
+						<div class="media-left">
+							<figure class="image is-64x64">
+								<img src="images/Padlock.png" alt="Image" />
+							</figure>
+						</div>
+						<div class="media-content">
+							<div class="content">
+								<strong>A password has been set to lock in this state, log in to exit</strong>
+								<br />
+								<div id="security-exit-input-cont" class="field is-grouped">
+									<div class="field-body">
+										<div class="field">
+											<p class="control is-expanded has-icons-left">
+												<input
+													id="security-exit-name-field"
+													class="input"
+													type="text"
+													placeholder="Username"
+												/>
+												<span class="icon is-small is-left">
+													<i class="fas fa-user"></i>
+												</span>
+											</p>
+										</div>
+										<div class="field">
+											<p class="control is-expanded has-icons-left">
+												<input
+													id="security-exit-pass-field"
+													class="input"
+													type="password"
+													placeholder="Password"
+												/>
+												<span class="icon is-small is-left">
+													<i class="fas fa-key"></i>
+												</span>
+											</p>
+										</div>
+										<div class="buttons is-grouped">
+											<a id="security-exit-button" class="button">
+												Confirm
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+			<button id="security-exit-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+		</div>
+		<!-- New User Input -->
+		<div class="box">
+			<div id="user-input-cont" class="field is-grouped">
+				<div class="field-body">
+					<div class="field">
+						<p class="control is-expanded has-icons-left">
+							<input id="first-name-field" class="input" type="text" placeholder="First Name" />
+							<span class="icon is-small is-left">
+								<i class="fas fa-user"></i>
+							</span>
+						</p>
+					</div>
+					<div class="field">
+						<p class="control is-expanded has-icons-left">
+							<input id="last-name-field" class="input" type="text" placeholder="Last Name" />
+							<span class="icon is-small is-left">
+								<i class="fas fa-user"></i>
+							</span>
+						</p>
+					</div>
+					<div class="field">
+						<p class="control is-expanded has-icons-left">
+							<input id="badge-num-field" class="input" type="numbers" placeholder="84738857" />
+							<span class="icon is-small is-left">
+								<i class="fas fa-id-badge"></i>
+							</span>
+						</p>
+					</div>
+					<div class="buttons">
+						<a id="add-user-button" class="button">
+							Add User
+						</a>
+					</div>
+				</div>
+			</div>
+			<!-- user table -->
+			<div class="field is-grouped">
+				<p class="control is-expanded">
+					<input id="search-input" class="input" type="text" placeholder="Find a User..." />
+				</p>
+				<p class="control"></p>
+			</div>
+			<div id="table-cont" class="table-container" style="max-height: 210px; overflow-y: scroll;">
+				<table id="table" class="table is-fullwidth is-hoverable">
+					<thead>
+						<tr>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Badge Number</th>
+						</tr>
+					</thead>
+					<tbody id="user-tbody">
+						<tr>
+							<td>Karl</td>
+							<td>Dandleton</td>
+							<td>5555555555</td>
+						</tr>
+						<td>Bobson</td>
+						<td>Dugnutt</td>
+						<td>1123345566</td>
+						<tr>
+							<td>Glennalon</td>
+							<td>Mixon</td>
+							<td>3334445555</td>
+						</tr>
+						<tr>
+							<td>Sleve</td>
+							<td>McDichael</td>
+							<td>3433445543</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr />
+			<div id="kiosk-footer-items" class="box has-text-centered is-fullwidth" style="display: none;">
+				<!-- Kiosk fields -->
+				<div class="container is-fullwidth">
+					<header class="bd-index-header">
+						<h3 class="title is-3">
+							<button id="kiosk-minus-button" class="button">
+								<span class="icon">
+									<svg
+										class="svg-inline--fa fa-minus fa-w-14 svg-inline--fas"
+										aria-hidden="true"
+										data-prefix="fas"
+										data-icon="minus"
+										role="img"
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 448 512"
+										data-fa-i2svg=""
+									>
+										<path
+											fill="currentColor"
+											d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+										></path>
+									</svg>
+								</span>
+							</button>
+							<a>
+								Swipe and Show Activity
+							</a>
+							<button id="kiosk-plus-button" class="button">
+								<span class="icon">
+									<svg
+										class="svg-inline--fa fa-plus fa-w-14"
+										aria-hidden="true"
+										data-prefix="fa"
+										data-icon="plus"
+										role="img"
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 448 512"
+										data-fa-i2svg=""
+									>
+										<path
+											fill="currentColor"
+											d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+										></path>
+									</svg>
+								</span>
+							</button>
+						</h3>
+					</header>
+					<hr />
+					<div id="grid" class="columns is-fullwidth">
+						<div class="column" style="display: block;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: block;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: block;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: block;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: none;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: none;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: none;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="column" style="display: none;">
+							<div id="kiosk-field" class="tile is-12">
+								<article class="tile is-child box">
+									<p class="title">User Name</p>
+									<p class="subtitle">Badge Number</p>
+									<figure class="image is-4by3">
+										<img src="https://bulma.io/images/placeholders/640x480.png" />
+									</figure>
+								</article>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="normal-footer-items" class="box has-text-centered">
+				<nav class="level">
+					<!-- Left side -->
+					<div class="level-left">
+						<div class="buttons">
+							<a id="delete-user-button" class="button is-warning">
+								Delete
+							</a>
+						</div>
+					</div>
+					<!-- Right side -->
+					<div class="level-right">
+						<div id="file-js-example" class="file has-name is-pulled-right">
+							<label class="file-label">
+								<input class="file-input" type="file" name="resume" />
+								<span class="file-cta">
+									<span class="file-icon">
+										<i class="fas fa-upload"></i>
+									</span>
+									<span class="file-label">
+										Choose a file…
+									</span>
+								</span>
+								<span class="file-name">
+									No file uploaded
+								</span>
+							</label>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</body>
 </html>
