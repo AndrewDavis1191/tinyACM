@@ -16,8 +16,7 @@ const createWindow = () => {
     autoHideMenuBar: true,
     icon: './images/icon.png',
     webPreferences: {
-      nodeIntegration: true,
-      webSecurity: false,
+      nodeIntegration: true
     }
   });
 
