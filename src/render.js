@@ -34,6 +34,8 @@ arr.splice(arr.indexOf(word),1,word);
 const key = arr.sort(() => Math.floor(Math.random() * Math.floor(3)) - 1).join(' ');
 
 // Get elements from html
+const navbar = document.getElementById('navbar');
+const navbarBurger = document.getElementById('navbar-burger');
 const navbarMenu = document.getElementById('navbar-menu');
 const addUserBtn = document.getElementById('add-user-button');
 const deleteUserBtn = document.getElementById('delete-user-button');
@@ -82,6 +84,17 @@ const normalFooterItems = document.getElementById('normal-footer-items');
 const fileInput_button = document.getElementById('file-js-example');
 
 // Add Event Listeners
+navbarBurger.onclick = function() {
+  if (this.className !== 'navbar-burger burger is-active') {
+    this.className = 'navbar-burger burger is-active'
+    navbar.className = 'navbar-menu is-active'
+  }
+  else {
+    this.className = 'navbar-burger burger'
+    navbar.className = 'navbar-menu'
+  }
+}
+
 firstNameField.onclick = function() {
   if (this.className !== 'input') {
     this.className = 'input'
