@@ -14,7 +14,6 @@ const createWindow = () => {
     resizable: true,
     maximizable: true,
     autoHideMenuBar: true,
-    icon: __dirname + '/../images/tinyACMLogo.svg',
     webPreferences: {
       nodeIntegration: true,
     }

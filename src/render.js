@@ -275,14 +275,9 @@ addUserBtn.onclick = function() {
     cell2.innerHTML = `${lastNameField.value}`
     cell3.innerHTML = `${badgeNumField.value}`
     console.log('adding user');
-    db.serialize(function() {
-      db.run(`INSERT INTO users(first_name,last_name,badge_number)
-              VALUES('${firstNameField.value}','${lastNameField.value}','${badgeNumField.value}');
-      `);
-      db.all('SELECT * FROM users', function(err, result) {
-          console.log(result);
-      });
-    });
+    db.run(`INSERT INTO users(first_name,last_name,badge_number)
+            VALUES('${firstNameField.value}','${lastNameField.value}','${badgeNumField.value}');
+    `);
     firstNameField.value = ''
     lastNameField.value = ''
     badgeNumField.value = ''
@@ -313,12 +308,10 @@ deleteUserBtn.onclick = function() {
 		for (let i = 0; i < table.rows.length; i++) {
 			if (table.rows[i].className === 'is-selected') {
         badge = table.rows[i].cells[2].innerText;
-        db.serialize(function(err, result) {
         db.run(`DELETE FROM users
                 WHERE badge_number = ${badge}`
         );
         console.log(result);
-        });
 				table.deleteRow(i);
 				i--;
 				counter = counter + 1;
@@ -490,11 +483,9 @@ fileInput.onchange = () => {
       dataArray.push(row);
       // Set start under header and limit import to 10,000 rows
       if (dataArray.indexOf(row) >0 && dataArray.length <= 10002) {
-        db.serialize(function() {
-          db.run(`INSERT INTO users(first_name,last_name,badge_number)
-                  VALUES('${row[0]}','${row[1]}',${row[2]});
-          `);
-        })
+        db.run(`INSERT INTO users(first_name,last_name,badge_number)
+                VALUES('${row[0]}','${row[1]}',${row[2]});
+        `);
         let tableRow = userTableBody.insertRow();
         let cell1 = tableRow.insertCell(0);
         let cell2 = tableRow.insertCell(1);

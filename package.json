@@ -1,6 +1,6 @@
 {
-  "name": "picoacm",
-  "productName": "picoacm",
+  "name": "tinyacm",
+  "productName": "tinyacm",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -24,7 +24,8 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "picoacm"
+            "name": "tinyacm",
+            "icon": "C:/Users/ardavis/Desktop/PicoACMProd/PicoACM-Electron/images/tinyACMLogo.ico"
           }
         },
         {
@@ -35,7 +36,10 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "name": "tinyacm",
+            "icon": "C:/Users/ardavis/Desktop/PicoACMProd/PicoACM-Electron/images/tinyACMLogo.icns"
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
