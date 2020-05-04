@@ -12,7 +12,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 });
 
 // Create required tables and populate with starter info
-db.serialize(function (err) {
+db.serialize(function (err, result) {
 	db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY)');
 	db.run(`INSERT INTO users(first_name,last_name,badge_number)
           VALUES('Karl','Dandleton',5555555555),
@@ -215,8 +215,6 @@ exportUsersButton.onclick = function () {
 			errorNotification.innerText = `There are no users in the database to export.
                                       Please add users before exporting.`;
 			show(errorModal);
-    } else if (err) {
-      console.log(err)
 		} else {
 			exportCsvFile(result);
 		}
@@ -230,8 +228,6 @@ exportJournalButton.onclick = function () {
 			errorNotification.innerText = `There have not been any actions recorded in journal yet.
                                       Try again once you've encountered a badge read`;
 			show(errorModal);
-    } else if (err) {
-      console.log(err)
 		} else {
 			exportCsvFile(result);
 		}
@@ -321,7 +317,6 @@ deleteUserBtn.onclick = function () {
 				badge = table.rows[i].cells[2].innerText;
 				db.run(`DELETE FROM users
                 WHERE badge_number = ${badge}`);
-				console.log(result);
 				table.deleteRow(i);
 				i--;
 				counter = counter + 1;
@@ -340,7 +335,7 @@ kioskBtn.onclick = function () {
 	const window = remote.getCurrentWindow();
 	// Entering Kiosk Mode
 	if (kioskBtn.innerText !== 'Exit Kiosk Mode') {
-		db.all('SELECT * FROM admins', function (result) {
+		db.all('SELECT * FROM admins', function (err, result) {
 			console.log(result);
 			console.log('entering kiosk mode');
 			kioskBtn.innerText = 'Exit Kiosk Mode';
@@ -354,7 +349,7 @@ kioskBtn.onclick = function () {
 		});
 	} else if (kioskBtn.innerText !== 'Kiosk Mode') {
 		// Exiting Kiosk Mode
-		db.all('SELECT * FROM admins', function (result) {
+		db.all('SELECT * FROM admins', function (err, result) {
 			console.log(result);
 			if (result.length > 0) {
 				securityExitModal.className = 'modal is-active';
@@ -378,7 +373,7 @@ kioskBtn.onclick = function () {
 						db.all(
 							`SELECT * FROM admins
               WHERE username = '${securityExitModalUsername.value}'`,
-							function (result) {
+							function (err, result) {
 								console.log(result);
 								let bytes = Crypto.AES.decrypt(result[0].password, key);
 								let originalText = bytes.toString(Crypto.charenc.UTF8);
@@ -447,7 +442,7 @@ securityEntryModalButton.onclick = function () {
 		db.all(
 			`SELECT * FROM admins
       WHERE username = '${securityEntryModalUsername.value}'`,
-			function (result) {
+			function (err, result) {
 				console.log(result);
 				if (result.length > 0) {
 					securityEntryErrorNotification.innerText =
@@ -462,7 +457,7 @@ securityEntryModalButton.onclick = function () {
 						`INSERT INTO admins(username,password)
             VALUES('${securityEntryModalUsername.value}',
             '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')`,
-						function (err) {
+						function (err, result) {
 							if (err) {
 								console.log('error inserting new admin to table');
 							}
