@@ -141,13 +141,13 @@
 			</div>
 			<button id="about-modal-close-button" class="modal-close is-large" aria-label="close"></button>
 		</div>
-		<!--modal security kiosk entry box-->
-		<div id="security-entry-modal" class="modal">
-			<div id="security-entry-modal-background" class="modal-background"></div>
-			<div id="security-entry-error-modal" class="modal" style="display: none;">
-				<div id="security-entry-error-modal-background" class="modal-background"></div>
+		<!--Admin modal box-->
+		<div id="admin-modal" class="modal">
+			<div id="admin-modal-background" class="modal-background"></div>
+			<div id="admin-error-modal" class="modal" style="display: none;">
+				<div id="admin-error-modal-background" class="modal-background"></div>
 				<div class="modal-content">
-					<div id="security-entry-error-notification" class="notification is-danger"></div>
+					<div id="admin-error-notification" class="notification is-danger"></div>
 				</div>
 			</div>
 			<div class="modal-content">
@@ -162,12 +162,12 @@
 							<div class="content">
 								<strong>Would you like to password protect Kiosk Mode?</strong>
 								<br />
-								<div id="security-entry-input-cont" class="field is-grouped">
+								<div id="admin-input-cont" class="field is-grouped">
 									<div class="field-body">
 										<div class="field">
 											<p class="control is-expanded has-icons-left">
 												<input
-													id="security-entry-name-field"
+													id="admin-name-field"
 													class="input"
 													type="text"
 													placeholder="Username"
@@ -179,12 +179,12 @@
 										</div>
 									</div>
 								</div>
-								<div id="security-entry-input-cont" class="field is-grouped">
+								<div id="admin-input-cont" class="field is-grouped">
 									<div class="field-body">
 										<div class="field">
 											<p class="control is-expanded has-icons-left">
 												<input
-													id="security-entry-pass-field"
+													id="admin-pass-field"
 													class="input"
 													type="password"
 													placeholder="Password"
@@ -197,7 +197,7 @@
 										<div class="field">
 											<p class="control is-expanded has-icons-left">
 												<input
-													id="security-entry-pass-field2"
+													id="admin-pass-field2"
 													class="input"
 													type="password"
 													placeholder="Confirm Password"
@@ -208,7 +208,7 @@
 											</p>
 										</div>
 										<div class="buttons is-grouped">
-											<a id="security-entry-button" class="button">
+											<a id="admin-modal-button" class="button">
 												Confirm
 											</a>
 										</div>
@@ -234,7 +234,7 @@
 					</div>
 				</div>
 			</div>
-			<button id="security-entry-modal-close-button" class="modal-close is-large" aria-label="close"></button>
+			<button id="admin-modal-close-button" class="modal-close is-large" aria-label="close"></button>
 		</div>
 		<!--modal security kiosk exit box-->
 		<div id="security-exit-modal" class="modal">

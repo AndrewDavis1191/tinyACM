@@ -50,22 +50,22 @@ const aboutButton = document.getElementById('about-button');
 const aboutModal = document.getElementById('about-modal');
 const errorModal = document.getElementById('error-modal');
 const errorModalBackground = document.getElementById('error-modal-background');
-const securityEntryErrorModal = document.getElementById('security-entry-error-modal');
-const securityEntryErrorModalBackground = document.getElementById('security-entry-error-modal-background');
+const adminErrorModal = document.getElementById('admin-error-modal');
+const adminErrorModalBackground = document.getElementById('admin-error-modal-background');
 const securityExitErrorModal = document.getElementById('security-exit-error-modal');
 const securityExitErrorModalBackground = document.getElementById('security-exit-error-modal-background');
 const errorNotification = document.getElementById('error-notification');
-const securityEntryErrorNotification = document.getElementById('security-entry-error-notification');
+const adminErrorNotification = document.getElementById('admin-error-notification');
 const securityExitErrorNotification = document.getElementById('security-exit-error-notification');
 const aboutModalCloseButton = document.getElementById('about-modal-close-button');
 const aboutModalBackground = document.getElementById('about-modal-background');
-const securityEntryModal = document.getElementById('security-entry-modal');
-const securityEntryModalButton = document.getElementById('security-entry-button');
-const securityEntryModalUsername = document.getElementById('security-entry-name-field');
-const securityEntryModalPassword = document.getElementById('security-entry-pass-field');
-const securityEntryModalPassword2 = document.getElementById('security-entry-pass-field2');
-const securityEntryModalCloseButton = document.getElementById('security-entry-modal-close-button');
-const securityEntryModalBackground = document.getElementById('security-entry-modal-background');
+const adminModal = document.getElementById('admin-modal');
+const adminModalButton = document.getElementById('admin-modal-button');
+const adminModalUsername = document.getElementById('admin-name-field');
+const adminModalPassword = document.getElementById('admin-pass-field');
+const adminModalPassword2 = document.getElementById('admin-pass-field2');
+const adminModalCloseButton = document.getElementById('admin-modal-close-button');
+const adminModalBackground = document.getElementById('admin-modal-background');
 const securityExitModal = document.getElementById('security-exit-modal');
 const securityExitModalButton = document.getElementById('security-exit-button');
 const securityExitModalUsername = document.getElementById('security-exit-name-field');
@@ -130,8 +130,8 @@ errorModalBackground.onclick = function () {
 	hide(errorModal);
 };
 
-securityEntryErrorModalBackground.onclick = function () {
-	hide(securityEntryErrorModal);
+adminErrorModalBackground.onclick = function () {
+	hide(adminErrorModal);
 };
 
 securityExitErrorModalBackground.onclick = function () {
@@ -139,15 +139,15 @@ securityExitErrorModalBackground.onclick = function () {
 };
 
 adminButton.onclick = function () {
-	securityEntryModal.className = 'modal is-active';
+	adminModal.className = 'modal is-active';
 };
 
-securityEntryModalCloseButton.onclick = function () {
-	securityEntryModal.className = 'modal';
+adminModalCloseButton.onclick = function () {
+	adminModal.className = 'modal';
 };
 
-securityEntryModalBackground.onclick = function () {
-	securityEntryModal.className = 'modal';
+adminModalBackground.onclick = function () {
+	adminModal.className = 'modal';
 };
 
 securityExitModalCloseButton.onclick = function () {
@@ -180,10 +180,10 @@ badgeNumField.addEventListener('keyup', function (event) {
 });
 
 // Press Confirm Button on Enter in Security Entry Modal
-securityEntryModalPassword2.addEventListener('keyup', function (event) {
+adminModalPassword2.addEventListener('keyup', function (event) {
 	event.preventDefault();
 	if (event.keyCode === 13) {
-		securityEntryModalButton.click();
+		adminModalButton.click();
 	}
 });
 
@@ -422,41 +422,41 @@ kioskBtn.onclick = function () {
 };
 
 // Security entry modal function
-securityEntryModalButton.onclick = function () {
-	if (securityEntryModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(securityEntryModalUsername.value)) {
-		securityEntryErrorNotification.innerText = 'Username must consist of only words and numbers.';
-		show(securityEntryErrorModal);
-		securityEntryModalUsername.className = 'input is-danger';
+adminModalButton.onclick = function () {
+	if (adminModalUsername.value.length === 0 || /[^\x00-\x7F]+/gi.test(adminModalUsername.value)) {
+		adminErrorNotification.innerText = 'Username must consist of only words and numbers.';
+		show(adminErrorModal);
+		adminModalUsername.className = 'input is-danger';
 	} else if (
-		securityEntryModalPassword.value.length === 0 ||
-		/[^\x00-\x7F]+/gi.test(securityEntryModalPassword.value)
+		adminModalPassword.value.length === 0 ||
+		/[^\x00-\x7F]+/gi.test(adminModalPassword.value)
 	) {
-		securityEntryErrorNotification.innerText = 'Password cannot be blank.';
-		show(securityEntryErrorModal);
-		securityEntryModalPassword.className = 'input is-danger';
-	} else if (securityEntryModalPassword.value !== securityEntryModalPassword2.value) {
-		securityEntryErrorNotification.innerText = 'Passwords do not match.';
-		show(securityEntryErrorModal);
-		securityEntryModalPassword2.className = 'input is-danger';
+		adminErrorNotification.innerText = 'Password cannot be blank.';
+		show(adminErrorModal);
+		adminModalPassword.className = 'input is-danger';
+	} else if (adminModalPassword.value !== adminModalPassword2.value) {
+		adminErrorNotification.innerText = 'Passwords do not match.';
+		show(adminErrorModal);
+		adminModalPassword2.className = 'input is-danger';
 	} else {
 		db.all(
 			`SELECT * FROM admins
-      WHERE username = '${securityEntryModalUsername.value}'`,
+      WHERE username = '${adminModalUsername.value}'`,
 			function (err, result) {
 				console.log(result);
 				if (result.length > 0) {
-					securityEntryErrorNotification.innerText =
+					adminErrorNotification.innerText =
 						'An administrator has already registered with this username.';
-					show(securityEntryErrorModal);
+					show(adminErrorModal);
 				} else {
 					let row = adminTableBody.insertRow();
 					let cell = row.insertCell(0);
-					cell.innerHTML = `${securityEntryModalUsername.value}`;
-					let ciphertext = Crypto.AES.encrypt(securityEntryModalPassword.value, key).toString();
+					cell.innerHTML = `${adminModalUsername.value}`;
+					let ciphertext = Crypto.AES.encrypt(adminModalPassword.value, key).toString();
 					db.run(
 						`INSERT INTO admins(username,password)
-            VALUES('${securityEntryModalUsername.value}',
-            '${Crypto.AES.encrypt(securityEntryModalPassword.value, key)}')`,
+            VALUES('${adminModalUsername.value}',
+            '${Crypto.AES.encrypt(adminModalPassword.value, key)}')`,
 						function (err, result) {
 							if (err) {
 								console.log('error inserting new admin to table');
@@ -464,12 +464,12 @@ securityEntryModalButton.onclick = function () {
 						}
 					);
 					show(adminTableContainer);
-					securityEntryModalUsername.value = '';
-					securityEntryModalPassword.value = '';
-					securityEntryModalPassword2.value = '';
-					securityEntryModalUsername.className = 'input';
-					securityEntryModalPassword.className = 'input';
-					securityEntryModalPassword2.className = 'input';
+					adminModalUsername.value = '';
+					adminModalPassword.value = '';
+					adminModalPassword2.value = '';
+					adminModalUsername.className = 'input';
+					adminModalPassword.className = 'input';
+					adminModalPassword2.className = 'input';
 				}
 			}
 		);
