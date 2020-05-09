@@ -52,11 +52,11 @@ const errorModal = document.getElementById('error-modal');
 const errorModalBackground = document.getElementById('error-modal-background');
 const adminErrorModal = document.getElementById('admin-error-modal');
 const adminErrorModalBackground = document.getElementById('admin-error-modal-background');
-const securityExitErrorModal = document.getElementById('security-exit-error-modal');
-const securityExitErrorModalBackground = document.getElementById('security-exit-error-modal-background');
+const kioskExitErrorModal = document.getElementById('kiosk-exit-error-modal');
+const kioskExitErrorModalBackground = document.getElementById('kiosk-exit-error-modal-background');
 const errorNotification = document.getElementById('error-notification');
 const adminErrorNotification = document.getElementById('admin-error-notification');
-const securityExitErrorNotification = document.getElementById('security-exit-error-notification');
+const kioskExitErrorNotification = document.getElementById('kiosk-exit-error-notification');
 const aboutModalCloseButton = document.getElementById('about-modal-close-button');
 const aboutModalBackground = document.getElementById('about-modal-background');
 const adminModal = document.getElementById('admin-modal');
@@ -66,12 +66,12 @@ const adminModalPassword = document.getElementById('admin-pass-field');
 const adminModalPassword2 = document.getElementById('admin-pass-field2');
 const adminModalCloseButton = document.getElementById('admin-modal-close-button');
 const adminModalBackground = document.getElementById('admin-modal-background');
-const securityExitModal = document.getElementById('security-exit-modal');
-const securityExitModalButton = document.getElementById('security-exit-button');
-const securityExitModalUsername = document.getElementById('security-exit-name-field');
-const securityExitModalPassword = document.getElementById('security-exit-pass-field');
-const securityExitModalCloseButton = document.getElementById('security-exit-modal-close-button');
-const securityExitModalBackground = document.getElementById('security-exit-modal-background');
+const kioskExitModal = document.getElementById('kiosk-exit-modal');
+const kioskExitModalButton = document.getElementById('kiosk-exit-button');
+const kioskExitModalUsername = document.getElementById('kiosk-exit-name-field');
+const kioskExitModalPassword = document.getElementById('kiosk-exit-pass-field');
+const kioskExitModalCloseButton = document.getElementById('kiosk-exit-modal-close-button');
+const kioskExitModalBackground = document.getElementById('kiosk-exit-modal-background');
 const exportUsersButton = document.getElementById('export-users-button');
 const exportJournalButton = document.getElementById('export-journal-button');
 const userTableBody = document.getElementById('user-tbody');
@@ -134,8 +134,8 @@ adminErrorModalBackground.onclick = function () {
 	hide(adminErrorModal);
 };
 
-securityExitErrorModalBackground.onclick = function () {
-	hide(securityExitErrorModal);
+kioskExitErrorModalBackground.onclick = function () {
+	hide(kioskExitErrorModal);
 };
 
 adminButton.onclick = function () {
@@ -150,12 +150,12 @@ adminModalBackground.onclick = function () {
 	adminModal.className = 'modal';
 };
 
-securityExitModalCloseButton.onclick = function () {
-	securityExitModal.className = 'modal';
+kioskExitModalCloseButton.onclick = function () {
+	kioskExitModal.className = 'modal';
 };
 
-securityExitModalBackground.onclick = function () {
-	securityExitModal.className = 'modal';
+kioskExitModalBackground.onclick = function () {
+	kioskExitModal.className = 'modal';
 };
 
 kioskPlusButton.onclick = function () {
@@ -188,10 +188,10 @@ adminModalPassword2.addEventListener('keyup', function (event) {
 });
 
 // Press Confirm Button on Enter in Security Exit Modal
-securityExitModalPassword.addEventListener('keyup', function (event) {
+kioskExitModalPassword.addEventListener('keyup', function (event) {
 	event.preventDefault();
 	if (event.keyCode === 13) {
-		securityExitModalButton.click();
+		kioskExitModalButton.click();
 	}
 });
 
@@ -352,32 +352,32 @@ kioskBtn.onclick = function () {
 		db.all('SELECT * FROM admins', function (err, result) {
 			console.log(result);
 			if (result.length > 0) {
-				securityExitModal.className = 'modal is-active';
-				securityExitModalButton.onclick = function () {
+				kioskExitModal.className = 'modal is-active';
+				kioskExitModalButton.onclick = function () {
 					if (
-						securityExitModalUsername.value.length === 0 ||
-						/[^\x00-\x7F]+/gi.test(securityExitModalUsername.value)
+						kioskExitModalUsername.value.length === 0 ||
+						/[^\x00-\x7F]+/gi.test(kioskExitModalUsername.value)
 					) {
-						securityExitErrorNotification.innerText = 'Username must consist of only words and numbers.';
-						show(securityExitErrorModal);
-						securityExitModalUsername.className = 'input is-danger';
+						kioskExitErrorNotification.innerText = 'Username must consist of only words and numbers.';
+						show(kioskExitErrorModal);
+						kioskExitModalUsername.className = 'input is-danger';
 					} else if (
-						securityExitModalPassword.value.length === 0 ||
-						/[^\x00-\x7F]+/gi.test(securityExitModalPassword.value)
+						kioskExitModalPassword.value.length === 0 ||
+						/[^\x00-\x7F]+/gi.test(kioskExitModalPassword.value)
 					) {
-						securityExitErrorNotification.innerText = 'Password must not be blank';
-						show(securityExitErrorModal);
-						securityExitModalPassword.className = 'input is-danger';
+						kioskExitErrorNotification.innerText = 'Password must not be blank';
+						show(kioskExitErrorModal);
+						kioskExitModalPassword.className = 'input is-danger';
 					} else {
 						// Check db and validate password
 						db.all(
 							`SELECT * FROM admins
-              WHERE username = '${securityExitModalUsername.value}'`,
+              WHERE username = '${kioskExitModalUsername.value}'`,
 							function (err, result) {
 								console.log(result);
 								let bytes = Crypto.AES.decrypt(result[0].password, key);
 								let originalText = bytes.toString(Crypto.charenc.UTF8);
-								if (originalText === securityExitModalPassword.value) {
+								if (originalText === kioskExitModalPassword.value) {
 									console.log('exiting kiosk mode');
 									kioskBtn.innerText = 'Kiosk Mode';
 									show(navbarMenu);
@@ -390,17 +390,17 @@ kioskBtn.onclick = function () {
 									firstNameField.value = '';
 									lastNameField.value = '';
 									badgeNumField.value = '';
-									securityExitModal.className = 'modal';
-									securityExitModalUsername.value = '';
-									securityExitModalPassword.value = '';
-									securityExitModalUsername.className = 'input';
-									securityExitModalPassword.className = 'input';
-								} else if (originalText !== securityExitModalPassword) {
-									securityExitModalUsername.className = 'input is-danger';
-									securityExitModalPassword.className = 'input is-danger';
-									securityExitErrorNotification.innerText =
+									kioskExitModal.className = 'modal';
+									kioskExitModalUsername.value = '';
+									kioskExitModalPassword.value = '';
+									kioskExitModalUsername.className = 'input';
+									kioskExitModalPassword.className = 'input';
+								} else if (originalText !== kioskExitModalPassword) {
+									kioskExitModalUsername.className = 'input is-danger';
+									kioskExitModalPassword.className = 'input is-danger';
+									kioskExitErrorNotification.innerText =
 										'Username or Password entered is incorrect';
-									show(securityExitErrorModal);
+									show(kioskExitErrorModal);
 								}
 							}
 						);
