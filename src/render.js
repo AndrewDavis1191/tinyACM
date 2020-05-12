@@ -4,26 +4,30 @@ const { dialog } = remote;
 const { createReadStream, writeFile } = require('fs');
 const { parse } = require('fast-csv');
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database(':memory:', (err) => {
-	if (err) {
-		return console.error(err.message);
+const dbinstance = async () => {
+	try {
+		db = await new sqlite3.Database(':memory:', (err) => {
+			console.log('Connected to the in-memory SQlite database.');
+			// Create required tables and populate with starter info
+			db.serialize(function (err, result) {
+			db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY)');
+			db.run(`INSERT INTO users(first_name,last_name,badge_number)
+							VALUES('Karl','Dandleton',5555555555),
+										('Bobson','Dugnutt',1123345566),
+										('Glennalon','Mixon',3334445555),
+										('Sleve','McDichael',3433445543);
+			`);
+			db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
+			db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date TEXT, message TEXT, badge_number INT)');
+			console.log(err);
+			});
+		});
+	} catch (err) {
+			throw Error(err.message);
 	}
-	console.log('Connected to the in-memory SQlite database.');
-});
+};
 
-// Create required tables and populate with starter info
-db.serialize(function (err, result) {
-	db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY)');
-	db.run(`INSERT INTO users(first_name,last_name,badge_number)
-          VALUES('Karl','Dandleton',5555555555),
-                ('Bobson','Dugnutt',1123345566),
-                ('Glennalon','Mixon',3334445555),
-                ('Sleve','McDichael',3433445543);
-  `);
-	db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
-	db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date TEXT, message TEXT, badge_number INT)');
-	console.log(err);
-});
+dbinstance();
 
 // Encryption Key
 const keysentence =
