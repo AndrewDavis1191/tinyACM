@@ -87,7 +87,7 @@ const kioskFooterItems = document.getElementById('kiosk-footer-items');
 const kioskPlusButton = document.getElementById('kiosk-plus-button');
 const kioskMinusButton = document.getElementById('kiosk-minus-button');
 const normalFooterItems = document.getElementById('normal-footer-items');
-const fileInput_button = document.getElementById('file-js-example');
+const fileInputButton = document.getElementById('file-js-box');
 
 // Add Event Listeners
 navbarBurger.onclick = function () {
@@ -347,7 +347,7 @@ kioskBtn.onclick = function () {
 			hide(addUserBtn);
 			hide(userContainer);
 			hide(deleteUserBtn);
-			hide(fileInput_button);
+			hide(fileInputButton);
 			hide(normalFooterItems);
 			show(kioskFooterItems);
 		});
@@ -388,7 +388,7 @@ kioskBtn.onclick = function () {
 									show(addUserBtn);
 									show(userContainer);
 									show(deleteUserBtn);
-									show(fileInput_button);
+									show(fileInputButton);
 									show(normalFooterItems);
 									hide(kioskFooterItems);
 									firstNameField.value = '';
@@ -417,7 +417,7 @@ kioskBtn.onclick = function () {
 				show(addUserBtn);
 				show(userContainer);
 				show(deleteUserBtn);
-				show(fileInput_button);
+				show(fileInputButton);
 				show(normalFooterItems);
 				hide(kioskFooterItems);
 			}
