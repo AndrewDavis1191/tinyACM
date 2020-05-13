@@ -10,15 +10,15 @@ const dbinstance = async () => {
 			console.log('Connected to the in-memory SQlite database.');
 			// Create required tables and populate with starter info
 			db.serialize(function (err, result) {
-			db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY)');
+			db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY);');
 			db.run(`INSERT INTO users(first_name,last_name,badge_number)
-							VALUES('Karl','Dandleton',5555555555),
-										('Bobson','Dugnutt',1123345566),
-										('Glennalon','Mixon',3334445555),
-										('Sleve','McDichael',3433445543);
+					VALUES('Karl','Dandleton',5555555555),
+						('Bobson','Dugnutt',1123345566),
+						('Glennalon','Mixon',3334445555),
+						('Sleve','McDichael',3433445543);
 			`);
-			db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT)');
-			db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date TEXT, message TEXT, badge_number INT)');
+			db.run('CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, password TEXT);');
+			db.run('CREATE TABLE IF NOT EXISTS journal(messagetype TEXT, date TEXT, message TEXT, badge_number INT);');
 			console.log(err);
 			});
 		});
@@ -339,7 +339,7 @@ kioskBtn.onclick = function () {
 	const window = remote.getCurrentWindow();
 	// Entering Kiosk Mode
 	if (kioskBtn.innerText !== 'Exit Kiosk Mode') {
-		db.all('SELECT * FROM admins', function (err, result) {
+		db.all('SELECT * FROM admins;', function (err, result) {
 			console.log(result);
 			console.log('entering kiosk mode');
 			kioskBtn.innerText = 'Exit Kiosk Mode';
@@ -353,7 +353,7 @@ kioskBtn.onclick = function () {
 		});
 	} else if (kioskBtn.innerText !== 'Kiosk Mode') {
 		// Exiting Kiosk Mode
-		db.all('SELECT * FROM admins', function (err, result) {
+		db.all('SELECT * FROM admins;', function (err, result) {
 			console.log(result);
 			if (result.length > 0) {
 				kioskExitModal.className = 'modal is-active';
@@ -376,7 +376,7 @@ kioskBtn.onclick = function () {
 						// Check db and validate password
 						db.all(
 							`SELECT * FROM admins
-              WHERE username = '${kioskExitModalUsername.value}'`,
+              WHERE username = '${kioskExitModalUsername.value}';`,
 							function (err, result) {
 								console.log(result);
 								let bytes = Crypto.AES.decrypt(result[0].password, key);
@@ -445,7 +445,7 @@ adminModalButton.onclick = function () {
 	} else {
 		db.all(
 			`SELECT * FROM admins
-      WHERE username = '${adminModalUsername.value}'`,
+			 WHERE username = '${adminModalUsername.value}'`,
 			function (err, result) {
 				console.log(result);
 				if (result.length > 0) {
@@ -459,8 +459,8 @@ adminModalButton.onclick = function () {
 					let ciphertext = Crypto.AES.encrypt(adminModalPassword.value, key).toString();
 					db.run(
 						`INSERT INTO admins(username,password)
-            VALUES('${adminModalUsername.value}',
-            '${Crypto.AES.encrypt(adminModalPassword.value, key)}')`,
+							VALUES('${adminModalUsername.value}',
+            				'${Crypto.AES.encrypt(adminModalPassword.value, key)}')`,
 						function (err, result) {
 							if (err) {
 								console.log('error inserting new admin to table');
@@ -489,9 +489,9 @@ fileInput.onchange = () => {
 			i--;
 		}
 		db.serialize(function () {
-			db.run('DROP TABLE users');
+			db.run('DROP TABLE users;');
 			console.log('users table removed');
-			db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT)');
+			db.run('CREATE TABLE users(first_name text, last_name text, badge_number BIGINT);');
 			console.log('users table created');
 		});
 		let dataArray = [];
@@ -504,8 +504,8 @@ fileInput.onchange = () => {
 					// Set start under header and limit import to 10,000 rows
 					if (dataArray.indexOf(row) > 0 && dataArray.length <= 10002) {
 						db.run(`INSERT INTO users(first_name,last_name,badge_number)
-                VALUES('${row[0]}','${row[1]}',${row[2]});
-        `);
+                				VALUES('${row[0]}','${row[1]}',${row[2]});
+        				`);
 						let tableRow = userTableBody.insertRow();
 						let cell1 = tableRow.insertCell(0);
 						let cell2 = tableRow.insertCell(1);
@@ -583,15 +583,39 @@ function getDateString() {
 function journalAllow(result) {
 	let date_ob = getDateString();
 	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
-        VALUES('Access Approved','${date_ob}','Your badge is listed for event access',${result[0].badge_number});
+        	VALUES('Access Approved','${date_ob}','Your badge is listed for event access',${result[0].badge_number});
   `);
 }
 
 function journalDeny(result) {
 	let date_ob = getDateString();
 	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
-        VALUES('Access Denied','${date_ob}','Your badge was not found in access list',${result});
+        	VALUES('Access Denied','${date_ob}','Your badge was not found in access list',${result});
   `);
+}
+
+function evaluateJournalEntry(badge) {
+	db.run(`SELECT j.badge_number, j.date, j.messagetype
+			FROM journal j
+			INNER JOIN (
+				SELECT badge_number, max(date) AS LatestDate
+				FROM journal
+				WHERE badge_number = '${badge}'
+				GROUP BY badge_number
+			) jm
+			ON j.badge_number = jm.badge_number AND j.date = jm.LatestDate;
+	`),
+	function (err, query) {
+		if (query.messagetype === 'Access Denied') {
+			journalAllow(badge) 
+		}
+		else if (query.messagetype === 'Access Approved') {
+			journalDeny(badge) 
+		}
+		else if (err) {
+			console.log('error retrieving past badge status')
+		}
+	}
 }
 
 let currentSlide = 0;
@@ -608,8 +632,8 @@ function badgeMatcher(event) {
 			charsTyped = [];
 			db.all(
 				`SELECT *
-              FROM users
-              WHERE badge_number = '${filteredBadge}'`,
+				 FROM users
+         WHERE badge_number = '${filteredBadge}';`,
 				function (err, result) {
 					if (result.length === 0) {
 						// Kiosk Tile swipe and show carousel Deny
@@ -619,7 +643,7 @@ function badgeMatcher(event) {
 							'Access Denied';
 						columns[currentSlide].firstElementChild.firstElementChild.children[1].innerText = filteredBadge;
 						currentSlide = (currentSlide + 1) % showing;
-						journalDeny(filteredBadge);
+						evaluateJournalEntry(filteredBadge);
 					} else if (err) {
 						errorNotification.innerText = `Invalid badge input, be sure you are using the correct reader`;
 						show(errorModal);
@@ -632,7 +656,7 @@ function badgeMatcher(event) {
 						columns[currentSlide].firstElementChild.firstElementChild.children[1].innerText =
 							result[0].badge_number;
 						currentSlide = (currentSlide + 1) % showing;
-						journalAllow(result);
+						evaluateJournalEntry(result);
 					}
 				}
 			);
