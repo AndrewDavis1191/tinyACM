@@ -481,7 +481,7 @@ adminModalButton.onclick = function () {
 };
 
 // File input function
-const fileInput = document.querySelector('#file-js-example input[type=file]');
+const fileInput = document.querySelector('#file-js-box input[type=file]');
 fileInput.onchange = () => {
 	if (fileInput.files.length > 0) {
 		for (let i = 1; i < table.rows.length; i++) {
@@ -495,7 +495,7 @@ fileInput.onchange = () => {
 			console.log('users table created');
 		});
 		let dataArray = [];
-		const fileName = document.querySelector('#file-js-example .file-name');
+		const fileName = document.querySelector('#file-js-box .file-name');
 		fileName.textContent = fileInput.files[0].name;
 		createReadStream(fileInput.files[0].path)
 			.pipe(
@@ -594,8 +594,22 @@ function journalDeny(result) {
   `);
 }
 
+function journalEnter(result) {
+	let date_ob = getDateString();
+	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
+        	VALUES('Access Approved','${date_ob}','User is Entering the Zone',${result});
+  `);
+}
+
+function journalExit(result) {
+	let date_ob = getDateString();
+	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
+        	VALUES('Access Approved','${date_ob}','User is Exiting the Zone',${result});
+  `);
+}
+
 function evaluateJournalEntry(badge) {
-	db.run(`SELECT j.badge_number, j.date, j.messagetype
+	db.run(`SELECT j.badge_number, j.date, j.message
 			FROM journal j
 			INNER JOIN (
 				SELECT badge_number, max(date) AS LatestDate
@@ -606,11 +620,13 @@ function evaluateJournalEntry(badge) {
 			ON j.badge_number = jm.badge_number AND j.date = jm.LatestDate;
 	`),
 	function (err, query) {
-		if (query.messagetype === 'Access Denied') {
-			journalAllow(badge) 
+		if (query.message === 'User is Entering the Zone') {
+			journalExit(badge)
+			console.log('user now exiting')
 		}
-		else if (query.messagetype === 'Access Approved') {
-			journalDeny(badge) 
+		else if (query.message === 'User is Exiting the Zone') {
+			journalEnter(badge)
+			console.log('user now entering')
 		}
 		else if (err) {
 			console.log('error retrieving past badge status')
@@ -643,7 +659,7 @@ function badgeMatcher(event) {
 							'Access Denied';
 						columns[currentSlide].firstElementChild.firstElementChild.children[1].innerText = filteredBadge;
 						currentSlide = (currentSlide + 1) % showing;
-						evaluateJournalEntry(filteredBadge);
+						journalDeny(filteredBadge);
 					} else if (err) {
 						errorNotification.innerText = `Invalid badge input, be sure you are using the correct reader`;
 						show(errorModal);
@@ -656,6 +672,7 @@ function badgeMatcher(event) {
 						columns[currentSlide].firstElementChild.firstElementChild.children[1].innerText =
 							result[0].badge_number;
 						currentSlide = (currentSlide + 1) % showing;
+						journalAllow(result)
 						evaluateJournalEntry(result);
 					}
 				}
