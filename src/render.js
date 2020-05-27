@@ -1,6 +1,5 @@
-const { remote } = require('electron');
+const { remote, dialog } = require('electron');
 const { crypto } = require('cryptojs');
-const { dialog } = remote;
 const { createReadStream, writeFile } = require('fs');
 const { parse } = require('fast-csv');
 const sqlite3 = require('sqlite3').verbose();
