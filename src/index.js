@@ -31,7 +31,7 @@ const createWindow = () => {
   const choice = require('electron').dialog.showMessageBoxSync(this,
     {
       type: 'question',
-      buttons: ['Yes', 'No'],
+      buttons: ['Close App', 'Cancel'],
       title: 'Confirm',
       message: `Are you sure you want to quit? Users and journal will be lost.
       Please export if there is any information you'd like to keep.`
