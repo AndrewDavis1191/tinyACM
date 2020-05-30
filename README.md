@@ -13,7 +13,7 @@ Lightweight (Relatively... it is electron, afterall) :heavy_check_mark:
 
 No need for internet (Party in the desert?) :heavy_check_mark:
 
-Operator Mode --> To station someone to handle the badging, if desired :heavy_check_mark:
+Secure Operator Mode with Swipe&Show --> To station someone to handle the badging, if desired :heavy_check_mark:
 
 Journal --> To log entries and exits in the database :heavy_check_mark:
 
@@ -21,8 +21,10 @@ Journal --> To log entries and exits in the database :heavy_check_mark:
 ![tinyACM Demo](demo/tinyacmdemo.gif)
 
 ## Installation
-######Windows
-[Click Here for Windows Installer!](https://github.com/AndrewDavis1191/tinyACM/blob/master/Installers/Windows/tinyacm-1.0.0%20Setup.exe)
+###### Windows
+[Click Here for Windows Installer!]
+###### OSX
+[Click Here for Mac Installer!]
 
 ## Usage
 Populate the users via the CRUD, or import a CSV of your users (this can be exported from your established Access Management System if you have one in place)
@@ -63,7 +65,7 @@ git clone https://github.com/AndrewDavis1191/tinyACM.git
 npm install package.json
 # start the app with npm
 npm start
-# if you want to build installer for your OS(mac/linux)
+# if you want to build installer for your OS(windows/mac/linux)
 npm run make
 ```
 
@@ -75,7 +77,7 @@ Please send feedback to me if you have suggestions on code in any manner; operat
 
 This is my first time messing around with JavaScript, Most of what I've done professionally is Powershell.:poop:
 
-I wanted to go vanilla JS, as I'd like to move into React native and actually appreciate the problems it solves.
+I wanted to go vanilla JS, as I'd like to move into TypeScript and React/RN and actually appreciate the problems it solves.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
