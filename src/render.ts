@@ -205,11 +205,11 @@ async function exportCsvFile(json: any[]) {
 	const header = Object.keys(json[0]);
 	let csv = json.map((row: { [x: string]: any; }) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
 	csv.unshift(header.join(','));
-	csv = csv.join('\r\n');
+	let csv2: string = csv.join('\r\n');
 	const filePath = await dialog.showSaveDialog({
 		defaultPath: `file-${Date.now()}.csv`,
 	});
-	writeFile(filePath.filePath, csv, () => console.log('csv saved successfully'));
+	writeFile(filePath.filePath, csv2, () => console.log('csv saved successfully'));
 }
 
 // Export users table
