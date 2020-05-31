@@ -1,14 +1,15 @@
 const { remote, dialog } = require('electron');
-const { crypto } = require('cryptojs');
 const { createReadStream, writeFile } = require('fs');
+const { crypto } = require('cryptojs')
 const { parse } = require('fast-csv');
 const sqlite3 = require('sqlite3').verbose();
+var db: any = []
 const dbinstance = async () => {
 	try {
-		db = await new sqlite3.Database(':memory:', (err) => {
+		db = await new sqlite3.Database(':memory:', (_err: any) => {
 			console.log('Connected to the in-memory SQlite database.');
 			// Create required tables and populate with starter info
-			db.serialize(function (err, result) {
+			db.serialize(function (err: any, _result: any) {
 			db.run('CREATE TABLE IF NOT EXISTS users(first_name text, last_name text, badge_number INT PRIMARY KEY);');
 			db.run(`INSERT INTO users(first_name,last_name,badge_number)
 					VALUES('Karl','Dandleton',5555555555),
@@ -199,10 +200,10 @@ kioskExitModalPassword.addEventListener('keyup', function (event) {
 });
 
 // Export data function
-async function exportCsvFile(json) {
-	const replacer = (key, value) => (value === null ? '' : value);
+async function exportCsvFile(json: any[]) {
+	const replacer = (_key: any, value: any) => (value === null ? '' : value);
 	const header = Object.keys(json[0]);
-	let csv = json.map((row) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
+	let csv = json.map((row: { [x: string]: any; }) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
 	csv.unshift(header.join(','));
 	csv = csv.join('\r\n');
 	const filePath = await dialog.showSaveDialog({
@@ -213,7 +214,7 @@ async function exportCsvFile(json) {
 
 // Export users table
 exportUsersButton.onclick = function () {
-	db.all('SELECT * FROM users;)', function (err, result) {
+	db.all('SELECT * FROM users;)', function (_err: any, result: any[]) {
 		if (result.length === 0) {
 			errorNotification.innerText = `There are no users in the database to export.
                                       Please add users before exporting.`;
@@ -226,7 +227,7 @@ exportUsersButton.onclick = function () {
 
 // Export journal table
 exportJournalButton.onclick = function () {
-	db.all('SELECT * FROM journal;)', function (err, result) {
+	db.all('SELECT * FROM journal;)', function (_err: any, result: any[]) {
 		if (result.length === 0) {
 			errorNotification.innerText = `There have not been any actions recorded in journal yet.
                                       Try again once you've encountered a badge read`;
@@ -238,12 +239,12 @@ exportJournalButton.onclick = function () {
 };
 
 // Show an element
-const show = function (elem) {
+const show = function (elem: HTMLElement) {
 	elem.style.display = 'block';
 };
 
 // Hide an element
-const hide = function (elem) {
+const hide = function (elem: HTMLElement) {
 	elem.style.display = 'none';
 };
 
@@ -298,12 +299,12 @@ addUserBtn.onclick = function () {
 		row.onclick = function () {
 			if (this.className === 'is-selected') {
 				this.className = '';
-				badge = '';
-				rindex = '';
+				let badge = '';
+				let rindex = '';
 				console.log('no item selected');
 			} else {
 				this.className = 'is-selected';
-				badge = this.cells[2].innerText;
+				let badge = this.cells[2].innerText;
 				console.log(badge);
 			}
 		};
@@ -317,7 +318,7 @@ deleteUserBtn.onclick = function () {
 	if (table.rows.length >= 1) {
 		for (let i = 0; i < table.rows.length; i++) {
 			if (table.rows[i].className === 'is-selected') {
-				badge = table.rows[i].cells[2].innerText;
+				const badge = table.rows[i].cells[2].innerText;
 				db.run(`DELETE FROM users
                 WHERE badge_number = ${badge}`);
 				table.deleteRow(i);
@@ -338,7 +339,7 @@ kioskBtn.onclick = function () {
 	const window = remote.getCurrentWindow();
 	// Entering Kiosk Mode
 	if (kioskBtn.innerText !== 'Exit Kiosk Mode') {
-		db.all('SELECT * FROM admins;', function (err, result) {
+		db.all('SELECT * FROM admins;', function (_err: any, result: any) {
 			console.log(result);
 			console.log('entering kiosk mode');
 			kioskBtn.innerText = 'Exit Kiosk Mode';
@@ -352,7 +353,7 @@ kioskBtn.onclick = function () {
 		});
 	} else if (kioskBtn.innerText !== 'Kiosk Mode') {
 		// Exiting Kiosk Mode
-		db.all('SELECT * FROM admins;', function (err, result) {
+		db.all('SELECT * FROM admins;', function (_err: any, result: any[]) {
 			console.log(result);
 			if (result.length > 0) {
 				kioskExitModal.className = 'modal is-active';
@@ -376,7 +377,7 @@ kioskBtn.onclick = function () {
 						db.all(
 							`SELECT * FROM admins
               WHERE username = '${kioskExitModalUsername.value}';`,
-							function (err, result) {
+							function (_err: any, result: { password: any; }[]) {
 								console.log(result);
 								let bytes = Crypto.AES.decrypt(result[0].password, key);
 								let originalText = bytes.toString(Crypto.charenc.UTF8);
@@ -445,7 +446,7 @@ adminModalButton.onclick = function () {
 		db.all(
 			`SELECT * FROM admins
 			 WHERE username = '${adminModalUsername.value}'`,
-			function (err, result) {
+			function (_err: any, result: any[]) {
 				console.log(result);
 				if (result.length > 0) {
 					adminErrorNotification.innerText =
@@ -460,7 +461,7 @@ adminModalButton.onclick = function () {
 						`INSERT INTO admins(username,password)
 							VALUES('${adminModalUsername.value}',
             				'${Crypto.AES.encrypt(adminModalPassword.value, key)}')`,
-						function (err, result) {
+						function (err: any, _result: any) {
 							if (err) {
 								console.log('error inserting new admin to table');
 							}
@@ -498,7 +499,7 @@ fileInput.onchange = () => {
 		fileName.textContent = fileInput.files[0].name;
 		createReadStream(fileInput.files[0].path)
 			.pipe(
-				parse().on('data', (row) => {
+				parse().on('data', (row: any[]) => {
 					dataArray.push(row);
 					// Set start under header and limit import to 10,000 rows
 					if (dataArray.indexOf(row) > 0 && dataArray.length <= 10002) {
@@ -515,7 +516,7 @@ fileInput.onchange = () => {
 					}
 				})
 			)
-			.on('error', (error) => console.error(error))
+			.on('error', (error: any) => console.error(error))
 			.on('end', () => {
 				console.log('CSV file successfully processed');
 				fileName.textContent = '';
@@ -525,20 +526,20 @@ fileInput.onchange = () => {
 
 // Table selection and highlighting
 let table = document.getElementById('table'),
-	rIndex;
+	rIndex: any;
 for (let i = 1, len = table.rows.length; i < len; i++) {
 	table.rows[i].onclick = function () {
 		let table = document.getElementById('table'),
-			rIndex;
+			rIndex: any;
 		if (this.className === 'is-selected') {
 			this.className = '';
-			badge = '';
-			rindex = '';
+			let badge = '';
+			let rindex = '';
 			console.log('no item selected');
 		} else {
 			this.className = 'is-selected';
 			rIndex = this.rowIndex;
-			badge = this.cells[2].innerText;
+			let badge = this.cells[2].innerText;
 			console.log(rIndex);
 			console.log(badge);
 		}
@@ -548,13 +549,13 @@ for (let i = 1, len = table.rows.length; i < len; i++) {
 // Kiosk Swipe and Show add/remove grid function
 let grid = document.getElementById('grid');
 let columns = Array.prototype.slice.call(document.querySelectorAll('#grid > .column'), 0);
-let showing = 4;
+let showing: any = 4;
 function showColumns() {
 	showing = Math.min(Math.max(parseInt(showing), 1), 8);
-	columns.forEach(function (el) {
+	columns.forEach(function (el: { style: { display: string; }; }) {
 		el.style.display = 'none';
 	});
-	columns.slice(0, showing).forEach(function (el) {
+	columns.slice(0, showing).forEach(function (el: { style: { display: string; }; }) {
 		el.style.display = 'block';
 	});
 	kioskPlusButton.blur();
@@ -562,7 +563,7 @@ function showColumns() {
 }
 
 // Global replace for input filter
-function replaceAll(str, find, replace) {
+function replaceAll(str: string, find: string | RegExp, replace: string) {
 	return str.replace(new RegExp(find, 'g'), replace);
 }
 
@@ -579,35 +580,35 @@ function getDateString() {
 	return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milsec;
 }
 
-function journalAllow(result) {
+function journalAllow(result: { badge_number: any; }[]) {
 	let date_ob = getDateString();
 	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
         	VALUES('Access Approved','${date_ob}','Your badge is listed for event access',${result[0].badge_number});
   `);
 }
 
-function journalDeny(result) {
+function journalDeny(result: any) {
 	let date_ob = getDateString();
 	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
         	VALUES('Access Denied','${date_ob}','Your badge was not found in access list',${result});
   `);
 }
 
-function journalEnter(result) {
+function journalEnter(result: any) {
 	let date_ob = getDateString();
 	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
         	VALUES('Access Approved','${date_ob}','User is Entering the Zone',${result});
   `);
 }
 
-function journalExit(result) {
+function journalExit(result: any) {
 	let date_ob = getDateString();
 	db.run(`INSERT INTO journal(messagetype,date,message,badge_number)
         	VALUES('Access Approved','${date_ob}','User is Exiting the Zone',${result});
   `);
 }
 
-function evaluateJournalEntry(badge) {
+function evaluateJournalEntry(badge: any) {
 	db.run(`SELECT j.badge_number, j.date, j.message
 			FROM journal j
 			INNER JOIN (
@@ -618,7 +619,7 @@ function evaluateJournalEntry(badge) {
 			) jm
 			ON j.badge_number = jm.badge_number AND j.date = jm.LatestDate;
 	`),
-	function (err, query) {
+	function (err: any, query: { message: string; }) {
 		if (query.message === 'User is Entering the Zone') {
 			journalExit(badge)
 			console.log('user now exiting')
@@ -636,20 +637,20 @@ function evaluateJournalEntry(badge) {
 let currentSlide = 0;
 // Function to grab badge number from pcProx reader correctly
 let charsTyped = [];
-function badgeMatcher(event) {
+function badgeMatcher(event: { charCode: number; keyCode: number; }) {
 	if (document.activeElement.id === 'search-input' || document.activeElement.nodeName !== 'INPUT') {
 		charsTyped.push(String.fromCharCode(event.charCode));
 		console.log(charsTyped);
 		if (event.keyCode === 13) {
-			filter = replaceAll(charsTyped.toString(), ',', '');
-			filteredBadge = filter.split(':')[1];
+			let filter = replaceAll(charsTyped.toString(), ',', '');
+			const filteredBadge = filter.split(':')[1];
 			console.log(filteredBadge);
 			charsTyped = [];
 			db.all(
 				`SELECT *
 				 FROM users
          WHERE badge_number = '${filteredBadge}';`,
-				function (err, result) {
+				function (err: any, result: any[]) {
 					if (result.length === 0) {
 						// Kiosk Tile swipe and show carousel Deny
 						columns[currentSlide].firstElementChild.firstElementChild.className =

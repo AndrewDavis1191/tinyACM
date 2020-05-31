@@ -1,5 +1,5 @@
-const { app, shell, BrowserWindow, dialog } = require('electron');
-const path = require('path');
+const { app, shell, BrowserWindow } = require('electron');
+import path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -23,11 +23,11 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  mainWindow.webContents.on("new-window", function(event, url) {
+  mainWindow.webContents.on("new-window", function(event: { preventDefault: () => void; }, url: any) {
     event.preventDefault();
     shell.openExternal(url);
   });
-  mainWindow.on('close', function(e) {
+  mainWindow.on('close', function(e: { preventDefault: () => void; }) {
   const choice = require('electron').dialog.showMessageBoxSync(this,
     {
       type: 'question',
