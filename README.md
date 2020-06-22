@@ -4,7 +4,7 @@ A lightweight Access Control application for AdHoc situations.
 ## Backstory
 A freind came to me with an issue of hosting a holiday party at a company, and wanted to implement access control.
 
-It seems that largely, the infrastructure and initial investment for something so simple just didn't make sense.
+It seems that - largely - the infrastructure and initial investment for something so simple just didn't make sense.
 
 So I thought it would be neat to build a simple cross-platform app that can satisfy this niche need.
 
