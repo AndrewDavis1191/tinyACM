@@ -46,7 +46,7 @@ Switch to kiosk mode, and your AdHoc Access Control is ready to go!
 │
 ├── CSS (bulma)
 │
-├── JavaScript (Nodejs/Electron)
+├── TypeScript (Nodejs/Electron)
 │   ├── CryptoJS
 │   └── fast-csv
 │
@@ -75,9 +75,9 @@ This is currently what I wanted for MVP, but future goals would be to either use
 ## Constructive Criticism!
 Please send feedback to me if you have suggestions on code in any manner; operation, readability, overall JavaScript best practices.
 
-This is my first time messing around with JavaScript, Most of what I've done professionally is Powershell.:poop:
+This is my first time messing around with JavaScript/TypeScript, Most of what I've done professionally is Powershell.:poop:
 
-I wanted to go vanilla JS, as I'd like to move into TypeScript and React/RN and actually appreciate the problems it solves.
+I started with vanilla JS, later migrated to TypeScript. Mostly because I wanted to see TS + later move to React/RN and actually appreciate the problems it solves.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
