@@ -24,7 +24,7 @@ Journal --> To log entries and exits in the database :heavy_check_mark:
 ###### Windows
 [Click Here for Windows Installer!]
 ###### OSX
-[Click Here for Mac Installer!]
+[Click Here for Mac Installer!](https://github.com/AndrewDavis1191/tinyACM/raw/master/out/make/zip/darwin/x64/tinyacm-darwin-x64-1.0.0.zip)
 
 ## Usage
 Populate the users via the CRUD, or import a CSV of your users (this can be exported from your established Access Management System if you have one in place)
