@@ -89,6 +89,14 @@ typings/
 .webpack/
 
 # Electron-Forge
+## OSX
 out/make/zip/darwin/x64/.gitattributes
 out/tinyacm-darwin-x64/
 !*/out/make/zip/darwin/x64/tinyacm-darwin-x64-1.0.0.zip
+
+## Windows
+out/squirrel.windows/x64/
+out/tinyacm-win32-x64/
+out/make/squirrel.windows/x64/tinyacm-1.0.0-full.nupkg
+out/make/squirrel.windows/x64/RELEASES
+!*out/make/squirrel.windows/x64/tinyacm-1.0.0 Setup.exe

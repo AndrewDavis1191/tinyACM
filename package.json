@@ -5,9 +5,9 @@
   "description": "My Electron application description",
   "main": "build/index.js",
   "scripts": {
-    "start": "cp src/index.html build && electron-forge start",
+    "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "cp src/index.html build && electron-forge make",
+    "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
