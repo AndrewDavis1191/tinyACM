@@ -89,4 +89,6 @@ typings/
 .webpack/
 
 # Electron-Forge
-out/
+out/make/zip/darwin/x64/.gitattributes
+out/tinyacm-darwin-x64/
+!*/out/make/zip/darwin/x64/tinyacm-darwin-x64-1.0.0.zip
