@@ -8,7 +8,7 @@ It seems that - largely - the infrastructure and initial investment for somethin
 
 So I thought it would be neat to build a simple cross-platform app that can satisfy this niche need.
 
-## The goals
+## The Goals
 Lightweight (Relatively... it is electron, afterall) :heavy_check_mark:
 
 No need for internet (Party in the desert?) :heavy_check_mark:
@@ -69,7 +69,7 @@ npm start
 npm run make
 ```
 
-## current status and goals
+## Current Status and Remarks
 This is currently what I wanted for MVP, but future goals would be to either use the node-serialport library to explore reading USB input directly or shell out the $200 for the PcProx sdk. I'd like to look into different readers and card types to understand the differences (hard to get my hands on different cards), and ultimately, it would be awesome to get this working with an iSTAR panel directly. Sort term goals involve blob management in sqlite to store and display photos on swipe and show.
 
 ## Constructive Criticism!
@@ -77,7 +77,7 @@ Please send feedback to me if you have suggestions on code in any manner; operat
 
 This is my first time messing around with JavaScript/TypeScript, Most of what I've done professionally is Powershell.:poop:
 
-I started with vanilla JS, later migrated to TypeScript. Mostly because I wanted to see TS + later move to React/RN and actually appreciate the problems it solves.
+I started with vanilla JS, later migrated to TypeScript. Mostly because I wanted to see TS + later move to React/RN and actually appreciate the problems the technologies solve.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
