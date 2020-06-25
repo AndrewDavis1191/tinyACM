@@ -21,9 +21,9 @@ Journal --> To log entries and exits in the database :heavy_check_mark:
 ![tinyACM Demo](demo/tinyacmdemo.gif)
 
 ## Installation
-###### Windows
+###### Windows [<img src="https://img.icons8.com/windows/32/000000/windows-10.png"/>](https://github.com/AndrewDavis1191/tinyACM/raw/master/out/make/squirrel.windows/x64/tinyacm-1.0.0%20Setup.exe)
 [Click Here for Windows Installer!](https://github.com/AndrewDavis1191/tinyACM/raw/master/out/make/squirrel.windows/x64/tinyacm-1.0.0%20Setup.exe)
-###### OSX
+###### OSX [<img src="https://img.icons8.com/metro/26/000000/mac-os.png"/>](https://github.com/AndrewDavis1191/tinyACM/raw/master/out/make/zip/darwin/x64/tinyacm-darwin-x64-1.0.0.zip)
 [Click Here for Mac Installer!](https://github.com/AndrewDavis1191/tinyACM/raw/master/out/make/zip/darwin/x64/tinyacm-darwin-x64-1.0.0.zip)
 
 ## Usage
