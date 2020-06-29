@@ -1,4 +1,5 @@
 const { remote, dialog } = require('electron');
+const { Menu, MenuItem } = remote;
 const { createReadStream, writeFile } = require('fs');
 const { crypto } = require('cryptojs')
 const { parse } = require('fast-csv');
@@ -543,6 +544,24 @@ for (let i = 1, len = table.rows.length; i < len; i++) {
 			console.log(rIndex);
 			console.log(badge);
 		}
+	};
+}
+
+// Context menu for Right-Click Operations on Table
+const menu = new Menu()
+menu.append(new MenuItem({ label: 'MenuItem1', click() { console.log('item 1 clicked') } }))
+menu.append(new MenuItem({ type: 'separator' }))
+menu.append(new MenuItem({ label: 'MenuItem2', type: 'checkbox', checked: true }))
+
+userTableBody.addEventListener('contextmenu', (e) => {
+  e.preventDefault()
+  menu.popup({ window: remote.getCurrentWindow() })
+}, false)
+
+// Table specific info on right-click
+for (let i = 1, len = table.rows.length; i < len; i++) {
+	table.rows[i].oncontextmenu = function () {
+		let table = document.getElementById('table')
 	};
 }
 
