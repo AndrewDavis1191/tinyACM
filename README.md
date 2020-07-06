@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/AndrewDavis1191/tinyACM/master/images/tinyACMLogoText.svg" width="200" height="100"/>
+# <img src="https://raw.githubusercontent.com/AndrewDavis1191/tinyACM/master/images/tinyACMLogoText.svg" width="200" height="100"/>
 A lightweight Access Control application for AdHoc situations.
 
 ## Backstory
