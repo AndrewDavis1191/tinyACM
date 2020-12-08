@@ -55,7 +55,7 @@
     "bulma-switch": "^2.0.0",
     "cryptojs": "^2.5.3",
     "electron-squirrel-startup": "^1.0.0",
-    "fast-csv": "^4.3.0",
+    "fast-csv": "^4.3.6",
     "package.json": "^2.0.1",
     "sqlite3": "^4.2.0"
   },
